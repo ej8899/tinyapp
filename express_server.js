@@ -69,12 +69,22 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body); // Log the POST request body to the console
-  console.log(makeID(6));
-  res.send("Ok"); // Respond with 'Ok' (we will replace this)
+  //console.log(req.body.longURL); // Log the POST request body to the console
+  console.log();
+  // console.log(makeID(6));
+  const newTinyURL = makeID();
+  urlDatabase[newTinyURL] = req.body.longURL;
+  console.log(JSON.stringify(urlDatabase));
+  return res.redirect('/urls/'+newTinyURL);
+  // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
-
+app.get("/u/:id", (req, res) => {
+  let id = req.params.id;
+  const longURL = urlDatabase[id];
+  console.log('|' + longURL + '|');
+  res.redirect(longURL);
+});
 
 
 
