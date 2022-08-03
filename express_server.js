@@ -14,12 +14,12 @@ const urlDatabase = {
 
 
 const makeID = function (numChars) {
-  var yourCode = "";
-  var possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  if(!numChars) {
+  let yourCode = "";
+  let possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  if (!numChars) {
     numChars = 6;
   }
-  for (var i = 0; i < numChars; i++) {
+  for (let i = 0; i < numChars; i++) {
     yourCode += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
   }
   return yourCode;
