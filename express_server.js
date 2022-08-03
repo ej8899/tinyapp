@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
-const path = require('path');
+// const path = require('path');
 
 app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static("public"))
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -42,6 +42,8 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: req.params.longURL };
+  const templateVarsDb = { urls: urlDatabase};
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] }; 
+  // <%= urls[id] %>
   res.render("urls_show", templateVars);
 });
