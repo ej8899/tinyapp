@@ -83,6 +83,18 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 //
+// UPDATE an existing database entry
+//
+app.post("/urls/:id/update", (req, res) => {
+  //console.log(req.body.longURL); // Log the POST request body to the console
+  console.log();
+  console.log("IN EDIT w ID:" + req.params.id);
+  urlDatabase[req.params.id] = req.body.longURL
+  console.log(req.body.longURL);
+  return res.redirect('/urls/');
+});
+
+//
 // RENDER specific tiny URL page data
 //
 app.get("/urls/:id", (req, res) => {
