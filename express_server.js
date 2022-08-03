@@ -1,3 +1,9 @@
+
+
+
+//
+// REQUIRES & INCLUDES
+//
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
@@ -8,12 +14,48 @@ app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser')
 
+
+//
+// SET and DEFINE GLOBAL VARIABLES
+//
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
 
+const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m', 
+      conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
+      conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
+const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorItalics = "\x1b[3m", conColorReverse = "\x1b[7m";
 
+//
+// SETUP HELPER FUNCTIONS:
+//
+
+//
+// create some server title ascii art
+//
+const makeServerTitle = function () {
+  let m = conColorMagenta, c = conColorCyan;
+  console.log(m)
+  console.log(` _    _                  ${c}_                 `);
+  console.log(`${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  `);
+  console.log(`${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ `);
+  console.log(`${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |`);
+  console.log(` ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ `);
+  console.log(` ${m}__             |___/        ${c}|_|    |_|    `);
+  console.log(`${m}/ \_\\  ___  _ __ __   __ ___  _ __          `);
+  console.log(`\\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
+  console.log(`_\\ \\|  __/| |    \\ V /|  __/| |            `);
+  console.log(`\\__/ \\___||_|     \\_/  \\___||_|            `);
+  console.log(conColorReset);
+
+}
+
+//
+// create a random ID -default 6 chars longer, otherwise specify # of chars to create
+// return is the random ID
+//
 const makeID = function (numChars) {
   let yourCode = "";
   let possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -27,12 +69,18 @@ const makeID = function (numChars) {
 };
 
 
+//
+// PROGRAM START
+//
+makeServerTitle();
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
+  console.log(`${conColorDim}(Don't forget to gently, but firmly press ctrl-c when you need to exit the server!)${conColorReset}`)
 });
 
 app.get("/urls.json", (req, res) => {
@@ -113,7 +161,8 @@ app.post("/urls", (req, res) => {
   // console.log(makeID(6));
   const newTinyURL = makeID();
   urlDatabase[newTinyURL] = req.body.longURL;
-  console.log(JSON.stringify(urlDatabase));
+  // console.log(JSON.stringify(urlDatabase));
+  console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a WEB app, right?\nYou should be paying attention to your web browser!${conColorReset}`)
   return res.redirect('/urls/'+newTinyURL);
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
@@ -134,7 +183,14 @@ app.get("/u/:id", (req, res) => {
 //
 app.post("/login", (req, res) => {
   console.log();
-  console.log("SET LOGIN / cookie")
+  if(req.body.username) {
+    console.log(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
+  } else {
+    console.log(`${conColorYellow}Did you forget who you are?${conColorReset}`);
+  }
   res.cookie('username', req.body.username);  // REMEMBER: the .username is the html FORM INPUT NAME!!
   return res.redirect('/urls/');
 });
+
+
+
