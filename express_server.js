@@ -40,6 +40,6 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: /* What goes here? */ };
+  const templateVars = { id: req.params.id, longURL: req.params.longURL };
   res.render("urls_show", templateVars);
 });
