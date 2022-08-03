@@ -62,6 +62,18 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   res.render("urls_new.ejs");
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+  //console.log(req.body.longURL); // Log the POST request body to the console
+  console.log();
+  console.log("IN DELETE w ID:" + req.params.id);
+  delete urlDatabase[req.params.id];
+  return res.redirect('/urls/');
+  // urlDatabase[newTinyURL] = req.body.longURL;
+  // console.log(JSON.stringify(urlDatabase));
+  // return res.redirect('/urls/'+newTinyURL);
+  // res.send("Ok"); // Respond with 'Ok' (we will replace this)
+});
+
 app.get("/urls/:id", (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] }; 
   // <%= urls[id] %>
@@ -86,7 +98,6 @@ app.get("/u/:id", (req, res) => {
   res.redirect(longURL);
 });
 
-
-
+// does server restart  DEBUG test for nodemon monitoring
 
 
