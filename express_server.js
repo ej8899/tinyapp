@@ -52,16 +52,24 @@ app.get("/fetch", (req, res) => {
 });
 
 
-
+//
+// RENDER the main tiny URL page (list all items)
+//
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index.ejs", templateVars);
 });
 
+//
+// RENDER for a NEW tiny URL entry
+//
 app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   res.render("urls_new.ejs");
 });
 
+//
+// DELETE an existing database entry
+//
 app.post("/urls/:id/delete", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
@@ -74,12 +82,18 @@ app.post("/urls/:id/delete", (req, res) => {
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
+//
+// RENDER specific tiny URL page data
+//
 app.get("/urls/:id", (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] }; 
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
 
+//
+// CREATE a NEW database Entry
+//
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
@@ -91,6 +105,9 @@ app.post("/urls", (req, res) => {
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
+//
+// REDIRECT to the longURL
+//
 app.get("/u/:id", (req, res) => {
   let id = req.params.id;
   const longURL = urlDatabase[id];
@@ -98,6 +115,6 @@ app.get("/u/:id", (req, res) => {
   res.redirect(longURL);
 });
 
-// does server restart  DEBUG test for nodemon monitoring
+
 
 
