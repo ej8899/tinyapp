@@ -6,6 +6,7 @@ const PORT = 8080; // default port 8080
 app.set("view engine", "ejs");
 app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }));
+var cookieParser = require('cookie-parser')
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -98,7 +99,7 @@ app.post("/urls/:id/update", (req, res) => {
 // RENDER specific tiny URL page data
 //
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] }; 
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id]};  // username: req.cookies["username"]
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
@@ -128,5 +129,12 @@ app.get("/u/:id", (req, res) => {
 });
 
 
-
-
+//
+// LOGIN by setting COOKIE username
+//
+app.post("/login", (req, res) => {
+  console.log();
+  console.log("SET LOGIN / cookie")
+  res.cookie('username', req.body.username);  // REMEMBER: the .username is the html FORM INPUT NAME!!
+  return res.redirect('/urls/');
+});
