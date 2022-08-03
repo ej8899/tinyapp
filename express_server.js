@@ -162,7 +162,7 @@ app.post("/urls", (req, res) => {
   const newTinyURL = makeID();
   urlDatabase[newTinyURL] = req.body.longURL;
   // console.log(JSON.stringify(urlDatabase));
-  console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a WEB app, right?\nYou should be paying attention to your web browser!${conColorReset}`)
+  console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a ${conColorCyan}WEB${conColorMagenta} app, right?\nYou should be paying attention to your web browser!${conColorReset}`)
   return res.redirect('/urls/'+newTinyURL);
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
