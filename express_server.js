@@ -68,6 +68,21 @@ const makeServerTitle = function () {
   console.log(`\\__/ \\___||_|     \\_/  \\___||_|            `);
   console.log(conColorReset);
 
+};
+
+const cookiesButNoMilk = function () {
+  const quotesArray = [
+    "C is for cookie that's good enough for me.",
+    "Cookies... Om Nom Nom Nom!",
+    "I'd give you a cookie, but I ate it.",
+    "Me Love to Eat Cookies!",
+    "Keep Calm & Eat Cookies",
+    "Me not fussy.. just give me cookies.",
+    "Me just met you, but you got cookie, so share it maybe?" ];
+  
+  let quoteNumber = Math.floor((Math.random() * quotesArray.length-1) + 1);
+  
+  return(quotesArray[quoteNumber]);
 }
 
 //
@@ -94,7 +109,7 @@ const cookieName = function (req) {
   if(!userName) {
     userName = null;
   } else {
-    console.log(`${conColorGreen}Mmmm... cookies... me like cookies!`);
+    console.log(conColorGreen + cookiesButNoMilk() + conColorReset);
   }
 };
 
@@ -155,7 +170,7 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
 app.post("/urls/:id/delete", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
-  console.log(`${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!`);
+  console.log(`${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!\n`);
   delete urlDatabase[req.params.id];
   return res.redirect('/urls/');
   // urlDatabase[newTinyURL] = req.body.longURL;
