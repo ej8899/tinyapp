@@ -46,6 +46,7 @@ opsys = conColorBright + conColorOrange + opsys + conColorReset;
 
 let userName = "Default";
 
+
 //
 // SETUP HELPER FUNCTIONS:
 //
@@ -78,9 +79,7 @@ const cookiesButNoMilk = function() {
     "Keep Calm & Eat Cookies",
     "Me not fussy.. just give me cookies.",
     "Me just met you, but you got cookie, so share it maybe?" ];
-  
   let quoteNumber = Math.floor((Math.random() * quotesArray.length - 1) + 1);
-  
   return (quotesArray[quoteNumber]);
 };
 
