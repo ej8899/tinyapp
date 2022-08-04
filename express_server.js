@@ -30,8 +30,8 @@ const urlDatabase = {
 };
 
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
-      conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
-      conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
+  conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
+  conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
 const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
 
 let opsys = process.platform;
