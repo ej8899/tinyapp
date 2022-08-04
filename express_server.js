@@ -53,24 +53,23 @@ let userName = "Default";
 //
 // create some server title ascii art
 //
-const makeServerTitle = function () {
+const makeServerTitle = function() {
   let m = conColorMagenta + conColorBright, c = conColorCyan + conColorDim, o = conColorOrange + conColorBright;
-  console.log(m)
+  console.log(m);
   console.log(` _    _                  ${c}_                 ${conColorReset}`);
   console.log(`${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColorReset}`);
   console.log(`${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColorReset}`);
   console.log(`${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColorReset}`);
   console.log(` ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColorReset}`);
   console.log(` ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColorReset}`);
-  console.log(`${o}/ \_\\  ___  _ __ __   __ ___  _ __          `);
+  console.log(`${o}/ _\\  ___  _ __ __   __ ___  _ __          `);
   console.log(`\\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
   console.log(`_\\ \\|  __/| |    \\ V /|  __/| |            `);
   console.log(`\\__/ \\___||_|     \\_/  \\___||_|            `);
   console.log(conColorReset);
-
 };
 
-const cookiesButNoMilk = function () {
+const cookiesButNoMilk = function() {
   const quotesArray = [
     "C is for cookie that's good enough for me.",
     "Cookies... Om Nom Nom Nom!",
@@ -80,16 +79,16 @@ const cookiesButNoMilk = function () {
     "Me not fussy.. just give me cookies.",
     "Me just met you, but you got cookie, so share it maybe?" ];
   
-  let quoteNumber = Math.floor((Math.random() * quotesArray.length-1) + 1);
+  let quoteNumber = Math.floor((Math.random() * quotesArray.length - 1) + 1);
   
-  return(quotesArray[quoteNumber]);
-}
+  return (quotesArray[quoteNumber]);
+};
 
 //
 // create a random ID -default 6 chars longer, otherwise specify # of chars to create
 // return is the random ID
 //
-const makeID = function (numChars) {
+const makeID = function(numChars) {
   let yourCode = "";
   let possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   if (!numChars) {
@@ -104,9 +103,9 @@ const makeID = function (numChars) {
 //
 // grab cookie username (or set default)
 //
-const cookieName = function (req) {
+const cookieName = function(req) {
   userName = req.cookies.username;
-  if(!userName) {
+  if (!userName) {
     userName = null;
   } else {
     console.log(conColorGreen + cookiesButNoMilk() + conColorReset);
@@ -140,7 +139,7 @@ app.get("/set", (req, res) => {
   const a = 1;
   res.send(`a = ${a}`);
 });
- 
+
 app.get("/fetch", (req, res) => {
   res.send(`a = ${a}`);
 });
@@ -186,7 +185,7 @@ app.post("/urls/:id/update", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
   console.log("IN EDIT w ID:" + req.params.id);
-  urlDatabase[req.params.id] = req.body.longURL
+  urlDatabase[req.params.id] = req.body.longURL;
   console.log(req.body.longURL);
   return res.redirect('/urls/');
 });
@@ -210,7 +209,7 @@ app.post("/urls", (req, res) => {
   const newTinyURL = makeID();
   urlDatabase[newTinyURL] = req.body.longURL;
   // console.log(JSON.stringify(urlDatabase));
-  console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a ${conColorCyan}WEB${conColorMagenta} app, right?\nYou should be paying attention to your web browser!${conColorReset}`)
+  console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a ${conColorCyan}WEB${conColorMagenta} app, right?\nYou should be paying attention to your web browser!${conColorReset}`);
   return res.redirect('/urls/' + newTinyURL);
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
@@ -232,7 +231,7 @@ app.get("/u/:id", (req, res) => {
 //
 app.post("/login", (req, res) => {
   console.log();
-  if(req.body.username) {
+  if (req.body.username) {
     console.log(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
   } else {
     console.log(`${conColorYellow}Did you forget who you are?${conColorReset}`);
