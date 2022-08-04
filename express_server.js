@@ -235,6 +235,15 @@ app.get("/u/:id", (req, res) => {
   }
 });
 
+//
+// REDIRECT to the longURL
+//
+app.get("/register", (req, res) => {
+  cookieName(req);
+  const templateVars = { urls: urlDatabase, username: userName};
+  console.log(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`)
+  res.render("newuser.ejs", templateVars);
+});
 
 //
 // LOGIN by setting COOKIE username
