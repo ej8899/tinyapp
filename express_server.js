@@ -9,6 +9,7 @@
 // REQUIRES & INCLUDES
 //
 const express = require("express");
+let cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 8080; // default port 8080
 // const path = require('path');
@@ -16,7 +17,7 @@ const PORT = 8080; // default port 8080
 app.set("view engine", "ejs");
 app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }));
-var cookieParser = require('cookie-parser')
+app.use(cookieParser());
 
 
 //
@@ -27,7 +28,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
-const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m', 
+const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
       conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
       conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
 const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
@@ -42,6 +43,7 @@ if (opsys === "darwin") {
 }
 opsys = conColorBright + conColorOrange + opsys + conColorReset;
 
+let userName = "Default";
 
 //
 // SETUP HELPER FUNCTIONS:
@@ -83,6 +85,17 @@ const makeID = function (numChars) {
   return yourCode;
 };
 
+//
+// grab cookie username (or set default)
+//
+const cookieName = function (req) {
+  userName = req.cookies.username;
+  if(!userName) {
+    userName = null;
+  } else {
+    console.log(`${conColorGreen}Mmmm... cookies... me like cookies!`);
+  }
+};
 
 //
 // PROGRAM START
@@ -121,7 +134,8 @@ app.get("/fetch", (req, res) => {
 // RENDER the main tiny URL page (list all items)
 //
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase };
+  cookieName(req);
+  const templateVars = { urls: urlDatabase, username: userName};
   res.render("urls_index.ejs", templateVars);
 });
 
@@ -129,7 +143,9 @@ app.get("/urls", (req, res) => {
 // RENDER for a NEW tiny URL entry
 //
 app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
-  res.render("urls_new.ejs");
+  cookieName(req);
+  const templateVars = { urls: urlDatabase, username: userName};
+  res.render("urls_new.ejs", templateVars);
 });
 
 //
@@ -163,7 +179,8 @@ app.post("/urls/:id/update", (req, res) => {
 // RENDER specific tiny URL page data
 //
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id]};  // username: req.cookies["username"]
+  cookieName(req);
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], username: userName};  // username: req.cookies["username"]
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
@@ -174,12 +191,11 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
-  // console.log(makeID(6));
   const newTinyURL = makeID();
   urlDatabase[newTinyURL] = req.body.longURL;
   // console.log(JSON.stringify(urlDatabase));
   console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a ${conColorCyan}WEB${conColorMagenta} app, right?\nYou should be paying attention to your web browser!${conColorReset}`)
-  return res.redirect('/urls/'+newTinyURL);
+  return res.redirect('/urls/' + newTinyURL);
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
