@@ -1,4 +1,8 @@
-
+//
+// LHL Project - TinyApp
+// https://flex-web.compass.lighthouselabs.ca/workbooks/flex-m03w6/activities/529?journey_step=36&workbook=9
+// 2022-08-03+
+//
 
 
 //
@@ -92,7 +96,7 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
   console.log(`${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
-  console.log(`${conColorDim}Yes, that's even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
+  console.log(`${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
 });
 
 app.get("/urls.json", (req, res) => {
