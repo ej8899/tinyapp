@@ -25,7 +25,7 @@
       
       <!-- show username cookie here OR the form -->
       <% if(username){ %>
-        <%= username %>
+        Logged in as: <%= username %>&nbsp;&nbsp;<form method="POST" action="/logout/"><button type="submit" class="btn btn-outline-dark"> Logout</button></form>
       <% } else{ %>  
       <!-- LOGIN FORM -->
       <form  class="form-inline" method="POST" action="/login"><input

@@ -226,4 +226,13 @@ app.post("/login", (req, res) => {
 });
 
 
+//
+// LOGOUT by clearng COOKIE username
+//
+app.post("/logout", (req, res) => {
+  console.log();
+  res.clearCookie('username');
 
+  console.log(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
+  return res.redirect('/urls/');
+});
