@@ -80,7 +80,7 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
-  console.log(`${conColorDim}(Don't forget to gently, but firmly press ctrl-c when you need to exit the server!)${conColorReset}`)
+  console.log(`${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`)
 });
 
 app.get("/urls.json", (req, res) => {
