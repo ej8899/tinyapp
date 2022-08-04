@@ -206,7 +206,7 @@ app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
   const newTinyURL = makeID();
-  if(req.body.longURL) {
+  if (req.body.longURL) {
     urlDatabase[newTinyURL] = req.body.longURL;
     console.log(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
     return res.redirect('/urls/' + newTinyURL);
@@ -225,13 +225,13 @@ app.post("/urls", (req, res) => {
 app.get("/u/:id", (req, res) => {
   let id = req.params.id;
   
-  if(id !== 'undefined') {
+  if (id !== 'undefined') {
     const longURL = urlDatabase[id];
     console.log(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
     res.redirect(longURL);
   } else {
     console.log(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
-    return res.redirect('/urls/')
+    return res.redirect('/urls/');
   }
 });
 
