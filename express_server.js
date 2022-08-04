@@ -26,7 +26,18 @@ const urlDatabase = {
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m', 
       conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
       conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
-const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorItalics = "\x1b[3m", conColorReverse = "\x1b[7m";
+const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
+
+let opsys = process.platform;
+if (opsys === "darwin") {
+  opsys = "MacOS";
+} else if (opsys === "win32" || opsys === "win64") {
+  opsys = "Windows";
+} else if (opsys === "linux") {
+  opsys = "Linux";
+}
+opsys = conColorBright + conColorOrange + opsys + conColorReset;
+
 
 //
 // SETUP HELPER FUNCTIONS:
@@ -36,15 +47,15 @@ const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorItalics = "\x
 // create some server title ascii art
 //
 const makeServerTitle = function () {
-  let m = conColorMagenta, c = conColorCyan;
+  let m = conColorMagenta + conColorBright, c = conColorCyan + conColorDim, o = conColorOrange + conColorBright;
   console.log(m)
-  console.log(` _    _                  ${c}_                 `);
-  console.log(`${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  `);
-  console.log(`${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ `);
-  console.log(`${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |`);
-  console.log(` ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ `);
-  console.log(` ${m}__             |___/        ${c}|_|    |_|    `);
-  console.log(`${m}/ \_\\  ___  _ __ __   __ ___  _ __          `);
+  console.log(` _    _                  ${c}_                 ${conColorReset}`);
+  console.log(`${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColorReset}`);
+  console.log(`${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColorReset}`);
+  console.log(`${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColorReset}`);
+  console.log(` ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColorReset}`);
+  console.log(` ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColorReset}`);
+  console.log(`${o}/ \_\\  ___  _ __ __   __ ___  _ __          `);
   console.log(`\\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
   console.log(`_\\ \\|  __/| |    \\ V /|  __/| |            `);
   console.log(`\\__/ \\___||_|     \\_/  \\___||_|            `);
@@ -80,7 +91,8 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
-  console.log(`${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`)
+  console.log(`${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
+  console.log(`${conColorDim}Yes, that's even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
 });
 
 app.get("/urls.json", (req, res) => {
@@ -122,7 +134,7 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
 app.post("/urls/:id/delete", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
-  console.log("IN DELETE w ID:" + req.params.id);
+  console.log(`${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!`);
   delete urlDatabase[req.params.id];
   return res.redirect('/urls/');
   // urlDatabase[newTinyURL] = req.body.longURL;
@@ -174,7 +186,7 @@ app.post("/urls", (req, res) => {
 app.get("/u/:id", (req, res) => {
   let id = req.params.id;
   const longURL = urlDatabase[id];
-  console.log('|' + longURL + '|');
+  console.log(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
   res.redirect(longURL);
 });
 
