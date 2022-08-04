@@ -155,7 +155,7 @@ app.get("/urls", (req, res) => {
 });
 
 //
-// RENDER for a NEW tiny URL entry
+// RENDER for a NEW tiny URL entry page
 //
 app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   cookieName(req);
@@ -207,10 +207,15 @@ app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
   console.log();
   const newTinyURL = makeID();
-  urlDatabase[newTinyURL] = req.body.longURL;
+  if(req.body.longURL) {
+    urlDatabase[newTinyURL] = req.body.longURL;
+    console.log(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
+    return res.redirect('/urls/' + newTinyURL);
+  } else {
+    console.log(conColorRed + "Looks like someone forgot something along the way!" + conColorReset);
+    return res.redirect('/urls/');
+  }
   // console.log(JSON.stringify(urlDatabase));
-  console.log(`${conColorMagenta}Hey, happy to have you here, but you do realize this is a ${conColorCyan}WEB${conColorMagenta} app, right?\nYou should be paying attention to your web browser!${conColorReset}`);
-  return res.redirect('/urls/' + newTinyURL);
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
@@ -220,9 +225,15 @@ app.post("/urls", (req, res) => {
 //
 app.get("/u/:id", (req, res) => {
   let id = req.params.id;
-  const longURL = urlDatabase[id];
-  console.log(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
-  res.redirect(longURL);
+  
+  if(id !== 'undefined') {
+    const longURL = urlDatabase[id];
+    console.log(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
+    res.redirect(longURL);
+  } else {
+    console.log(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
+    return res.redirect('/urls/')
+  }
 });
 
 
@@ -242,7 +253,7 @@ app.post("/login", (req, res) => {
 
 
 //
-// LOGOUT by clearng COOKIE username
+// LOGOUT by clearing COOKIE username
 //
 app.post("/logout", (req, res) => {
   console.log();
