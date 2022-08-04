@@ -9,13 +9,13 @@
 // REQUIRES & INCLUDES
 //
 const express = require("express");
-let cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = 8080; // default port 8080
 // const path = require('path');
 
 app.set("view engine", "ejs");
-app.use(express.static("public"))
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
