@@ -61,7 +61,7 @@ if (opsys === "darwin") {
 }
 opsys = conColorBright + conColorOrange + opsys + conColorReset;
 
-let userName = "Default";
+let userName = "Default", uid = "";
 
 
 //
@@ -120,12 +120,18 @@ const makeID = function(numChars) {
 // grab cookie username (or set default)
 //
 const cookieName = function(req) {
+  /*
   userName = req.cookies.username;
   if (!userName) {
     userName = null;
   } else {
     console.log(conColorGreen + cookiesButNoMilk() + conColorReset);
+  }*/
+  uid = req.cookies.uid;
+  if (!uid) {
+    uid = userRandomID;
   }
+  console.log(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
 
 //
@@ -162,11 +168,13 @@ app.get("/fetch", (req, res) => {
 
 
 //
-// RENDER the main tiny URL page (list all items)
+// RENDER the main tiny URL index page (list all items)
 //
 app.get("/urls", (req, res) => {
   cookieName(req);
-  const templateVars = { urls: urlDatabase, username: userName};
+  uidData = usersDatabase[uid];
+  console.log("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
+  const templateVars = { urls: urlDatabase, username: userName, user: uidData};
   res.render("urls_index.ejs", templateVars);
 });
 
