@@ -30,7 +30,7 @@ const urlDatabase = {
 };
 
 const usersDatabase = {
-  oIVdiS: {
+  userRandomID: {
     id: "userRandomID",
     email: "user@example.com",
     password: "purple-monkey-dinosaur",
@@ -130,7 +130,7 @@ const cookieName = function(req) {
   uid = req.cookies.uid;
   if (!uid) {
     // uid = userRandomID;
-    uid = "oIVdiS";
+    uid = "nobody";
   }
   console.log(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
@@ -186,7 +186,13 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   cookieName(req);
   const templateVars = { urls: urlDatabase, username: userName};
-  res.render("urls_new.ejs", templateVars);
+  // IF no UID set then show the login page
+  console.log(uid);
+  if(uid === "nobody") {
+    res.render("login");
+  } else {
+    res.render("urls_new.ejs", templateVars);
+  }
 });
 
 
