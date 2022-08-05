@@ -2,7 +2,7 @@
 // LHL Project - TinyApp
 // https://flex-web.compass.lighthouselabs.ca/workbooks/flex-m03w6/activities/529?journey_step=36&workbook=9
 // https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
-// 2022-08-03+
+// 2022-08-03 -> 2022-08-05
 //
 
 
@@ -73,17 +73,18 @@ let userName = "Default", uid = "";
 //
 const makeServerTitle = function() {
   let m = conColorMagenta + conColorBright, c = conColorCyan + conColorDim, o = conColorOrange + conColorBright;
-  console.log(m);
-  console.log(` _    _                  ${c}_                 ${conColorReset}`);
-  console.log(`${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColorReset}`);
-  console.log(`${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColorReset}`);
-  console.log(`${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColorReset}`);
-  console.log(` ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColorReset}`);
-  console.log(` ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColorReset}`);
-  console.log(`${o}/ _\\  ___  _ __ __   __ ___  _ __          `);
-  console.log(`\\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
-  console.log(`_\\ \\|  __/| |    \\ V /|  __/| |            `);
-  console.log(`\\__/ \\___||_|     \\_/  \\___||_|            `);
+  const consoleLine = '-'.repeat(43);
+  console.log(`\n\n  ${m} _    _                  ${c}_                 ${conColorReset}`);
+  console.log(`  ${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColorReset}`);
+  console.log(`  ${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColorReset}`);
+  console.log(`  ${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColorReset}`);
+  console.log(`   ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColorReset}`);
+  console.log(`   ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColorReset}`);
+  console.log(`  ${o}/ _\\  ___  _ __ __   __ ___  _ __          `);
+  console.log(`  \\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
+  console.log(`  _\\ \\|  __/| |    \\ V /|  __/| |            `);
+  console.log(`  \\__/ \\___||_|     \\_/  \\___||_|            `);
+  console.log(conColorYellow + '  ' + consoleLine);
   console.log(conColorReset);
 };
 
@@ -117,6 +118,23 @@ const makeID = function(numChars) {
 };
 
 //
+// Search our users database by email address for match.  REturn fALSE if no match, or UID if a match
+//
+const findUserByEmail = function(emailAddy) {
+  if (!emailAddy) {
+    return false;
+  }
+  // search via emails
+  for (let userSearch in usersDatabase) {
+    if (usersDatabase[userSearch].email === emailAddy) {
+      console.log(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
+      return userSearch;
+    }
+  }
+  return false;
+};
+
+//
 // grab cookie username (or set default)
 //
 const cookieName = function(req) {
@@ -135,6 +153,11 @@ const cookieName = function(req) {
   console.log(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
 
+
+
+
+
+
 //
 // PROGRAM START
 //
@@ -145,26 +168,25 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
-  console.log(`${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
-  console.log(`${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
+  console.log(`  ${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
+  console.log(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
+  console.log(`  ${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
 });
-
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-
 
 //
 // RENDER the main tiny URL index page (list all items)
 //
 app.get("/urls", (req, res) => {
   cookieName(req);
-  uidData = usersDatabase[uid];
-  console.log("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
-  const templateVars = { urls: urlDatabase, username: userName, user: uidData};
-  res.render("urls_index.ejs", templateVars);
+  let uidData = usersDatabase[uid];
+  if (!uidData) {
+    // need to login
+    res.render("login.ejs");
+  } else {
+    console.log("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
+    const templateVars = { urls: urlDatabase, username: userName, user: uidData};
+    res.render("urls_index.ejs", templateVars);
+  }
 });
 
 
@@ -173,10 +195,11 @@ app.get("/urls", (req, res) => {
 //
 app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   cookieName(req);
-  const templateVars = { urls: urlDatabase, username: userName};
+  let uidData = usersDatabase[uid];
+  const templateVars = { urls: urlDatabase, username: userName, user: uidData};
   // IF no UID set then show the login page
-  console.log(uid);
-  if(uid === "nobody") {
+  console.log(uidData);
+  if (uid === "nobody") {
     res.render("login");
   } else {
     res.render("urls_new.ejs", templateVars);
@@ -218,7 +241,9 @@ app.post("/urls/:id/update", (req, res) => {
 //
 app.get("/urls/:id", (req, res) => {
   cookieName(req);
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], username: userName};  // username: req.cookies["username"]
+  let uidData = usersDatabase[uid];
+
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], username: userName, user: uidData};  // username: req.cookies["username"]
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
@@ -267,7 +292,7 @@ app.get("/u/:id", (req, res) => {
 app.get("/register", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, username: userName};
-  console.log(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`)
+  console.log(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`);
   res.render("newuser.ejs", templateVars);
 });
 
@@ -277,7 +302,11 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, username: userName};
-  console.log(`${conColorGreen}get user signed in${conColorReset}`)
+  console.log(`${conColorGreen}get user signed in${conColorReset}`);
+
+  // CLEAR existing cookies
+  res.clearCookie('username');
+  res.clearCookie('uid');
   res.render("login.ejs", templateVars);
 });
 
@@ -303,6 +332,16 @@ app.post("/register", (req,res) => {
     email: req.body.email,
     password: req.body.password,
   };
+
+  console.log(JSON.stringify(usersDatabase)); // DEBUG
+
+  // Does the account already exist?? search via emails!
+  let tempUID = findUserByEmail(req.body.email);
+  if (tempUID) {
+    console.log("\nHey, you're already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
+    return res.redirect('/login');
+  }
+
   usersDatabase[uid] = userAccountObject;
   console.log(usersDatabase[uid]); // DEBUG
 
@@ -320,16 +359,24 @@ app.post("/register", (req,res) => {
 app.post("/login", (req, res) => {
   console.log();
 
-  console.log(req.body.email);
+  console.log("Someone's looking to get in here: " + req.body.email);
 
   if (req.body.username) {
     console.log(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
   } else {
     console.log(`${conColorYellow}Did you forget who you are?${conColorReset}`);
   }
-  res.cookie('username', req.body.username);  // REMEMBER: the .username is the html FORM INPUT NAME!!
+
+  let tempUID = findUserByEmail(req.body.email);
+  if (tempUID) {
+    // set cookie to uid
+    res.cookie('uid',tempUID);
+  } else {
+    // jump to LOGIN page //!TODO set a message why (user not found)
+  }
   return res.redirect('/urls/');
 });
+
 
 
 //
@@ -338,7 +385,7 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   console.log();
   res.clearCookie('username');
-
+  res.clearCookie('uid');
   console.log(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
-  return res.redirect('/urls/');
+  return res.redirect('/login/');
 });
