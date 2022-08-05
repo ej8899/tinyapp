@@ -30,7 +30,7 @@ const urlDatabase = {
 };
 
 const usersDatabase = {
-  userRandomID: {
+  oIVdiS: {
     id: "userRandomID",
     email: "user@example.com",
     password: "purple-monkey-dinosaur",
@@ -129,7 +129,8 @@ const cookieName = function(req) {
   }*/
   uid = req.cookies.uid;
   if (!uid) {
-    uid = userRandomID;
+    // uid = userRandomID;
+    uid = "oIVdiS";
   }
   console.log(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
@@ -178,6 +179,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index.ejs", templateVars);
 });
 
+
 //
 // RENDER for a NEW tiny URL entry page
 //
@@ -186,6 +188,7 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   const templateVars = { urls: urlDatabase, username: userName};
   res.render("urls_new.ejs", templateVars);
 });
+
 
 //
 // DELETE an existing database entry
@@ -202,6 +205,7 @@ app.post("/urls/:id/delete", (req, res) => {
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
+
 //
 // UPDATE an existing database entry
 //
@@ -214,6 +218,7 @@ app.post("/urls/:id/update", (req, res) => {
   return res.redirect('/urls/');
 });
 
+
 //
 // RENDER specific tiny URL page data
 //
@@ -223,6 +228,7 @@ app.get("/urls/:id", (req, res) => {
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
+
 
 //
 // CREATE a NEW database Entry
@@ -260,14 +266,25 @@ app.get("/u/:id", (req, res) => {
   }
 });
 
+
 //
-// REDIRECT to the longURL
+// REDIRECT to the REGISTER page
 //
 app.get("/register", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, username: userName};
   console.log(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`)
   res.render("newuser.ejs", templateVars);
+});
+
+//
+// REDIRECT to the LOGIN page
+//
+app.get("/login", (req, res) => {
+  cookieName(req);
+  const templateVars = { urls: urlDatabase, username: userName};
+  console.log(`${conColorGreen}get user signed in${conColorReset}`)
+  res.render("login.ejs", templateVars);
 });
 
 //
@@ -293,10 +310,13 @@ app.post("/register", (req,res) => {
 
 
 //
-// LOGIN by setting COOKIE username
+// LOGIN by setting COOKIE username // !TODO - need to process login form info - is password correct? and  account exists?
 //
 app.post("/login", (req, res) => {
   console.log();
+
+  console.log(req.body.email);
+
   if (req.body.username) {
     console.log(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
   } else {
