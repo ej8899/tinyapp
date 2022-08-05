@@ -29,6 +29,23 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const usersDatabase = {
+  userRandomID: {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur",
+  },
+  user2RandomID: {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk",
+  },
+};
+
+const trackingDatabase = {
+  tinyurl: "dateClicked",
+}
+
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
   conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
   conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
@@ -244,6 +261,28 @@ app.get("/register", (req, res) => {
   console.log(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`)
   res.render("newuser.ejs", templateVars);
 });
+
+//
+// REGISTRATION handler
+//
+app.post("/register", (req,res) => {
+  let uid = makeID();
+  // set email, pass and uid into usersDatabase
+  let userAccountObject = {
+    id: uid,
+    email: req.body.email,
+    password: req.body.password,
+  };
+  usersDatabase[uid] = userAccountObject;
+  console.log(usersDatabase[uid]); // DEBUG
+
+  // set cookie w this uid
+  res.cookie('uid', uid);
+
+  // redirect to urls page
+  return res.redirect('/urls/');
+});
+
 
 //
 // LOGIN by setting COOKIE username
