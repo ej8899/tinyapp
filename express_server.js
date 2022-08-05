@@ -288,6 +288,17 @@ app.get("/login", (req, res) => {
 });
 
 //
+// LOGOUT by clearing COOKIE username
+//
+app.get("/logout", (req, res) => {
+  console.log();
+  res.clearCookie('username');
+
+  console.log(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
+  return res.redirect('/login/');
+});
+
+//
 // REGISTRATION handler
 //
 app.post("/register", (req,res) => {
