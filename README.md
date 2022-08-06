@@ -14,3 +14,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 
 ### FUTURE PLANS:
 - dark mode
+
+
+### ATTRIBUTES:
+- <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">title icon created by Freepik - Flaticon</a>
