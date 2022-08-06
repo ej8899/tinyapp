@@ -21,13 +21,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
+
 //
-// SET and DEFINE GLOBAL VARIABLES
+// GLOBAL variables necessary to CORE functionality
 //
-// TODO:  change into object for each AND
-// add dateCreated field
-// add totaClickThrus
-//
+
+let uid = ""; // for cookie tracking across all functionality
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -50,22 +50,16 @@ const trackingDatabase = {
   // linkID and clickDate
 };
 
+
+//
+// additional global variables
+//
+
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
   conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
   conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
 const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
 
-let opsys = process.platform;
-if (opsys === "darwin") {
-  opsys = "MacOS";
-} else if (opsys === "win32" || opsys === "win64") {
-  opsys = "Windows";
-} else if (opsys === "linux") {
-  opsys = "Linux";
-}
-opsys = conColorBright + conColorOrange + opsys + conColorReset;
-
-let uid = "";
 
 
 //
@@ -73,7 +67,7 @@ let uid = "";
 //
 
 //
-// create some server title ascii art
+// create server title ascii art
 //
 const makeServerTitle = function() {
   let m = conColorMagenta + conColorBright, c = conColorCyan + conColorDim, o = conColorOrange + conColorBright;
@@ -88,10 +82,13 @@ const makeServerTitle = function() {
   console.log(`  \\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
   console.log(`  _\\ \\|  __/| |    \\ V /|  __/| |            `);
   console.log(`  \\__/ \\___||_|     \\_/  \\___||_|            `);
-  console.log(conColorYellow + '  ' + consoleLine);
+  console.log(conColorYellow +  conColorDim + '  ' + consoleLine);
   console.log(conColorReset);
 };
 
+//
+// random foolishness for the cookies function
+//
 const cookiesButNoMilk = function() {
   const quotesArray = [
     "C is for cookie that's good enough for me.",
@@ -103,6 +100,40 @@ const cookiesButNoMilk = function() {
     "Me just met you, but you got cookie, so share it maybe?" ];
   let quoteNumber = Math.floor((Math.random() * quotesArray.length - 1) + 1);
   return (quotesArray[quoteNumber]);
+};
+
+//
+// read operating system we're using and response with sever message accordingly
+// not required for CORE functionality, but a learning opportunity
+//
+const getOpSys = function() {
+  let opsys = process.platform;
+  if (opsys === "darwin") {
+    opsys = "MacOS";
+  } else if (opsys === "win32" || opsys === "win64") {
+    opsys = "Windows";
+  } else if (opsys === "linux") {
+    opsys = "Linux";
+  }
+  opsys = conColorBright + conColorOrange + opsys + conColorReset;
+  return opsys;
+};
+
+//
+// consoleLog() replacement handler for quiet mode
+// USAGE: consolelog(input text string, override)
+// where if override is TRUE then disregard quiet mode
+// returns nothing when done
+//
+const consolelog = function(inputText,override) {
+  if (process.argv[2] === '-quiet' && override !== true) {
+    return;
+  }
+  if (!inputText) { // no input text is to generate a blank line
+    console.log(' ');
+    return;
+  }
+  console.log(inputText);
 };
 
 //
@@ -150,28 +181,17 @@ const cookieName = function(req) {
   consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
 
-//
-// consoleLog() replacement handler for quiet mode
-// USAGE: consolelog(input text string, override)
-// where if override is TRUE then disregard quiet mode
-// returns nothing when done
-//
-const consolelog = function(inputText,override) {
-  if (process.argv[2] === '-quiet' && override !== true) {
-    return;
-  }
-  if (!inputText) { // no input text is to generate a blank line
-    console.log(' ');
-    return;
-  }
-  console.log(inputText);
-};
 
 
-
-//
-// PROGRAM START
-//
+/***
+ *     _______  _______  _______  ______    _______
+ *    |       ||       ||   _   ||    _ |  |       |
+ *    |  _____||_     _||  |_|  ||   | ||  |_     _|
+ *    | |_____   |   |  |       ||   |_||_   |   |
+ *    |_____  |  |   |  |       ||    __  |  |   |
+ *     _____| |  |   |  |   _   ||   |  | |  |   |
+ *    |_______|  |___|  |__| |__||___|  |_|  |___|
+ */
 makeServerTitle();
 
 //
@@ -191,7 +211,7 @@ app.listen(PORT, () => {
     consolelog(`  ${conColorOrange}${conColorDim}(( Server is running in silent mode. ))${conColorReset}`,true);
   }
   consolelog(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
-  consolelog(`  ${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
+  consolelog(`  ${conColorDim}And yes... that even works for you ${getOpSys()} ${conColorDim}users!${conColorReset}\n`);
   consolelog(`  Oh, and use ${conColorYellow}express_server.js ${conColorMagenta}-quiet${conColorReset} to run the server in silent mode!\n`);
 });
 
