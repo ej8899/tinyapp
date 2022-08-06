@@ -44,7 +44,7 @@ const usersDatabase = {
 
 const trackingDatabase = {
   tinyurl: "dateClicked",
-}
+};
 
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
   conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
@@ -160,11 +160,11 @@ const cookieName = function(req) {
 // returns nothing when done
 //
 const consolelog = function(inputText,override) {
-  if (process.argv[2] === '-quiet' && override !=true) {
+  if (process.argv[2] === '-quiet' && override !== true) {
     return;
   }
   console.log(inputText);
-}
+};
 
 
 
@@ -191,7 +191,7 @@ app.listen(PORT, () => {
   }
   consolelog(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
   consolelog(`  ${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
-  consolelog(`  Oh, and use ${conColorYellow}express_server.js ${conColorMagenta}-quiet${conColorReset} to run the server in silent mode!\n`)
+  consolelog(`  Oh, and use ${conColorYellow}express_server.js ${conColorMagenta}-quiet${conColorReset} to run the server in silent mode!\n`);
 });
 
 //
