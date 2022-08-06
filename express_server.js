@@ -24,7 +24,7 @@ app.use(cookieParser());
 //
 // SET and DEFINE GLOBAL VARIABLES
 //
-// TODO:  change into object for each AND 
+// TODO:  change into object for each AND
 // add dateCreated field
 // add totaClickThrus
 //
@@ -65,7 +65,7 @@ if (opsys === "darwin") {
 }
 opsys = conColorBright + conColorOrange + opsys + conColorReset;
 
-let userName = "Default", uid = "";
+let uid = "";
 
 
 //
@@ -139,16 +139,9 @@ const findUserByEmail = function(emailAddy) {
 };
 
 //
-// grab cookie username (or set default)
+// grab cookie uid (or set default)
 //
 const cookieName = function(req) {
-  /*
-  userName = req.cookies.username;
-  if (!userName) {
-    userName = null;
-  } else {
-    console.log(conColorGreen + cookiesButNoMilk() + conColorReset);
-  }*/
   uid = req.cookies.uid;
   if (!uid) {
     // uid = userRandomID;
@@ -165,6 +158,10 @@ const cookieName = function(req) {
 //
 const consolelog = function(inputText,override) {
   if (process.argv[2] === '-quiet' && override !== true) {
+    return;
+  }
+  if (!inputText) { // no input text is to generate a blank line
+    console.log(' ');
     return;
   }
   console.log(inputText);
@@ -209,7 +206,7 @@ app.get("/urls", (req, res) => {
     res.render("login.ejs", {loginPage: "yes"});
   } else {
     consolelog("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
-    const templateVars = { urls: urlDatabase, username: userName, user: uidData};
+    const templateVars = { urls: urlDatabase, user: uidData};
     res.render("urls_index.ejs", templateVars);
   }
 });
@@ -220,7 +217,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   cookieName(req);
   let uidData = usersDatabase[uid];
-  const templateVars = { urls: urlDatabase, username: userName, user: uidData};
+  const templateVars = { urls: urlDatabase, user: uidData};
   // IF no UID set then show the login page
   consolelog(uidData);
   if (uid === "nobody") {
@@ -267,7 +264,7 @@ app.get("/urls/:id", (req, res) => {
   cookieName(req);
   let uidData = usersDatabase[uid];
 
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], username: userName, user: uidData};  // username: req.cookies["username"]
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData};
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
@@ -315,7 +312,7 @@ app.get("/u/:id", (req, res) => {
 //
 app.get("/register", (req, res) => {
   cookieName(req);
-  const templateVars = { urls: urlDatabase, username: userName, loginPage: "yes"};
+  const templateVars = { urls: urlDatabase, loginPage: "yes"};
   consolelog(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`);
   res.render("newuser.ejs", templateVars);
 });
@@ -325,21 +322,19 @@ app.get("/register", (req, res) => {
 //
 app.get("/login", (req, res) => {
   cookieName(req);
-  const templateVars = { urls: urlDatabase, username: userName, loginPage: "yes"};
+  const templateVars = { urls: urlDatabase, loginPage: "yes"};
   consolelog(`${conColorGreen}get user signed in${conColorReset}`);
 
   // CLEAR existing cookies
-  res.clearCookie('username');
   res.clearCookie('uid');
   res.render("login.ejs", templateVars);
 });
 
 //
-// LOGOUT by clearing COOKIE username
+// LOGOUT by clearing COOKIE uid
 //
 app.get("/logout", (req, res) => {
   consolelog();
-  res.clearCookie('username');
   res.clearCookie('uid');
   consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
   const templateVars = { loginPage: "yes"};
@@ -379,7 +374,7 @@ app.post("/register", (req,res) => {
 
 
 //
-// LOGIN by setting COOKIE username // !TODO - need to process login form info - is password correct? and  account exists?
+// LOGIN by setting COOKIE uid // !TODO - need to process login form info - is password correct? and  account exists?
 //
 app.post("/login", (req, res) => {
   res.clearCookie('uid');
@@ -405,11 +400,10 @@ app.post("/login", (req, res) => {
 
 
 //
-// LOGOUT by clearing COOKIE username
+// LOGOUT by clearing COOKIE uid
 //
 app.post("/logout", (req, res) => {
   consolelog();
-  res.clearCookie('username');
   res.clearCookie('uid');
   consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
   res.render("login.ejs", { loginPage: "yes"});
