@@ -54,6 +54,7 @@ You'll be directed to the login page.  An account is required to create and mana
 - dark mode
 - link analytics
 - customizable tiny url
+- add password reset
 ---
 ## Attributes:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>

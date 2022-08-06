@@ -181,6 +181,19 @@ const cookieName = function(req) {
   consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
 
+//
+// lookup userID in database and compare password to suppliedPassword
+// returns the userID if validated, otherwise return null
+//
+const validateUser = function(userID, suppliedPassword) {
+  if(usersDatabase[userID].password === suppliedPassword) {
+    consolelog(`Oh yeah!  They guessed the ${conColorRed}correct password!${conColorReset}`);
+    return userID;
+  } else {
+    consolelog(`OOh.. password didn't match!  ${conColorGreen}Hopefully it's not a hacker at our door!${conColorReset}`);
+    return null;
+  }
+};
 
 
 /***
@@ -225,7 +238,7 @@ app.get("/urls", (req, res) => {
     // need to login
     res.render("login.ejs", {loginPage: "yes"});
   } else {
-    consolelog("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
+    consolelog("in get/urls --> usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
     const templateVars = { urls: urlDatabase, user: uidData};
     res.render("urls_index.ejs", templateVars);
   }
@@ -405,14 +418,24 @@ app.post("/login", (req, res) => {
     consolelog(`${conColorYellow}Did you forget who you are?${conColorReset}`);
   }
 
+  // check to see if user exists
   let tempUID = findUserByEmail(req.body.email);
-  if (tempUID) {
+
+  if (tempUID) { // users EXISTS and is password validated:
+    // check to see if password is valid
+    tempUID = validateUser(tempUID, req.body.password);
+    if (!tempUID) {
+      consolelog("I think it's a hacker!!");
+      // jump to LOGIN page & show why failed to user (failed password)
+      const templateVars = { message: "Your password is wrong!  Please check & try again!", loginPage: "yes"};
+      res.render("login.ejs", templateVars);
+    }
     // set cookie to uid
     res.cookie('uid',tempUID);
     return res.redirect('/urls/');
   } else {
     consolelog("Hold up a second!  We didn't find you in our user database!");
-    // jump to LOGIN page //!TODO set a message why (user not found)
+    // jump to LOGIN page & show why failed to user (failed email address)
     const templateVars = { message: "Your email address wasn't found in our user database!", loginPage: "yes"};
     res.render("login.ejs", templateVars);
   }
