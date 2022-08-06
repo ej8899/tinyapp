@@ -48,6 +48,9 @@
           </svg> Login</button>
         </div>
       </form>
+      <% if(locals.message) { %>
+        <p class="h6"><%= message %> <a href="/register">Register here!</a></p>
+      <% } %>
       <div>
         
       </div>

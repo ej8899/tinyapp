@@ -154,10 +154,12 @@ const cookieName = function(req) {
 };
 
 //
-// consoleLog() replacement
+// consoleLog() replacement handler for quiet mode
+// USAGE: consolelog(input text string, override)
+// where if override is TRUE then disregard quiet mode
+// returns nothing when done
 //
 const consolelog = function(inputText,override) {
-  // !TODO check if -quiet argv is passed - if not, just show this:
   if (process.argv[2] === '-quiet' && override !=true) {
     return;
   }
@@ -171,10 +173,17 @@ const consolelog = function(inputText,override) {
 //
 makeServerTitle();
 
+//
+// deal with any 'root/index' access to the locahost/domain
+//
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  consolelog(`Looks like someone needs some direction on where to go!`);
+  res.render("login.ejs");
 });
 
+//
+// setup the listener
+//
 app.listen(PORT, () => {
   console.log(`  ${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
   if (process.argv[2] === '-quiet') {
@@ -200,7 +209,6 @@ app.get("/urls", (req, res) => {
     res.render("urls_index.ejs", templateVars);
   }
 });
-
 
 //
 // RENDER for a NEW tiny URL entry page
@@ -370,11 +378,8 @@ app.post("/register", (req,res) => {
 //
 app.post("/login", (req, res) => {
   consolelog();
-
-  consolelog("Someone's looking to get in here: " + req.body.email);
-
-  if (req.body.username) {
-    consolelog(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
+  if (req.body.email) {
+    consolelog(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.email}${conColorOrange}"!${conColorReset}`);
   } else {
     consolelog(`${conColorYellow}Did you forget who you are?${conColorReset}`);
   }
@@ -383,12 +388,14 @@ app.post("/login", (req, res) => {
   if (tempUID) {
     // set cookie to uid
     res.cookie('uid',tempUID);
+    return res.redirect('/urls/');
   } else {
+    consolelog("Hold up a second!  We didn't find you in our user database!");
     // jump to LOGIN page //!TODO set a message why (user not found)
+    templateVars = { message: "Your email address wasn't found in our user database!"};
+    res.render("login.ejs", templateVars);
   }
-  return res.redirect('/urls/');
 });
-
 
 
 //
