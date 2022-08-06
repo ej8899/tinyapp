@@ -24,29 +24,27 @@
     <main style="margin: 1em;">
       <h3>Register New Account:</h3>
       <p>An account is required to use the TinyApp URL shortening service!<br><br></p>
+
       <form action="/register" method="POST">
         <div class="row g-3 align-items-center">
           <div class="mb-3">
             <div class="col-auto">
-            <label for="exampleInputEmail1" class="form-label">&nbsp;Email address</label>
+            <label for="exampleInputEmail1" class="form-label">&nbsp;Email address:</label>
             &nbsp;<input width=200 name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text"> We'll never share your email with anyone else.</div>
             </div>
           </div>
         </div>
          
           <div class="row g-3 align-items-center">
+            <div class="mb-3">
             <div class="col-auto">
               <label for="inputPassword6" class="col-form-label">Password</label>
             </div>
             <div class="col-auto">
               <input name="password" type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
             </div>
-            <div class="col-auto">
-              <span id="passwordHelpInline" class="form-text">
-                Must be 8-20 characters long.
-              </span>
-            </div>
+       
+          </div>
           </div>
 
           <BR><button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
@@ -55,7 +53,7 @@
         </div>
       </form>
       <div>
-        Already have an account?  <a href="login">Sign in</a> here.
+        <BR>Already have an account?  <a href="login">Sign in</a> here.
       </div>
     </main>
     <!-- Bootstrap JS -->
