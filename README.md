@@ -37,6 +37,8 @@ You'll be directed to the login page.  An account is required to create and mana
 ![](image-login.png)
 3) Sign in or register for a free account to get started you'll be directed to your main account page listing any Tiny URLs you've created. From the main page, you can edit and delete existing short URLs, or create a new tiny URL.
 ![](image-tinylist.png)
+4) Create new tiny URLS with the "Create" option.  Simply enter the long URL, and click or tap "submit". You'll return to the tiny URLs list (above) and see your new link added to the list!
+![](image-createtinyurl.png)
 ----
 ## Features:
 - free service
