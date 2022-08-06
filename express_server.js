@@ -24,6 +24,10 @@ app.use(cookieParser());
 //
 // SET and DEFINE GLOBAL VARIABLES
 //
+// TODO:  change into object for each AND 
+// add dateCreated field
+// add totaClickThrus
+//
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -43,7 +47,7 @@ const usersDatabase = {
 };
 
 const trackingDatabase = {
-  tinyurl: "dateClicked",
+  // linkID and clickDate
 };
 
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
