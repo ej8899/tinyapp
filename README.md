@@ -17,6 +17,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 4. [Extra Features](#extra-features)
 5. [Future Plans](#future-plans)
 6. [Attributions](#attributes)
+7. [Updates](#updates)
 ---
 ---
 ## Quick Start:
@@ -55,5 +56,11 @@ You'll be directed to the login page.  An account is required to create and mana
 ## Attributes:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
 - css styling, in part, by <a href="https://getbootstrap.com">Bootstrap</a>
+---
+## Updates:
+- Get the most recent version of TinyApp! [here](https://github.com/ej8899/tinyapp).
+- Change Log v 0.9 - 2022-08-06:  
+    * (private testing only)
+
 ---
 [back to top](#about)
