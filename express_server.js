@@ -202,7 +202,7 @@ app.get("/urls", (req, res) => {
   let uidData = usersDatabase[uid];
   if (!uidData) {
     // need to login
-    res.render("login.ejs");
+    res.render("login.ejs", {loginPage: "yes"});
   } else {
     consolelog("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
     const templateVars = { urls: urlDatabase, username: userName, user: uidData};
@@ -220,7 +220,7 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   // IF no UID set then show the login page
   consolelog(uidData);
   if (uid === "nobody") {
-    res.render("login");
+    res.render("login.ejs", {loginPage: "yes"});
   } else {
     res.render("urls_new.ejs", templateVars);
   }
@@ -311,7 +311,7 @@ app.get("/u/:id", (req, res) => {
 //
 app.get("/register", (req, res) => {
   cookieName(req);
-  const templateVars = { urls: urlDatabase, username: userName};
+  const templateVars = { urls: urlDatabase, username: userName, loginPage: "yes"};
   consolelog(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`);
   res.render("newuser.ejs", templateVars);
 });
@@ -321,7 +321,7 @@ app.get("/register", (req, res) => {
 //
 app.get("/login", (req, res) => {
   cookieName(req);
-  const templateVars = { urls: urlDatabase, username: userName};
+  const templateVars = { urls: urlDatabase, username: userName, loginPage: "yes"};
   consolelog(`${conColorGreen}get user signed in${conColorReset}`);
 
   // CLEAR existing cookies
@@ -338,7 +338,8 @@ app.get("/logout", (req, res) => {
   res.clearCookie('username');
 
   consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
-  return res.redirect('/login/');
+  const templateVars = { loginPage: "yes"};
+  return res.redirect('/login/', templateVars);
 });
 
 //
@@ -392,7 +393,7 @@ app.post("/login", (req, res) => {
   } else {
     consolelog("Hold up a second!  We didn't find you in our user database!");
     // jump to LOGIN page //!TODO set a message why (user not found)
-    templateVars = { message: "Your email address wasn't found in our user database!"};
+    const templateVars = { message: "Your email address wasn't found in our user database!", loginPage: "yes"};
     res.render("login.ejs", templateVars);
   }
 });
@@ -406,5 +407,6 @@ app.post("/logout", (req, res) => {
   res.clearCookie('username');
   res.clearCookie('uid');
   consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
-  return res.redirect('/login/');
+  const templateVars = { loginPage: "yes"};
+  return res.redirect('/login/', templateVars);
 });

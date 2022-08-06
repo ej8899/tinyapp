@@ -25,11 +25,14 @@
       <div >
       <!-- show username cookie here OR the form -->
       &nbsp;&nbsp;&nbsp;
+
       <% if (locals.user) { %>
         <% if(user.id) { %>
-          Logged in as: <%= user.email %>&nbsp;&nbsp;<a href="/logout"><button type="button" class="btn btn-outline-dark">Log Out</button></a>
+          Logged in as: <%= user.email %>  <a href="/logout"><button type="button" class="btn btn-outline-dark">Log Out</button></a>
         <% } %>
-     <% } else { %> 
+     <% } else if (locals.loginPage) { %>
+      <!-- on login page -->
+      <% } else { %> 
         <a href="/login">account login</a>
      <% } %>
     </div>
