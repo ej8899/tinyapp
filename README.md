@@ -1,14 +1,16 @@
 # tinyapp
 LHL - tiny app - URL shortening service
+https://flex-web.compass.lighthouselabs.ca/projects/tiny-app 
+
+![](image-readme.png)
+
+### FEATURES
 
 
-FEATURES
-
-
-EXTRA FEATURES
+### EXTRA FEATURES
 - hide menu bar if not logged in
 - "quiet" mode to silence server-side feedback
 - 
 
-FUTURE PLANS:
+### FUTURE PLANS:
 - dark mode
