@@ -150,11 +150,19 @@ const cookieName = function(req) {
     // uid = userRandomID;
     uid = "nobody";
   }
-  console.log(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
+  consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
 };
 
-
-
+//
+// consoleLog() replacement
+//
+const consolelog = function(inputText,override) {
+  // !TODO check if -quiet argv is passed - if not, just show this:
+  if (process.argv[2] === '-quiet' && override !=true) {
+    return;
+  }
+  console.log(inputText);
+}
 
 
 
@@ -169,8 +177,12 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`  ${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
-  console.log(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
-  console.log(`  ${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
+  if (process.argv[2] === '-quiet') {
+    consolelog(`  ${conColorOrange}${conColorDim}(( Server is running in silent mode. ))${conColorReset}`,true);
+  }
+  consolelog(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
+  consolelog(`  ${conColorDim}And yes... that even works for you ${opsys} ${conColorDim}users!${conColorReset}\n`);
+  consolelog(`  Oh, and use ${conColorYellow}express_server.js ${conColorMagenta}-quiet${conColorReset} to run the server in silent mode!\n`)
 });
 
 //
@@ -183,7 +195,7 @@ app.get("/urls", (req, res) => {
     // need to login
     res.render("login.ejs");
   } else {
-    console.log("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
+    consolelog("usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
     const templateVars = { urls: urlDatabase, username: userName, user: uidData};
     res.render("urls_index.ejs", templateVars);
   }
@@ -198,7 +210,7 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
   let uidData = usersDatabase[uid];
   const templateVars = { urls: urlDatabase, username: userName, user: uidData};
   // IF no UID set then show the login page
-  console.log(uidData);
+  consolelog(uidData);
   if (uid === "nobody") {
     res.render("login");
   } else {
@@ -212,8 +224,8 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
 //
 app.post("/urls/:id/delete", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
-  console.log();
-  console.log(`${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!\n`);
+  consolelog();
+  consolelog(`${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!\n`);
   delete urlDatabase[req.params.id];
   return res.redirect('/urls/');
   // urlDatabase[newTinyURL] = req.body.longURL;
@@ -228,10 +240,10 @@ app.post("/urls/:id/delete", (req, res) => {
 //
 app.post("/urls/:id/update", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
-  console.log();
-  console.log("IN EDIT w ID:" + req.params.id);
+  consolelog();
+  consolelog("IN EDIT w ID:" + req.params.id);
   urlDatabase[req.params.id] = req.body.longURL;
-  console.log(req.body.longURL);
+  consolelog(req.body.longURL);
   return res.redirect('/urls/');
 });
 
@@ -254,14 +266,14 @@ app.get("/urls/:id", (req, res) => {
 //
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
-  console.log();
+  consolelog();
   const newTinyURL = makeID();
   if (req.body.longURL) {
     urlDatabase[newTinyURL] = req.body.longURL;
-    console.log(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
+    consolelog(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
     return res.redirect('/urls/' + newTinyURL);
   } else {
-    console.log(conColorRed + "Looks like someone forgot something along the way!" + conColorReset);
+    consolelog(conColorRed + "Looks like someone forgot something along the way!" + conColorReset);
     return res.redirect('/urls/');
   }
   // console.log(JSON.stringify(urlDatabase));
@@ -277,10 +289,10 @@ app.get("/u/:id", (req, res) => {
   
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
-    console.log(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
+    consolelog(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
     res.redirect(longURL);
   } else {
-    console.log(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
+    consolelog(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
     return res.redirect('/urls/');
   }
 });
@@ -292,7 +304,7 @@ app.get("/u/:id", (req, res) => {
 app.get("/register", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, username: userName};
-  console.log(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`);
+  consolelog(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`);
   res.render("newuser.ejs", templateVars);
 });
 
@@ -302,7 +314,7 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, username: userName};
-  console.log(`${conColorGreen}get user signed in${conColorReset}`);
+  consolelog(`${conColorGreen}get user signed in${conColorReset}`);
 
   // CLEAR existing cookies
   res.clearCookie('username');
@@ -314,10 +326,10 @@ app.get("/login", (req, res) => {
 // LOGOUT by clearing COOKIE username
 //
 app.get("/logout", (req, res) => {
-  console.log();
+  consolelog();
   res.clearCookie('username');
 
-  console.log(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
+  consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
   return res.redirect('/login/');
 });
 
@@ -338,12 +350,12 @@ app.post("/register", (req,res) => {
   // Does the account already exist?? search via emails!
   let tempUID = findUserByEmail(req.body.email);
   if (tempUID) {
-    console.log("\nHey, you're already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
+    consolelog("\nHey, you're already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
     return res.redirect('/login');
   }
 
   usersDatabase[uid] = userAccountObject;
-  console.log(usersDatabase[uid]); // DEBUG
+  consolelog(usersDatabase[uid]); // DEBUG
 
   // set cookie w this uid
   res.cookie('uid', uid);
@@ -357,14 +369,14 @@ app.post("/register", (req,res) => {
 // LOGIN by setting COOKIE username // !TODO - need to process login form info - is password correct? and  account exists?
 //
 app.post("/login", (req, res) => {
-  console.log();
+  consolelog();
 
-  console.log("Someone's looking to get in here: " + req.body.email);
+  consolelog("Someone's looking to get in here: " + req.body.email);
 
   if (req.body.username) {
-    console.log(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
+    consolelog(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.username}${conColorOrange}"!${conColorReset}`);
   } else {
-    console.log(`${conColorYellow}Did you forget who you are?${conColorReset}`);
+    consolelog(`${conColorYellow}Did you forget who you are?${conColorReset}`);
   }
 
   let tempUID = findUserByEmail(req.body.email);
@@ -383,9 +395,9 @@ app.post("/login", (req, res) => {
 // LOGOUT by clearing COOKIE username
 //
 app.post("/logout", (req, res) => {
-  console.log();
+  consolelog();
   res.clearCookie('username');
   res.clearCookie('uid');
-  console.log(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
+  consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
   return res.redirect('/login/');
 });
