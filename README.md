@@ -21,8 +21,11 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 1) start the server as mentioned in quick start.  
 ```node express_server.js```
 ![](image-server.png)
-2) Once the server is "listening", start your web browser and navigate to ```http://localhost:8080/```
-3) 
+2) Once the server is "listening", start your web browser and navigate to ```http://localhost:8080/```  
+You'll be directed to the login page.  An account is required to create and manage you Tiny URLs.
+![](image-login.png)
+3) Sign in or register for a free account to get started you'll be directed to your main account page listing any Tiny URLs you've created.
+![](image-tinylist.png)
 ----
 ## FEATURES:
   
