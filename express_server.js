@@ -336,10 +336,10 @@ app.get("/login", (req, res) => {
 app.get("/logout", (req, res) => {
   consolelog();
   res.clearCookie('username');
-
+  res.clearCookie('uid');
   consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
   const templateVars = { loginPage: "yes"};
-  return res.redirect('/login/', templateVars);
+  return res.render('login.ejs', templateVars);
 });
 
 //
@@ -378,6 +378,7 @@ app.post("/register", (req,res) => {
 // LOGIN by setting COOKIE username // !TODO - need to process login form info - is password correct? and  account exists?
 //
 app.post("/login", (req, res) => {
+  res.clearCookie('uid');
   consolelog();
   if (req.body.email) {
     consolelog(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.email}${conColorOrange}"!${conColorReset}`);
@@ -407,6 +408,5 @@ app.post("/logout", (req, res) => {
   res.clearCookie('username');
   res.clearCookie('uid');
   consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
-  const templateVars = { loginPage: "yes"};
-  return res.redirect('/login/', templateVars);
+  res.render("login.ejs", { loginPage: "yes"});
 });
