@@ -13,7 +13,7 @@
 
   <body>
     <%- include ('partials/_header') %>
-    <div class="card text-center">
+    <div class="card text-left">
       <div class="card-header"></div>
       <div class="card-body">
         <h5 class="card-title">TinyURL for: <%= longURL %></h5>
@@ -21,9 +21,9 @@
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
         </p>
       </div>
-      <div class="card-footer text-muted" align="center">
+      <div class="card-footer text-left">
         <!-- EDIT FORM HERE -->
-        <h5>EDIT Destination URL:</h5>
+        <h5>Change Destination URL:</h5>
         <form class="form-inline" method="POST" action="/urls/<%= id %>/update"><label for="longURL">URL: </label><input
           class="form-control"
           type="text"

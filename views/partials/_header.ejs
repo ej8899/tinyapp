@@ -1,45 +1,44 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-success" >
-    <img src="/icon-main.png" width="50" height="50">&nbsp;&nbsp;<a class="navbar-brand" href="/urls">TinyApp</a>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <% if (locals.loginPage) { %>
-    <% } else { %> 
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/urls"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+  <nav class="navbar navbar-expand-md navbar-dark bg-success">
+    <!-- NAVBAR - LEFT SIDE -->
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2 row align-items-center">
+      <a class="navbar-brand my-auto" href="#"><img src="/image-header.png" alt="TinyApp! URL Shortener"  class="d-inline-block align-text-center" style="padding-left: 10px;"></a>
+      <!-- DYNAMIC NAV bar only show options if logged in -->
+      <% if (locals.loginPage) { %>
+        <% } else { %> 
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="/urls"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
-        </svg> My URLs</a>&nbsp;
-        <a class="nav-item nav-link" href="/urls/new"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
-        </svg> Create New URL</a>
-      </div>
+          </svg> My URLs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="/urls/new"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+          </svg> Create New URL</a>
+        </li>
+      </ul>
       <% } %>
-      <div class="navbar-text text-right">
-      <!-- show username cookie here OR the form -->
-      &nbsp;&nbsp;&nbsp;
-
-      <% if (locals.user) { %>
-        <% if(user.id) { %>
-          Logged in as: <%= user.email %>  <a href="/logout"><button type="button" class="btn btn-outline-dark">Log Out</button></a>
-        <% } %>
-     <% } else if (locals.loginPage) { %>
-      <!-- on login page -->
-      <% } else { %> 
-        <a href="/login">account login</a>
-     <% } %>
-      </div>
     </div>
+    
+    <!-- NAVBAR - RIGHT SIDE-->
+    
+    <div class="navbar-collapse collapse w-100 order-1 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        &nbsp;&nbsp;&nbsp;
+
+    <% if (locals.user) { %>
+      <% if(user.id) { %>
+        <li class="nav-link">Logged in as: <%= user.email %>&nbsp;&nbsp;<a href="/logout"><button type="button" class=" btn btn-outline-dark">Log Out</button></a></li>
+        <!--  -->
+      <% } %>
+    <% } else if (locals.loginPage) { %>
+    <!-- on login page -->
+    <% } else { %> 
+      <a href="/login">account login</a>
+    <% } %>
+    </ul>
+  </div>
 
   </nav>
 </header>
