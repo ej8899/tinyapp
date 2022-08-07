@@ -179,6 +179,7 @@ const cookieName = function(req) {
     uid = "nobody";
   }
   consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
+  return uid;
 };
 
 //
@@ -282,6 +283,9 @@ app.post("/urls/:id/delete", (req, res) => {
 //
 app.post("/urls/:id/update", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
+  if(cookieName(req) === "nobody") {
+    return res.status(403).render("login.ejs");
+  }
   consolelog();
   consolelog("IN EDIT w ID:" + req.params.id);
   urlDatabase[req.params.id] = req.body.longURL;
@@ -294,7 +298,9 @@ app.post("/urls/:id/update", (req, res) => {
 // RENDER specific tiny URL page data
 //
 app.get("/urls/:id", (req, res) => {
-  cookieName(req);
+  if(cookieName(req) === "nobody") {
+    return res.status(403).render("login.ejs");
+  }
   let uidData = usersDatabase[uid];
 
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData};
