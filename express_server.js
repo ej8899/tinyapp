@@ -125,36 +125,44 @@ const getOpSys = function() {
 // USAGE: consolelog(input text string, override)
 // where if override is TRUE then disregard quiet mode
 // returns nothing when done
-//
+// - if argv is -logfile, then create a server log file with date stamps
+// - if argv is -quiet, then only log if override is TRUE
 const consolelog = function(inputText,override) {
-  // !TODO - update to create an actual LOG FILE if an argv says -consoleLogfile
-  if (process.argv[2] === '-quiet' && override !== true) {
-    return;
+  let createFile = "no"; // default to no log file
+  for (let x = 0; x < process.argv.length; x ++) {
+    if (process.argv[x] === '-quiet' && override !== true) {
+      return;
+    }
+    if (process.argv[x] === '-logfile') {
+      createFile = "yes";
+    }
   }
+  
   if (!inputText) { // no input text is to generate a blank line
     console.log(' ');
     return;
   }
-  const IntTwoChars = (i) => {
+  const IntTwoChars = (i) => { // helper for dateObject
     return (`0${i}`).slice(-2);
   };
-  // appendFile function with filename, content and callback function
-  // !TODO monitor for ma log file size and clear it when full
-  // !TODO fix dates and hours to zero padding if single digits
-  const dateObject = new Date();
-  let date = IntTwoChars(dateObject.getDate());
-  let month = IntTwoChars(dateObject.getMonth() + 1);
-  let year = dateObject.getFullYear();
-  let hours = IntTwoChars(dateObject.getHours());
-  let minutes = IntTwoChars(dateObject.getMinutes());
-  let seconds = IntTwoChars(dateObject.getSeconds());
-  const strippedText = inputText.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
-  const logfileText = '\r\n' + year + '-' + month + '-' + date + '--' + hours + ':' + minutes + ':' + seconds + ' - ' + strippedText;
-  fs.appendFile('tinyapp.log', logfileText, function(err) {
-    if (err) throw err;
-  });
 
-  console.log(inputText);
+  if (createFile === "yes") {
+    // !TODO monitor for ma log file size and clear it when full
+    const dateObject = new Date();
+    let date = IntTwoChars(dateObject.getDate());
+    let month = IntTwoChars(dateObject.getMonth() + 1);
+    let year = dateObject.getFullYear();
+    let hours = IntTwoChars(dateObject.getHours());
+    let minutes = IntTwoChars(dateObject.getMinutes());
+    let seconds = IntTwoChars(dateObject.getSeconds());
+    let strippedText = inputText.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, ''); // clear escape codes
+    strippedText = strippedText.replace(/(\r\n|\n|\r)/gm, ""); // clear newlines (we'll use our own for server log)
+    const logfileText = '\r\n' + year + '-' + month + '-' + date + ' -' + hours + ':' + minutes + ':' + seconds + ' - ' + strippedText;
+    fs.appendFile('tinyapp.log', logfileText, function(err) {
+      if (err) throw err;
+    });
+  }
+  console.log(inputText);  // all that above and we'll console.log the log entry
 };
 
 //
@@ -183,7 +191,7 @@ const findUserByEmail = function(emailAddy) {
   // search via emails
   for (let userSearch in usersDatabase) {
     if (usersDatabase[userSearch].email === emailAddy) {
-      console.log(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
+      consolelog(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
       return userSearch;
     }
   }
