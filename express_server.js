@@ -175,7 +175,7 @@ const findUserByEmail = function(emailAddy) {
 const cookieName = function(req) {
   uid = req.cookies.uid;
   if (!uid) {
-    uid = "nobody";
+    uid = "nobody"; // use "nobody" as a monitoring system for bad logins
     consolelog(`\n${conColorRed}Houston, we have a problem here.... "${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
     return uid;
   }

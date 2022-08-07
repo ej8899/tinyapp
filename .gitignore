@@ -1,2 +1,11 @@
+# Ignore the node_modules directory
 node_modules/
+
+# Ignore misc general files
 .DS_Store
+
+# Ignore misc project files
+
+# Ignore any log files
+logs
+*.log
