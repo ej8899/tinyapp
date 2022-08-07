@@ -175,8 +175,9 @@ const findUserByEmail = function(emailAddy) {
 const cookieName = function(req) {
   uid = req.cookies.uid;
   if (!uid) {
-    // uid = userRandomID;
     uid = "nobody";
+    consolelog(`\n${conColorRed}Houston, we have a problem here.... "${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
+    return uid;
   }
   consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
   return uid;
