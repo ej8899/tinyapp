@@ -354,7 +354,7 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
-  consolelog(`${conColorGreen}get user signed in${conColorReset}`);
+  consolelog(`${conColorGreen}This user needs to get ${conColorCyan}signed in ${conColorGreen} before they can do anything!${conColorReset}`);
 
   // CLEAR existing cookies
   res.clearCookie('uid');
