@@ -48,10 +48,14 @@ You'll be directed to the login page.  An account is required to create and mana
 - secure
 - easy to use
 - allows for multiple tiny links to the same long URL
+
 ---
 ## Extra Features:
 - hide menu bar if not logged in
 - "quiet" mode to silence server-side feedback
+    * use ```-quiet``` as starting argument
+- optional log file generation:  
+    * use ```-logfile``` as starting argument
 - incorrect password sends error to user
 - trying to create duplicate accounts sends error to user
 ---

@@ -9,6 +9,7 @@
 //
 // REQUIRES & INCLUDES
 //
+const fs = require('fs');
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -19,6 +20,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 
 
 
@@ -46,6 +48,7 @@ const usersDatabase = {
   },
 };
 
+// FUTURE USE:
 const trackingDatabase = {
   // linkID and clickDate
 };
@@ -54,12 +57,10 @@ const trackingDatabase = {
 //
 // additional global variables
 //
-
 const conColorCyan = "\x1b[36m", conColorRed = '\x1b[31m', conColorGreen = '\x1b[92m',
   conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
   conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
 const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
-
 
 
 //
@@ -126,6 +127,7 @@ const getOpSys = function() {
 // returns nothing when done
 //
 const consolelog = function(inputText,override) {
+  // !TODO - update to create an actual LOG FILE if an argv says -consoleLogfile
   if (process.argv[2] === '-quiet' && override !== true) {
     return;
   }
@@ -133,6 +135,25 @@ const consolelog = function(inputText,override) {
     console.log(' ');
     return;
   }
+  const IntTwoChars = (i) => {
+    return (`0${i}`).slice(-2);
+  };
+  // appendFile function with filename, content and callback function
+  // !TODO monitor for ma log file size and clear it when full
+  // !TODO fix dates and hours to zero padding if single digits
+  const dateObject = new Date();
+  let date = IntTwoChars(dateObject.getDate());
+  let month = IntTwoChars(dateObject.getMonth() + 1);
+  let year = dateObject.getFullYear();
+  let hours = IntTwoChars(dateObject.getHours());
+  let minutes = IntTwoChars(dateObject.getMinutes());
+  let seconds = IntTwoChars(dateObject.getSeconds());
+  const strippedText = inputText.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+  const logfileText = '\r\n' + year + '-' + month + '-' + date + '--' + hours + ':' + minutes + ':' + seconds + ' - ' + strippedText;
+  fs.appendFile('tinyapp.log', logfileText, function(err) {
+    if (err) throw err;
+  });
+
   console.log(inputText);
 };
 
@@ -170,6 +191,7 @@ const findUserByEmail = function(emailAddy) {
 };
 
 //
+// SECURITY function - cookieName (pull cookie info)
 // grab cookie uid (or set default)
 //
 const cookieName = function(req) {
@@ -184,6 +206,7 @@ const cookieName = function(req) {
 };
 
 //
+// SECURITY function - validateUser
 // lookup userID in database and compare password to suppliedPassword
 // returns the userID if validated, otherwise return null
 //
@@ -195,6 +218,16 @@ const validateUser = function(userID, suppliedPassword) {
     consolelog(`OOh.. password didn't match!  ${conColorGreen}Hopefully it's not a hacker at our door!${conColorReset}`);
     return null;
   }
+};
+
+//
+// !TODO - check for valid (working/responding) URL - (FUTURE)
+//
+const urlExists = function(theURL) {
+  // need this in global requires: import urlExist from 'url-exist';
+  // const exists = await urlExist('https://google.com');
+  // Handle result
+  //console.log(exists)
 };
 
 
@@ -209,13 +242,6 @@ const validateUser = function(userID, suppliedPassword) {
  */
 makeServerTitle();
 
-//
-// deal with any 'root/index' access to the locahost/domain
-//
-app.get("/", (req, res) => {
-  consolelog(`Looks like someone needs some direction on where to go!`);
-  res.render("login.ejs");
-});
 
 //
 // setup the listener
@@ -228,6 +254,14 @@ app.listen(PORT, () => {
   consolelog(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
   consolelog(`  ${conColorDim}And yes... that even works for you ${getOpSys()} ${conColorDim}users!${conColorReset}\n`);
   consolelog(`  Oh, and use ${conColorYellow}express_server.js ${conColorMagenta}-quiet${conColorReset} to run the server in silent mode!\n`);
+});
+
+//
+// deal with any 'root/index' access to the locahost/domain
+//
+app.get("/", (req, res) => {
+  consolelog(`Looks like someone needs some direction on where to go!`);
+  res.render("login.ejs");
 });
 
 //
@@ -249,12 +283,14 @@ app.get("/urls", (req, res) => {
 //
 // RENDER for a NEW tiny URL entry page
 //
-app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
-  cookieName(req);
+app.get("/urls/new", (req, res) => {  // NOTE: ORDER is important for nested /urls/ processing
+  if (cookieName(req) === "nobody") {
+    return res.status(403).render("login.ejs");
+  }
   let uidData = usersDatabase[uid];
   const templateVars = { urls: urlDatabase, user: uidData};
   // IF no UID set then show the login page
-  consolelog(uidData);
+  //consolelog(uidData);
   if (uid === "nobody") {
     res.render("login.ejs", {loginPage: "yes"});
   } else {
@@ -267,15 +303,12 @@ app.get("/urls/new", (req, res) => {  // NOTE ORDER is important
 // DELETE an existing database entry
 //
 app.post("/urls/:id/delete", (req, res) => {
-  //console.log(req.body.longURL); // Log the POST request body to the console
-  consolelog();
-  consolelog(`${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!\n`);
+  if (cookieName(req) === "nobody") {
+    return res.status(403).render("login.ejs");
+  }
+  consolelog(`\n${req.params.id} - ${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!\n`);
   delete urlDatabase[req.params.id];
   return res.redirect('/urls/');
-  // urlDatabase[newTinyURL] = req.body.longURL;
-  // console.log(JSON.stringify(urlDatabase));
-  // return res.redirect('/urls/'+newTinyURL);
-  // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
 
@@ -287,10 +320,9 @@ app.post("/urls/:id/update", (req, res) => {
   if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
-  consolelog();
-  consolelog("IN EDIT w ID:" + req.params.id);
+  consolelog("\nupdate tiny url:" + req.params.id + " to " + req.body.longURL);
+  // !TODO - need to error check req.body.longURL before changing the database!
   urlDatabase[req.params.id] = req.body.longURL;
-  consolelog(req.body.longURL);
   return res.redirect('/urls/');
 });
 
@@ -314,13 +346,13 @@ app.get("/urls/:id", (req, res) => {
 // CREATE a NEW database Entry
 //
 app.post("/urls", (req, res) => {
-  //console.log(req.body.longURL); // Log the POST request body to the console
   if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
   consolelog();
   const newTinyURL = makeID();
   if (req.body.longURL) {
+    // !TODO - need to error check req.body.longURL before changing the database!
     urlDatabase[newTinyURL] = req.body.longURL;
     consolelog(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
     return res.redirect('/urls/' + newTinyURL);
@@ -343,7 +375,6 @@ app.get("/u/:id", (req, res) => {
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
-    // !todo need to render a 'not found' page here instead of redirect to urls
     return res.render("url_notfound.ejs");
     // return res.redirect('/urls/');
   }
@@ -389,7 +420,7 @@ app.get("/logout", (req, res) => {
 //
 app.post("/register", (req,res) => {
   let uid = makeID();
-  // set email, pass and uid into usersDatabase
+  // set email, pass and uid into userDatabase 'structure'
   let userAccountObject = {
     id: uid,
     email: req.body.email,
@@ -420,13 +451,11 @@ app.post("/register", (req,res) => {
     return res.render('newuser.ejs',templateVars);
   }
   
-
   // add the user to the usersDatabase
   usersDatabase[uid] = userAccountObject;
   consolelog('IN REGISTRATION handler: ' + usersDatabase[uid]); // DEBUG
 
   // consider the user logged in at this point - they've created an account successfully.
-
   // set cookie for current user ID
   res.cookie('uid', uid);
   // redirect to urls page
@@ -435,7 +464,7 @@ app.post("/register", (req,res) => {
 
 
 //
-// LOGIN by setting COOKIE uid // !TODO - need to process login form info - is password correct? and  account exists?
+// LOGIN by setting COOKIE uid
 //
 app.post("/login", (req, res) => {
   res.clearCookie('uid');
