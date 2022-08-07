@@ -444,7 +444,7 @@ app.post("/login", (req, res) => {
       consolelog("I think it's a hacker!!");
       // jump to LOGIN page & show why failed to user (failed password)
       const templateVars = { message: "Your password is wrong!  Please check & try again!", loginPage: "yes"};
-      res.render("login.ejs", templateVars);
+      res.status(403).render("login.ejs", templateVars);
       return;
     }
     // set cookie to uid
@@ -454,7 +454,7 @@ app.post("/login", (req, res) => {
     consolelog("Hold up a second!  We didn't find you in our user database!");
     // jump to LOGIN page & show why failed to user (failed email address)
     const templateVars = { message: "Your email address wasn't found in our user database!", loginPage: "yes"};
-    res.render("login.ejs", templateVars);
+    res.status(403).render("login.ejs", templateVars);
     return;
   }
 });
