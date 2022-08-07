@@ -314,6 +314,9 @@ app.get("/urls/:id", (req, res) => {
 //
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
+  if(cookieName(req) === "nobody") {
+    return res.status(403).render("login.ejs");
+  }
   consolelog();
   const newTinyURL = makeID();
   if (req.body.longURL) {
