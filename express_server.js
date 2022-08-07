@@ -186,7 +186,7 @@ const cookieName = function(req) {
 // returns the userID if validated, otherwise return null
 //
 const validateUser = function(userID, suppliedPassword) {
-  if(usersDatabase[userID].password === suppliedPassword) {
+  if (usersDatabase[userID].password === suppliedPassword) {
     consolelog(`Oh yeah!  They guessed the ${conColorRed}correct password!${conColorReset}`);
     return userID;
   } else {
@@ -392,7 +392,9 @@ app.post("/register", (req,res) => {
   let tempUID = findUserByEmail(req.body.email);
   if (tempUID) {
     consolelog("\nHey, you're already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
-    return res.redirect('/login');
+    const templateVars = { message: "You're already registered as a user! Sign in instead!", loginPage: "yes"};
+    // return res.redirect('/login', templateVars);
+    return res.render('login.ejs', templateVars);
   }
 
   usersDatabase[uid] = userAccountObject;
