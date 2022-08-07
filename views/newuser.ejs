@@ -34,7 +34,6 @@
             </div>
           </div>
         </div>
-         
           <div class="row g-3 align-items-center">
             <div class="mb-3">
             <div class="col-auto">
@@ -43,7 +42,6 @@
             <div class="col-auto">
               <input name="password" type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
             </div>
-       
           </div>
           </div>
 
@@ -53,6 +51,9 @@
         </div>
       </form>
       <div>
+        <% if(locals.message) { %>
+          <br><p class="h6 text-danger"><%= message %></p>
+        <% } %>
         <BR>Already have an account?  <a href="login">Sign in</a> here.
       </div>
     </main>
