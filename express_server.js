@@ -343,8 +343,9 @@ app.get("/u/:id", (req, res) => {
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
-    // !todo need to render a 'not found' page here instead of redirect to urls 
-    return res.redirect('/urls/');
+    // !todo need to render a 'not found' page here instead of redirect to urls
+    return res.render("url_notfound.ejs");
+    // return res.redirect('/urls/');
   }
 });
 
