@@ -55,7 +55,7 @@ const trackingDatabase = {
 // additional global variables
 //
 
-const conColorCyan = "\x1b[36m", conColorRed = '\x1b[91m', conColorGreen = '\x1b[92m',
+const conColorCyan = "\x1b[36m", conColorRed = '\x1b[31m', conColorGreen = '\x1b[92m',
   conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
   conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
 const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
@@ -284,7 +284,7 @@ app.post("/urls/:id/delete", (req, res) => {
 //
 app.post("/urls/:id/update", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
-  if(cookieName(req) === "nobody") {
+  if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
   consolelog();
@@ -299,7 +299,7 @@ app.post("/urls/:id/update", (req, res) => {
 // RENDER specific tiny URL page data
 //
 app.get("/urls/:id", (req, res) => {
-  if(cookieName(req) === "nobody") {
+  if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
   let uidData = usersDatabase[uid];
@@ -315,7 +315,7 @@ app.get("/urls/:id", (req, res) => {
 //
 app.post("/urls", (req, res) => {
   //console.log(req.body.longURL); // Log the POST request body to the console
-  if(cookieName(req) === "nobody") {
+  if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
   consolelog();
