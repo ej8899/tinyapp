@@ -13,7 +13,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 ## Contents:
 1. [Quick Start](#quick-start)
 2. [Detailed Operation](#detailed-operation)
-3. [Features List](#features)
+3. [Features](#features)
 4. [Extra Features](#extra-features)
 5. [Future Plans](#future-plans)
 6. [Attributions](#attributes)
@@ -21,7 +21,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 ---
 ---
 ## Quick Start:
-1) start the TinyApp Server with  
+1) start the TinyApp Server in your terminal with  
   ```node express_server.js```   
   you can also use 'quiet mode' via  
   ```node express_server.js -quiet```  
@@ -33,12 +33,15 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 ```node express_server.js```
 ![](image-server.png)
 2) Once the server is "listening", start your web browser and navigate to ```http://localhost:8080/```  
-You'll be directed to the login page.  An account is required to create and manage you Tiny URLs.
+You'll be directed to the login page.  An account is required to create and manage your Tiny URLs.
 ![](image-login.png)
-3) Sign in or register for a free account to get started you'll be directed to your main account page listing any Tiny URLs you've created. From the main page, you can edit and delete existing short URLs, or create a new tiny URL.
+3) Sign in or register for a free account to get started. You'll be directed to your main account page listing any Tiny URLs you've created. From the main page, you can edit, delete or create tiny URLs.
 ![](image-tinylist.png)
 4) Create new tiny URLS with the "Create" option.  Simply enter the long URL, and click or tap "submit". You'll return to the tiny URLs list (above) and see your new link added to the list!
+![](image-createfirst.png)
+5) Update and modify tiny URL destinations through a dedicated update page.
 ![](image-createtinyurl.png)
+[back to top](#about)
 ----
 ## Features:
 - free service
@@ -49,12 +52,15 @@ You'll be directed to the login page.  An account is required to create and mana
 ## Extra Features:
 - hide menu bar if not logged in
 - "quiet" mode to silence server-side feedback
+- incorrect password sends error to user
+- trying to create duplicate accounts sends error to user
 ---
 ## Future Plans:
 - dark mode
 - link analytics
 - customizable tiny url
 - add password reset
+- multiple tiny url selection for bulk delete
 ---
 ## Attributes:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
