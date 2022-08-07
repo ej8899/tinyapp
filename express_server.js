@@ -318,8 +318,6 @@ app.post("/urls", (req, res) => {
     consolelog(conColorRed + "Looks like someone forgot something along the way!" + conColorReset);
     return res.redirect('/urls/');
   }
-  // console.log(JSON.stringify(urlDatabase));
-  // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
 
@@ -386,23 +384,39 @@ app.post("/register", (req,res) => {
     password: req.body.password,
   };
 
-  console.log(JSON.stringify(usersDatabase)); // DEBUG
+  consolelog(conColorGreen + "\nLet's have a look at that user database, shall we?!? \n" + conColorYellow + JSON.stringify(usersDatabase) + conColorReset); // DEBUG
+
+  // CHECK to ensure user entered an email address for account name - boot back to register if not and give message
+  if (!req.body.email) {
+    consolelog("\nThat's cray-cray-crazy - they forgot to enter their email address!");
+    const templateVars = { message: "You forgot to enter your email address!", loginPage: "yes"};
+    return res.render('newuser.ejs',templateVars);
+  }
 
   // Does the account already exist?? search via emails!
   let tempUID = findUserByEmail(req.body.email);
   if (tempUID) {
     consolelog("\nHey, you're already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
     const templateVars = { message: "You're already registered as a user! Sign in instead!", loginPage: "yes"};
-    // return res.redirect('/login', templateVars);
     return res.render('login.ejs', templateVars);
   }
 
+  // CHECK to ensure they've supplied a password - boot them back to register page if not & give message
+  if (!req.body.password) {
+    consolelog("\nSilly user - they forgot to enter a password for their account!");
+    const templateVars = { message: "You forgot to enter a password for your account!", loginPage: "yes"};
+    return res.render('newuser.ejs',templateVars);
+  }
+  
+
+  // add the user to the usersDatabase
   usersDatabase[uid] = userAccountObject;
-  consolelog(usersDatabase[uid]); // DEBUG
+  consolelog('IN REGISTRATION handler: ' + usersDatabase[uid]); // DEBUG
 
-  // set cookie w this uid
+  // consider the user logged in at this point - they've created an account successfully.
+
+  // set cookie for current user ID
   res.cookie('uid', uid);
-
   // redirect to urls page
   return res.redirect('/urls/');
 });
@@ -431,6 +445,7 @@ app.post("/login", (req, res) => {
       // jump to LOGIN page & show why failed to user (failed password)
       const templateVars = { message: "Your password is wrong!  Please check & try again!", loginPage: "yes"};
       res.render("login.ejs", templateVars);
+      return;
     }
     // set cookie to uid
     res.cookie('uid',tempUID);
@@ -440,6 +455,7 @@ app.post("/login", (req, res) => {
     // jump to LOGIN page & show why failed to user (failed email address)
     const templateVars = { message: "Your email address wasn't found in our user database!", loginPage: "yes"};
     res.render("login.ejs", templateVars);
+    return;
   }
 });
 
