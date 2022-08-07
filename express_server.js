@@ -296,7 +296,7 @@ app.post("/urls/:id/update", (req, res) => {
 
 
 //
-// RENDER specific tiny URL page data
+// RENDER specific tiny URL page data (for review or edit purposes)
 //
 app.get("/urls/:id", (req, res) => {
   if (cookieName(req) === "nobody") {
@@ -336,13 +336,14 @@ app.post("/urls", (req, res) => {
 //
 app.get("/u/:id", (req, res) => {
   let id = req.params.id;
-  
+  // !todo - check urls DB for id - if not there, show error
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
     consolelog(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
+    // !todo need to render a 'not found' page here instead of redirect to urls 
     return res.redirect('/urls/');
   }
 });
