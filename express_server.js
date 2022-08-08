@@ -147,7 +147,6 @@ const consolelog = function(inputText,override) {
   };
 
   if (createFile === "yes") {
-    // !TODO monitor for max log file size and clear it when full
     const dateObject = new Date();
     let date = IntTwoChars(dateObject.getDate());
     let month = IntTwoChars(dateObject.getMonth() + 1);
