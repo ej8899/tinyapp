@@ -9,9 +9,10 @@
 //
 // REQUIRES & INCLUDES
 //
-const fs = require('fs');
-const express = require("express");
-const cookieParser = require('cookie-parser');
+const fs = require('fs');                         // file services
+const bcrypt = require("bcryptjs");               // encryption
+const express = require("express");               // express.js render engine
+const cookieParser = require('cookie-parser');    // cookies management
 const app = express();
 const PORT = 8080; // default port 8080
 // const path = require('path');
@@ -237,7 +238,10 @@ const cookieName = function(req) {
 // returns the userID if validated, otherwise return null
 //
 const validateUser = function(userID, suppliedPassword) {
-  if (usersDatabase[userID].password === suppliedPassword) {
+  
+  // if (usersDatabase[userID].password === suppliedPassword) { // old w/o bcrypt
+
+  if(bcrypt.compareSync(suppliedPassword,usersDatabase[userID].password)) { // bcrypt.compareSync returns true or false
     consolelog(userID + ` entered ${conColorRed}correct password!${conColorReset}`);
     return userID;
   } else {
@@ -446,10 +450,12 @@ app.get("/logout", (req, res) => {
 app.post("/register", (req,res) => {
   let uid = makeID();
   // set email, pass and uid into userDatabase 'structure'
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
   let userAccountObject = {
     id: uid,
     email: req.body.email,
-    password: req.body.password,
+    // password: req.body.password,
+    password: hashedPassword,
   };
 
   //
