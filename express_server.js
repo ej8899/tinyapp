@@ -206,7 +206,7 @@ const cookieName = function(req) {
   uid = req.cookies.uid;
   if (!uid) {
     uid = "nobody"; // use "nobody" as a monitoring system for bad logins
-    consolelog(`\n${conColorRed}Houston, we have a problem here.... "${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
+    consolelog(`\n$"${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
     return uid;
   }
   consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
@@ -268,7 +268,7 @@ app.listen(PORT, () => {
 // deal with any 'root/index' access to the locahost/domain
 //
 app.get("/", (req, res) => {
-  consolelog(`Looks like someone needs some direction on where to go!`);
+  consolelog(`forcing to login page from root level access`);
   res.render("login.ejs");
 });
 
@@ -282,7 +282,7 @@ app.get("/urls", (req, res) => {
     // need to login
     res.render("login.ejs", {loginPage: "yes"});
   } else {
-    consolelog("in get/urls --> usersDatabase:" + JSON.stringify(uidData) + " for " + uid);
+    consolelog(uid + ": in the user database is: " + JSON.stringify(uidData));
     const templateVars = { urls: urlDatabase, user: uidData};
     res.render("urls_index.ejs", templateVars);
   }
@@ -379,10 +379,10 @@ app.get("/u/:id", (req, res) => {
   // !todo - check urls DB for id - if not there, show error
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
-    consolelog(`${conColorOrange}Don't be gone to ${conColorGreen}${longURL}${conColorOrange} for too long!\nWe'll miss you here on the ${conColorOrange}TinyApp${conColorGreen} Server!`);
+    consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
     res.redirect(longURL);
   } else {
-    consolelog(`${conColorYellow}That's pretty funny!  Trying to venture off to planet ${conColorRed}undefined${conColorYellow} are you?!?${conColorReset}\n`);
+    consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);
     return res.render("url_notfound.ejs");
     // return res.redirect('/urls/');
   }
@@ -395,7 +395,7 @@ app.get("/u/:id", (req, res) => {
 app.get("/register", (req, res) => {
   cookieName(req);
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
-  consolelog(`${conColorGreen}Ooh look!  A new friend has arrived!${conColorReset}`);
+  consolelog(`${conColorGreen}New user visiting the login page.${conColorReset}`);
   res.render("newuser.ejs", templateVars);
 });
 
@@ -418,7 +418,7 @@ app.get("/login", (req, res) => {
 app.get("/logout", (req, res) => {
   consolelog();
   res.clearCookie('uid');
-  consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
+  consolelog(`${uid}${conColorOrange} Has logged out.${conColorReset}`);
   const templateVars = { loginPage: "yes"};
   return res.render('login.ejs', templateVars);
 });
@@ -435,11 +435,14 @@ app.post("/register", (req,res) => {
     password: req.body.password,
   };
 
-  consolelog(conColorGreen + "\nLet's have a look at that user database, shall we?!? \n" + conColorYellow + JSON.stringify(usersDatabase) + conColorReset); // DEBUG
+  //
+  // DEBUG - this is for login testing only to 'remind' testers of the passwords
+  //
+  consolelog(conColorGreen + "\nLet's have a look at that user database, shall we?!? \n" + conColorYellow + JSON.stringify(usersDatabase) + conColorReset + '\n'); // DEBUG
 
   // CHECK to ensure user entered an email address for account name - boot back to register if not and give message
   if (!req.body.email) {
-    consolelog("\nThat's cray-cray-crazy - they forgot to enter their email address!");
+    consolelog("\nUser forgot to enter their email address!");
     const templateVars = { message: "You forgot to enter your email address!", loginPage: "yes"};
     return res.render('newuser.ejs',templateVars);
   }
@@ -447,21 +450,21 @@ app.post("/register", (req,res) => {
   // Does the account already exist?? search via emails!
   let tempUID = findUserByEmail(req.body.email);
   if (tempUID) {
-    consolelog("\nHey, you're already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
+    consolelog("\nUser is already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
     const templateVars = { message: "You're already registered as a user! Sign in instead!", loginPage: "yes"};
     return res.render('login.ejs', templateVars);
   }
 
   // CHECK to ensure they've supplied a password - boot them back to register page if not & give message
   if (!req.body.password) {
-    consolelog("\nSilly user - they forgot to enter a password for their account!");
+    consolelog("\nUser forgot to enter a password for their account!");
     const templateVars = { message: "You forgot to enter a password for your account!", loginPage: "yes"};
     return res.render('newuser.ejs',templateVars);
   }
   
   // add the user to the usersDatabase
   usersDatabase[uid] = userAccountObject;
-  consolelog('IN REGISTRATION handler: ' + usersDatabase[uid]); // DEBUG
+  consolelog(usersDatabase[uid] + ' - new user is joining the TinyApp family!'); // DEBUG
 
   // consider the user logged in at this point - they've created an account successfully.
   // set cookie for current user ID
@@ -478,9 +481,9 @@ app.post("/login", (req, res) => {
   res.clearCookie('uid');
   consolelog();
   if (req.body.email) {
-    consolelog(`${conColorOrange}Well, well, welcome to TinyApp, "${conColorMagenta}${req.body.email}${conColorOrange}"!${conColorReset}`);
+    consolelog(`${conColorMagenta}${req.body.email}${conColorOrange} - welcome to TinyApp!${conColorReset}`);
   } else {
-    consolelog(`${conColorYellow}Did you forget who you are?${conColorReset}`);
+    consolelog(`${conColorYellow}User forgot to enter email on login.${conColorReset}`);
   }
 
   // check to see if user exists
@@ -490,7 +493,7 @@ app.post("/login", (req, res) => {
     // check to see if password is valid
     tempUID = validateUser(tempUID, req.body.password);
     if (!tempUID) {
-      consolelog("I think it's a hacker!!");
+      consolelog(tempUID + "watch for hack attempts - (wrong password)");
       // jump to LOGIN page & show why failed to user (failed password)
       const templateVars = { message: "Your password is wrong!  Please check & try again!", loginPage: "yes"};
       res.status(403).render("login.ejs", templateVars);
@@ -500,7 +503,7 @@ app.post("/login", (req, res) => {
     res.cookie('uid',tempUID);
     return res.redirect('/urls/');
   } else {
-    consolelog("Hold up a second!  We didn't find you in our user database!");
+    consolelog(uid + ": We didn't find you in our user database!");
     // jump to LOGIN page & show why failed to user (failed email address)
     const templateVars = { message: "Your email address wasn't found in our user database!", loginPage: "yes"};
     res.status(403).render("login.ejs", templateVars);
@@ -515,6 +518,6 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   consolelog();
   res.clearCookie('uid');
-  consolelog(`${conColorOrange}Sniffle... Sniffle.. and here I thought we were becomming friends.${conColorYellow} :-(${conColorReset}`);
+  consolelog(`${uid}${conColorOrange}is logged out.${conColorReset}`);
   res.render("login.ejs", { loginPage: "yes"});
 });
