@@ -147,7 +147,7 @@ const consolelog = function(inputText,override) {
   };
 
   if (createFile === "yes") {
-    // !TODO monitor for ma log file size and clear it when full
+    // !TODO monitor for max log file size and clear it when full
     const dateObject = new Date();
     let date = IntTwoChars(dateObject.getDate());
     let month = IntTwoChars(dateObject.getMonth() + 1);
@@ -232,10 +232,10 @@ const validateUser = function(userID, suppliedPassword) {
 // !TODO - check for valid (working/responding) URL - (FUTURE)
 //
 const urlExists = function(theURL) {
-  // need this in global requires: import urlExist from 'url-exist';
-  // const exists = await urlExist('https://google.com');
-  // Handle result
-  //console.log(exists)
+  //
+  // !TODO - just ping the server and see if we get a response <400 - otherwise fail as a working URL
+  //
+  return true;
 };
 
 
