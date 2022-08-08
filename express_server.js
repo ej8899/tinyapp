@@ -376,14 +376,13 @@ app.post("/urls", (req, res) => {
 //
 app.get("/u/:id", (req, res) => {
   let id = req.params.id;
-  // !todo - check urls DB for id - if not there, show error
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
     consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);
-    return res.render("url_notfound.ejs");
+    return res.status(404).render("url_notfound.ejs");
     // return res.redirect('/urls/');
   }
 });
