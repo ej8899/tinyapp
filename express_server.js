@@ -157,7 +157,26 @@ const consolelog = function(inputText,override) {
     let seconds = IntTwoChars(dateObject.getSeconds());
     let strippedText = inputText.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, ''); // clear escape codes
     strippedText = strippedText.replace(/(\r\n|\n|\r)/gm, ""); // clear newlines (we'll use our own for server log)
-    const logfileText = '\r\n' + year + '-' + month + '-' + date + ' -' + hours + ':' + minutes + ':' + seconds + ' - ' + strippedText;
+    const logfileText = '\r\n' + year + '-' + month + '-' + date + ' - ' + hours + ':' + minutes + ':' + seconds + ' - ' + strippedText;
+    const logfileMaxSize = 50000;
+    fs.stat('tinyapp.log',(err,stats) => {
+      if (err) { 
+        // do nothing if error - hopefully just file not exist
+      } else {
+        if (stats.size > logfileMaxSize) {
+          // console.error(err)
+          // delete the log file
+          fs.unlink('tinyapp.log', function(err) {
+            if (err) {
+              // console.error(err);
+              // do nothing - hopefully just file not exist
+            } else {
+              console.log("File removed:", 'tinyapp.log');
+            }
+          });
+        }
+      }
+    });
     fs.appendFile('tinyapp.log', logfileText, function(err) {
       if (err) throw err;
     });
