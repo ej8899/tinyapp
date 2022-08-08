@@ -220,10 +220,10 @@ const cookieName = function(req) {
 //
 const validateUser = function(userID, suppliedPassword) {
   if (usersDatabase[userID].password === suppliedPassword) {
-    consolelog(`Oh yeah!  They guessed the ${conColorRed}correct password!${conColorReset}`);
+    consolelog(userID + ` entered ${conColorRed}correct password!${conColorReset}`);
     return userID;
   } else {
-    consolelog(`OOh.. password didn't match!  ${conColorGreen}Hopefully it's not a hacker at our door!${conColorReset}`);
+    consolelog(userID + ` Password didn't match!  ${conColorGreen}Hopefully it's not a hacker at our door!${conColorReset}`);
     return null;
   }
 };
