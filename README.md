@@ -75,6 +75,7 @@ You'll be directed to the login page.  An account is required to create and mana
 - Get the most recent version of TinyApp! [here](https://github.com/ej8899/tinyapp).
 - Change Log v 0.9 - 2022-08-06:  
     * (private testing only)
+    - add encrypted cookies
 
 ---
 [back to top](#about)
