@@ -12,9 +12,7 @@
 const fs = require('fs');                         // file services
 const bcrypt = require("bcryptjs");               // encryption
 const express = require("express");               // express.js render engine
-// const cookieParser = require('cookie-parser');    // cookies management (DEPRECIATED IF COOKIE SESSION WORKS) OLDCOOKIES
-// secure cookies via cookie-session - https://github.com/expressjs/cookie-session
-const cookieSession = require('cookie-session');  // cookies management - secure
+const cookieSession = require('cookie-session');  // cookies management - secure - see cookieName() for details
 
 const app = express();
 const PORT = 8080; // default port 8080
@@ -224,9 +222,20 @@ const findUserByEmail = function(emailAddy) {
 };
 
 //
-// SECURITY function - cookieName (pull cookie info)
-// grab cookie uid (or set default)
+// COOKIE function - cookieName (req, operation, cookieData);
+// USAGE: operation is clear, set, read
+//        cookieData is the data to set in cookie
+//        req is express.js request object
+// return is NULL for set or clear, or uid (user id) - a uid of "nobody" may be returned in some failed authentication situations
 //
+/* SETUP WITH:
+const cookieSession = require('cookie-session');  // cookies management - secure
+app.use(cookieSession({
+  name: 'tinyapp',
+  keys: ['this is a secret tinyapp key']
+})); // SECURE COOKIES
+reference: https://github.com/expressjs/cookie-session
+*/
 const cookieName = function(req,operation,cookieData) {
   // DELETE any set cookies
   if (operation === 'clear') {
@@ -236,7 +245,6 @@ const cookieName = function(req,operation,cookieData) {
 
   // SET any cookie info
   if (operation === 'set' && cookieData) {
-    //req.cookie('uid',cookieData);  // OLDCOOKIES
     req.session.euid = cookieData;
     consolelog(`nom nom nom... we've got NEW cookies`);
     return;
@@ -245,7 +253,6 @@ const cookieName = function(req,operation,cookieData) {
   // READ any cookies - also DEFAULT operation if not set
   if (operation === 'read' || !operation) {
     uid = req.session.euid; // this is via SECURE COOKIES
-    // uid = req.cookies.uid; // OLDCOOKIES
     if (!uid) {
       uid = "nobody"; // use "nobody" as a monitoring system for bad logins
       consolelog(`\n$"${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
