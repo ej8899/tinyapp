@@ -238,6 +238,7 @@ const cookieName = function(req,operation,cookieData) {
   if (operation === 'set' && cookieData) {
     //req.cookie('uid',cookieData);  // OLDCOOKIES
     req.session.euid = cookieData;
+    consolelog(`nom nom nom... we've got NEW cookies`);
     return;
   }
 
