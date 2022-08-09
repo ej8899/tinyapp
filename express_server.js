@@ -12,7 +12,10 @@
 const fs = require('fs');                         // file services
 const bcrypt = require("bcryptjs");               // encryption
 const express = require("express");               // express.js render engine
-const cookieParser = require('cookie-parser');    // cookies management
+// const cookieParser = require('cookie-parser');    // cookies management (DEPRECIATED IF COOKIE SESSION WORKS) OLDCOOKIES
+// secure cookies via cookie-session - https://github.com/expressjs/cookie-session
+const cookieSession = require('cookie-session');  // cookies management - secure
+
 const app = express();
 const PORT = 8080; // default port 8080
 // const path = require('path');
@@ -20,8 +23,11 @@ const PORT = 8080; // default port 8080
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
+// app.use(cookieParser()); // OLDCOOKIES
+app.use(cookieSession({
+  name: 'tinyapp',
+  keys: ['this is a secret tinyapp key']
+})); // SECURE COOKIES
 
 
 
@@ -221,15 +227,33 @@ const findUserByEmail = function(emailAddy) {
 // SECURITY function - cookieName (pull cookie info)
 // grab cookie uid (or set default)
 //
-const cookieName = function(req) {
-  uid = req.cookies.uid;
-  if (!uid) {
-    uid = "nobody"; // use "nobody" as a monitoring system for bad logins
-    consolelog(`\n$"${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
+const cookieName = function(req,operation,cookieData) {
+  // DELETE any set cookies
+  if (operation === 'clear') {
+    req.session = null;
+    return;
+  }
+
+  // SET any cookie info
+  if (operation === 'set' && cookieData) {
+    //req.cookie('uid',cookieData);  // OLDCOOKIES
+    req.session.euid = cookieData;
+    return;
+  }
+
+  // READ any cookies - also DEFAULT operation if not set
+  if (operation === 'read' || !operation) {
+    uid = req.session.euid; // this is via SECURE COOKIES
+    // uid = req.cookies.uid; // OLDCOOKIES
+    if (!uid) {
+      uid = "nobody"; // use "nobody" as a monitoring system for bad logins
+      consolelog(`\n$"${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
+      return uid;
+    }
+    consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
     return uid;
   }
-  consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
-  return uid;
+  consolelog("BAD cookie data in cookieName()");
 };
 
 //
@@ -428,8 +452,7 @@ app.get("/login", (req, res) => {
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
   consolelog(`${conColorGreen}This user needs to get ${conColorCyan}signed in ${conColorGreen} before they can do anything!${conColorReset}`);
 
-  // CLEAR existing cookies
-  res.clearCookie('uid');
+  cookieName(req,"clear");
   res.render("login.ejs", templateVars);
 });
 
@@ -438,7 +461,7 @@ app.get("/login", (req, res) => {
 //
 app.get("/logout", (req, res) => {
   consolelog();
-  res.clearCookie('uid');
+  cookieName(req,"clear");
   consolelog(`${uid}${conColorOrange} Has logged out.${conColorReset}`);
   const templateVars = { loginPage: "yes"};
   return res.render('login.ejs', templateVars);
@@ -490,8 +513,7 @@ app.post("/register", (req,res) => {
   consolelog(usersDatabase[uid] + ' - new user is joining the TinyApp family!'); // DEBUG
 
   // consider the user logged in at this point - they've created an account successfully.
-  // set cookie for current user ID
-  res.cookie('uid', uid);
+  cookieName(req,"set",uid);
   // redirect to urls page
   return res.redirect('/urls/');
 });
@@ -501,7 +523,7 @@ app.post("/register", (req,res) => {
 // LOGIN by setting COOKIE uid
 //
 app.post("/login", (req, res) => {
-  res.clearCookie('uid');
+  cookieName(req,"set","");
   consolelog();
   if (req.body.email) {
     consolelog(`${conColorMagenta}${req.body.email}${conColorOrange} - welcome to TinyApp!${conColorReset}`);
@@ -522,8 +544,9 @@ app.post("/login", (req, res) => {
       res.status(403).render("login.ejs", templateVars);
       return;
     }
-    // set cookie to uid
-    res.cookie('uid',tempUID);
+    // successfully logged in:
+    cookieName(req,"set",tempUID);
+
     return res.redirect('/urls/');
   } else {
     consolelog(uid + ": We didn't find you in our user database!");
@@ -540,7 +563,8 @@ app.post("/login", (req, res) => {
 //
 app.post("/logout", (req, res) => {
   consolelog();
-  res.clearCookie('uid');
+  cookieName(res,"clear");
+  //cookieName(req,"set","");
   consolelog(`${uid}${conColorOrange}is logged out.${conColorReset}`);
   res.render("login.ejs", { loginPage: "yes"});
 });
