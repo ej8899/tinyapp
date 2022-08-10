@@ -71,10 +71,9 @@ const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x
 
 
 //
-// SETUP HELPER FUNCTIONS:
+// SETUP ADDITIONAL HELPER FUNCTIONS:
+//  also see helpers.js for more
 //
-
-
 
 
 //
