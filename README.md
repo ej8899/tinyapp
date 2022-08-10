@@ -40,7 +40,7 @@ You'll be directed to the login page.  An account is required to create and mana
 ![](image-tinylist.png)
 4) Create new tiny URLS with the "Create" option.  Simply enter the long URL, and click or tap "submit". You'll return to the tiny URLs list (above) and see your new link added to the list!
 ![](image-createfirst.png)
-5) Update and modify tiny URL destinations through a dedicated update page.
+5) Update and modify tiny URL destinations through a dedicated update page.  You can also review link analytics on this page.
 ![](image-createtinyurl.png)
 [back to top](#about)
 ----
@@ -65,8 +65,9 @@ You'll be directed to the login page.  An account is required to create and mana
 - dark mode
 - link analytics
 - customizable tiny url
-- add password reset
+- add password reset to login page
 - multiple tiny url selection for bulk delete
+- enable copy URL icon in Tiny URL Info page
 ---
 ## Attributes:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
