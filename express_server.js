@@ -74,25 +74,7 @@ const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x
 // SETUP HELPER FUNCTIONS:
 //
 
-//
-// create server title ascii art
-//
-const makeServerTitle = function() {
-  let m = conColorMagenta + conColorBright, c = conColorCyan + conColorDim, o = conColorOrange + conColorBright;
-  const consoleLine = '-'.repeat(43);
-  console.log(`\n\n  ${m} _    _                  ${c}_                 ${conColorReset}`);
-  console.log(`  ${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColorReset}`);
-  console.log(`  ${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColorReset}`);
-  console.log(`  ${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColorReset}`);
-  console.log(`   ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColorReset}`);
-  console.log(`   ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColorReset}`);
-  console.log(`  ${o}/ _\\  ___  _ __ __   __ ___  _ __          `);
-  console.log(`  \\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
-  console.log(`  _\\ \\|  __/| |    \\ V /|  __/| |            `);
-  console.log(`  \\__/ \\___||_|     \\_/  \\___||_|            `);
-  console.log(conColorYellow +  conColorDim + '  ' + consoleLine);
-  console.log(conColorReset);
-};
+
 
 //
 // random foolishness for the cookies function
