@@ -9,6 +9,8 @@
 //
 // REQUIRES & INCLUDES
 //
+const { findUserByEmail } = require('./helpers.js');
+
 const fs = require('fs');                         // file services
 const bcrypt = require("bcryptjs");               // encryption
 const express = require("express");               // express.js render engine
@@ -205,6 +207,7 @@ const makeID = function(numChars) {
   return yourCode;
 };
 
+/*
 //
 // Search our users database by email address for match.  REturn fALSE if no match, or UID if a match
 //
@@ -220,7 +223,7 @@ const findUserByEmail = function(emailAddy) {
     }
   }
   return false;
-};
+};*/
 
 //
 // COOKIE function - cookieName (req, operation, cookieData);
@@ -521,7 +524,7 @@ app.post("/register", (req,res) => {
   }
 
   // Does the account already exist?? search via emails!
-  let tempUID = findUserByEmail(req.body.email);
+  let tempUID = findUserByEmail(req.body.email,usersDatabase);
   if (tempUID) {
     consolelog("\nUser is already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
     const templateVars = { message: "You're already registered as a user! Sign in instead!", loginPage: "yes"};
@@ -559,7 +562,7 @@ app.post("/login", (req, res) => {
   }
 
   // check to see if user exists
-  let tempUID = findUserByEmail(req.body.email);
+  let tempUID = findUserByEmail(req.body.email,usersDatabase);
 
   if (tempUID) { // users EXISTS and is password validated:
     // check to see if password is valid
