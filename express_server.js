@@ -9,7 +9,7 @@
 //
 // REQUIRES & INCLUDES
 //
-const { findUserByEmail } = require('./helpers.js');
+const { findUserByEmail, cookiesButNoMilk, getOpSys, makeServerTitle } = require('./helpers.js');
 
 const fs = require('fs');                         // file services
 const bcrypt = require("bcryptjs");               // encryption
@@ -76,38 +76,6 @@ const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x
 
 
 
-//
-// random foolishness for the cookies function
-//
-const cookiesButNoMilk = function() {
-  const quotesArray = [
-    "C is for cookie that's good enough for me.",
-    "Cookies... Om Nom Nom Nom!",
-    "I'd give you a cookie, but I ate it.",
-    "Me Love to Eat Cookies!",
-    "Keep Calm & Eat Cookies",
-    "Me not fussy.. just give me cookies.",
-    "Me just met you, but you got cookie, so share it maybe?" ];
-  let quoteNumber = Math.floor((Math.random() * quotesArray.length - 1) + 1);
-  return (quotesArray[quoteNumber]);
-};
-
-//
-// read operating system we're using and response with sever message accordingly
-// not required for CORE functionality, but a learning opportunity
-//
-const getOpSys = function() {
-  let opsys = process.platform;
-  if (opsys === "darwin") {
-    opsys = "MacOS";
-  } else if (opsys === "win32" || opsys === "win64") {
-    opsys = "Windows";
-  } else if (opsys === "linux") {
-    opsys = "Linux";
-  }
-  opsys = conColorBright + conColorOrange + opsys + conColorReset;
-  return opsys;
-};
 
 //
 // consoleLog() replacement handler for quiet mode
@@ -189,23 +157,7 @@ const makeID = function(numChars) {
   return yourCode;
 };
 
-/*
-//
-// Search our users database by email address for match.  REturn fALSE if no match, or UID if a match
-//
-const findUserByEmail = function(emailAddy) {
-  if (!emailAddy) {
-    return false;
-  }
-  // search via emails
-  for (let userSearch in usersDatabase) {
-    if (usersDatabase[userSearch].email === emailAddy) {
-      consolelog(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
-      return userSearch;
-    }
-  }
-  return false;
-};*/
+
 
 //
 // COOKIE function - cookieName (req, operation, cookieData);
@@ -245,7 +197,6 @@ const cookieName = function(req,operation,cookieData) {
       return uid;
     }
     consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
-    console.log("USER " + uid + " BEING RETURNED")
     return uid;
   }
   consolelog("BAD cookie data in cookieName()");
