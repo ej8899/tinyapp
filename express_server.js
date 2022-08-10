@@ -147,7 +147,8 @@ const consolelog = function(inputText,override) {
     console.log(' ');
     return;
   }
-  const IntTwoChars = (i) => { // helper for dateObject
+  // helper for date function to 0 pad
+  const IntTwoChars = (i) => {
     return (`0${i}`).slice(-2);
   };
 
@@ -259,6 +260,7 @@ const cookieName = function(req,operation,cookieData) {
       return uid;
     }
     consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
+    console.log("USER " + uid + " BEING RETURNED")
     return uid;
   }
   consolelog("BAD cookie data in cookieName()");
@@ -270,10 +272,8 @@ const cookieName = function(req,operation,cookieData) {
 // returns the userID if validated, otherwise return null
 //
 const validateUser = function(userID, suppliedPassword) {
-  
   // if (usersDatabase[userID].password === suppliedPassword) { // old w/o bcrypt
-
-  if(bcrypt.compareSync(suppliedPassword,usersDatabase[userID].password)) { // bcrypt.compareSync returns true or false
+  if (bcrypt.compareSync(suppliedPassword,usersDatabase[userID].password)) { // bcrypt.compareSync returns true or false
     consolelog(userID + ` entered ${conColorRed}correct password!${conColorReset}`);
     return userID;
   } else {
@@ -281,6 +281,19 @@ const validateUser = function(userID, suppliedPassword) {
     return null;
   }
 };
+
+//
+//  check userDatabase for userID - return TRUE if found, FALSE if not
+//
+const isActualUser = function(userID) {
+  for (let users in usersDatabase) {
+    if (usersDatabase[users]["id"] === userID) {
+      return true;
+    }
+  }
+  return false;
+};
+
 
 //
 // !TODO - check for valid (working/responding) URL - (FUTURE)
@@ -446,7 +459,10 @@ app.get("/u/:id", (req, res) => {
 // REDIRECT to the REGISTER page
 //
 app.get("/register", (req, res) => {
-  cookieName(req);
+  if (isActualUser(cookieName(req))) { // uid is set if cookie set, but lets ensure uid is correct to our DB
+    consolelog("ACTIVE user found register page, we'll just jump to main page instead!");
+    return res.redirect('/urls/');
+  }
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
   consolelog(`${conColorGreen}New user visiting the login page.${conColorReset}`);
   res.render("newuser.ejs", templateVars);
@@ -456,7 +472,10 @@ app.get("/register", (req, res) => {
 // REDIRECT to the LOGIN page
 //
 app.get("/login", (req, res) => {
-  cookieName(req);
+  if (isActualUser(cookieName(req))) { // uid is set if cookie set, but lets ensure uid is correct to our DB
+    consolelog(`ACTIVE user found login page, we'll jump to main page instead!`);
+    return res.redirect('/urls/');
+  }
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
   consolelog(`${conColorGreen}This user needs to get ${conColorCyan}signed in ${conColorGreen} before they can do anything!${conColorReset}`);
 
