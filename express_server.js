@@ -73,11 +73,11 @@ const trackingDatabase = {
 
 // analytics database: click LOG
 const clickDatabase = {
-  dateStamp: {
-    lid: 12345,
-    uid: 23456,
-    dateStamp: 12345,
-  }
+  // dateStamp: {
+  //   lid: 12345,
+  //   uid: 23456,
+  //   dateStamp: 12345,
+  // }
 };
 
 //
@@ -357,7 +357,7 @@ app.get("/urls/:id", (req, res) => {
   }
   let uidData = usersDatabase[uid];
   const totalCount = tinyTrack(trackingDatabase,req.params.id,"get");
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount};
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:clickDatabase};
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
@@ -396,7 +396,7 @@ app.get("/u/:id", (req, res) => {
     const longURL = urlDatabase[id];
     consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
     tinyTrack(trackingDatabase,id,'inc'); // increase total click count on this tiny URL
-    clickTrack(clickDatabase, id, "blah", 'add');
+    clickTrack(clickDatabase, id, makeID(18), 'add');  // !TODO - change makeID(18) to ACTUAL user id if exists
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);

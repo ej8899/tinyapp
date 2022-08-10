@@ -156,7 +156,8 @@ const clickTrack = function(db, urlID, uid, action) {
   // add a log entry
   console.log("IN CLICK TRACK");
   if (action === 'add') {
-    const rightNow = JSON.stringify(new Date());
+    let rightNow = JSON.stringify(new Date());
+    rightNow = rightNow.replace(/['"]+/g, '');
     console.log("RIGHTNOW: ", rightNow);
 
     let newClickTrack = {

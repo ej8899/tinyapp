@@ -18,21 +18,20 @@
     <div class="card text-left">
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+        <h4 class="card-title">URL Info:</h4>
+        <h5 class="card-title">Original URL: <%= longURL %></h5>
         
           <% if(locals.message) { %>
             <br><p class="h6 text-danger"><%= message %></p>
           <% } %>
           
         <p class="card-text">
-          Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
-          <% if(locals.totalCount) { %><p>Click Through Totals: <%= totalCount %></p>
-          <% } %>
+          Tiny URL ID: <a href="http://localhost:8080/u/<%= id %>">http://localhost:8080/u/<%= id %></a>&nbsp;&nbsp;<i class="fa-solid fa-xl fa-copy" style="color:grey"></i>
         </p>
       </div>
       <div class="card-footer text-left">
         <!-- EDIT FORM HERE -->
-        <h5>Change Destination URL:</h5>
+        <h4>Change Destination URL:</h4>
         <form class="form-inline" method="POST" action="/urls/<%= id %>/update"><label for="longURL">URL: </label><input
           class="form-control"
           type="text"
@@ -42,6 +41,18 @@
           <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
         </svg> Update</button></form>
       </div>
+      <div class="card-body"><p class="card-text">
+      <h4 class="card-title">Analytics:</h4>
+      <% if(locals.totalCount) { %><p><h5>Click Through Totals: <%= totalCount %></h5></p>
+        <% } %>
+      <p><h5><BR>Click Through Log:</h5></p>
+      <table>
+        <tr><td style="padding-right:25px"><h5>Date & Time (UTC)</h5></td><td><h5>User ID of Who Clicked:</h5></td></tr>
+      <% for (let id in logs) { %>
+        <tr><td style="padding-right:25px"><%= logs[id].dateStamp %></td><td><%= logs[id].uid %></td></tr>
+      <% } %>
+    </table>
+    </p>
     </div>
     <!-- Bootstrap JS -->
     <script
