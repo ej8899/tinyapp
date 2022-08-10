@@ -3,6 +3,7 @@
 //  add helper functions for express_server.js
 //
 
+const { request, application } = require("express");
 
 //
 // additional global variables
@@ -23,7 +24,7 @@ const findUserByEmail = function(emailAddy,database) {
   // search via emails
   for (let userSearch in database) {
     if (database[userSearch].email === emailAddy) {
-      console.log(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
+      // console.log(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
       return userSearch;
     }
   }
@@ -83,9 +84,76 @@ const makeServerTitle = function() {
   console.log(conColorReset);
 };
 
+//
+// urlExists(theURL)
+// check supplied URL to see if it actually exists (response of < 400)
+// return true if yes and ok, false if error code of 400 or >
+//
+const urlExists = function(theURL,callback) {
+/* - ARGH - sync vs async headaches
+  const request = require('request');
+  let myerror = 'empty';
+  request.get(theURL, (error, response, body) => {
+    if (error) {
+      myerror = false;
+    } else {
+      myerror = true;
+    }
+    return callback(myerror);
+  });
+//  return callback(myerror);
+*/
+};
+
+console.log(urlExists("http://www.google.com",(error, result) => {
+  return result;
+}));
+
+
+//
+// tinyTrack() -- use for tiny URL link tracking -- all operations done within
+// dbOperation is:
+//  addnew  - create a new tracking database entry with tinyid in db (database)
+//  delete  - delete this item from the db (tinyid)
+//  inc     - increase totalClicks with tinyid
+//  get     - pull the data and RETURN the count//
+const tinyTrack = function(db,tinyid,dbOperation) {
+
+  // force an 'addnew' to tracking db if it doesn't exist and that's not already why we're here
+  if (dbOperation !== 'addnew') {
+    if (!db[tinyid]) {
+      tinyTrack(db,tinyid,'addnew');
+    }
+  }
+
+  // INCREASE total clicks counter in db
+  if (dbOperation === 'inc') {
+    db[tinyid].totalClicks = db[tinyid].totalClicks + 1;
+  }
+
+  // GET total and return it
+  if (dbOperation === 'get') {
+    return (db[tinyid].totalClicks);
+  }
+
+  // ADD NEW tracking db entry
+  if (dbOperation === 'addnew') {
+    // initialize tracking database with new tiny URL info
+    let trackingTemplate = {
+      lid: tinyid,
+      totalClicks: 0,
+    };
+    db[tinyid] = trackingTemplate;
+  }
+  console.log("TRACKING DB ENTRY: " + JSON.stringify(db));
+};
+
+
 module.exports = {
   findUserByEmail,
   cookiesButNoMilk,
   getOpSys,
   makeServerTitle,
-}
+  urlExists,
+  tinyTrack
+};
