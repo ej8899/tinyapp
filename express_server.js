@@ -14,7 +14,8 @@ const { findUserByEmail,
   getOpSys,
   makeServerTitle,
   urlExists,
-  tinyTrack
+  tinyTrack,
+  clickTrack
 } = require('./helpers.js');
 
 const fs = require('fs');                         // file services
@@ -60,7 +61,7 @@ const usersDatabase = {
   },
 };
 
-// FUTURE USE:
+// analytics database: individual linkID and totalClicks
 const trackingDatabase = {
   // linkID and clickDate
   // linkID:,
@@ -70,6 +71,14 @@ const trackingDatabase = {
   }
 };
 
+// analytics database: click LOG
+const clickDatabase = {
+  dateStamp: {
+    lid: 12345,
+    uid: 23456,
+    dateStamp: 12345,
+  }
+};
 
 //
 // additional global variables
@@ -387,6 +396,7 @@ app.get("/u/:id", (req, res) => {
     const longURL = urlDatabase[id];
     consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
     tinyTrack(trackingDatabase,id,'inc'); // increase total click count on this tiny URL
+    clickTrack(clickDatabase, id, "blah", 'add');
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);
@@ -536,3 +546,10 @@ app.post("/logout", (req, res) => {
   consolelog(`${uid}${conColorOrange}is logged out.${conColorReset}`);
   res.render("login.ejs", { loginPage: "yes"});
 });
+
+
+/*
+module.exports = {
+  clickDatabase
+};
+*/

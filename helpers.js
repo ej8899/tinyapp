@@ -4,7 +4,7 @@
 //
 
 const { request, application } = require("express");
-
+// const { clickDatabase } = require('./express_server.js');
 //
 // additional global variables
 //
@@ -148,6 +148,29 @@ const tinyTrack = function(db,tinyid,dbOperation) {
   console.log("TRACKING DB ENTRY: " + JSON.stringify(db));
 };
 
+//
+// clickTrack()
+// this creates a LOG database of EVERY click of a tiny URL - with a tiny URL id, user ID, & datestamp.
+//
+const clickTrack = function(db, urlID, uid, action) {
+  // add a log entry
+  console.log("IN CLICK TRACK");
+  if (action === 'add') {
+    const rightNow = JSON.stringify(new Date());
+    console.log("RIGHTNOW: ", rightNow);
+
+    let newClickTrack = {
+      lid: urlID,
+      uid: uid,
+      dateStamp: rightNow,
+    };
+    db[rightNow] = newClickTrack;
+    console.log("CLICK TRACK DB: " + JSON.stringify(db));
+    console.log(JSON.stringify(newClickTrack));
+  }
+  console.log("CLICK TRACK DB: " + JSON.stringify(db));
+};
+
 
 module.exports = {
   findUserByEmail,
@@ -155,5 +178,6 @@ module.exports = {
   getOpSys,
   makeServerTitle,
   urlExists,
-  tinyTrack
+  tinyTrack,
+  clickTrack,
 };
