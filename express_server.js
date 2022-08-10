@@ -13,6 +13,8 @@ const { findUserByEmail,
   cookiesButNoMilk,
   getOpSys,
   makeServerTitle,
+  urlExists,
+  tinyTrack
 } = require('./helpers.js');
 
 const fs = require('fs');                         // file services
@@ -27,7 +29,6 @@ const PORT = 8080; // default port 8080
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser()); // OLDCOOKIES
 app.use(cookieSession({
   name: 'tinyapp',
   keys: ['this is a secret tinyapp key']
@@ -62,6 +63,11 @@ const usersDatabase = {
 // FUTURE USE:
 const trackingDatabase = {
   // linkID and clickDate
+  // linkID:,
+  "9sm5xK": {
+    lid: "9sm5xK",
+    totalClicks: 53,
+  }
 };
 
 
@@ -234,15 +240,7 @@ const isActualUser = function(userID) {
 };
 
 
-//
-// !TODO - check for valid (working/responding) URL - (FUTURE)
-//
-const urlExists = function(theURL) {
-  //
-  // !TODO - just ping the server and see if we get a response <400 - otherwise fail as a working URL
-  //
-  return true;
-};
+
 
 
 /***
@@ -349,8 +347,8 @@ app.get("/urls/:id", (req, res) => {
     return res.status(403).render("login.ejs");
   }
   let uidData = usersDatabase[uid];
-
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData};
+  const totalCount = tinyTrack(trackingDatabase,req.params.id,"get");
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount};
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
@@ -368,6 +366,9 @@ app.post("/urls", (req, res) => {
   if (req.body.longURL) {
     // !TODO - need to error check req.body.longURL before changing the database!
     urlDatabase[newTinyURL] = req.body.longURL;
+
+    tinyTrack(trackingDatabase,newTinyURL,"addnew");
+    
     consolelog(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
     return res.redirect('/urls/' + newTinyURL);
   } else {
@@ -385,6 +386,7 @@ app.get("/u/:id", (req, res) => {
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
     consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
+    tinyTrack(trackingDatabase,id,'inc'); // increase total click count on this tiny URL
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);

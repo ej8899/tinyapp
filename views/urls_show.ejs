@@ -25,6 +25,8 @@
           
         <p class="card-text">
           Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
+          <% if(locals.totalCount) { %><p>Click Through Totals: <%= totalCount %></p>
+          <% } %>
         </p>
       </div>
       <div class="card-footer text-left">

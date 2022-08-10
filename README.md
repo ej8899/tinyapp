@@ -59,6 +59,7 @@ You'll be directed to the login page.  An account is required to create and mana
     * use ```-logfile``` as starting argument
 - incorrect password sends error to user
 - trying to create duplicate accounts sends error to user
+- stretch: shows total clicks on a tiny url
 ---
 ## Future Plans:
 - dark mode
