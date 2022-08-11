@@ -73,8 +73,17 @@
       </div>
       <div class="card-body"><p class="card-text">
       <h4 class="card-title">Analytics:</h4>
-      <% if(locals.totalCount) { %><p><h5>Click Through Totals: <%= totalCount %></h5></p>
+      <% if(locals.totalCount) { %><p><h5>Click Through Totals: <%= totalCount %></h5></p><% } %>
+      <% if(locals.uniques) { %><p><h5>Unique Click Throughs: <%= uniques %></h5></p><% } %>
+      <% if(locals.moreStats) { %>
+        <table>
+        <tr><td style="padding-right:20px"><b>User:</b></td><td align=center style="padding-left:20px"><b>Clicks:</b></td></tr>
+        <% for (let anid in moreStats) { %>
+          <tr><td style="padding-right:20px"><%= anid %></td><td align=center style="padding-left:20px"><%= moreStats[anid].count %></td></tr>
         <% } %>
+      </table>
+      <% } %>
+
       <p><h4><BR>Click Through Log:</h4></p>
       <table>
         <tr><td style="padding-right:25px"><h5>Date & Time (UTC)</h5></td><td><h5>User ID of Who Clicked:</h5></td></tr>

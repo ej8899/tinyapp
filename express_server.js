@@ -252,6 +252,25 @@ const isActualUser = function(userID) {
   return false;
 };
 
+//
+//
+//
+const countUIDS = function(inputObject) {
+  let returnObject = {}, tempObject = {};
+
+  for (let item in inputObject) {
+    let tuid = inputObject[item].uid;
+    if (!returnObject[tuid]) { // if it's new, start count at 1
+      tempObject = {
+        count: 1,
+      };
+      returnObject[tuid] = tempObject;
+    } else {
+      returnObject[tuid].count += 1; // inc the count since it exists already
+    }
+  }
+  return (returnObject);
+};
 
 
 
@@ -382,7 +401,10 @@ app.get("/urls/:id", (req, res) => {
       tempClicksDatabase[makeID(8)] = templateClicks;
     }
   }
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:tempClicksDatabase};
+  let moreStats = countUIDS(tempClicksDatabase);
+  let clickUniques = Object.keys(moreStats).length;
+
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:tempClicksDatabase, uniques:clickUniques, moreStats:moreStats};
   res.render("urls_show.ejs", templateVars);
 });
 
