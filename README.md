@@ -40,7 +40,8 @@ You'll be directed to the login page.  An account is required to create and mana
 ![](image-tinylist.png)
 4) Create new tiny URLS with the "Create" option.  Simply enter the long URL, and click or tap "submit". You'll return to the tiny URLs list (above) and see your new link added to the list!
 ![](image-createfirst.png)
-5) Update and modify tiny URL destinations through a dedicated update page.  You can also review link analytics on this page such as total click throughs, and review the log file which includes the dates and times of when the tiny URL was clicked. 
+5) Update and modify tiny URL destinations through a dedicated update page.  
+You can also review link analytics on this page such as total click throughs, unique click throughs by users.  Additionally, the complete log of clicks, which includes the dates and times of when the tiny URL was clicked, is available too! 
 ![](image-createtinyurl.png)
 [back to top](#about)
 ----
