@@ -365,17 +365,24 @@ app.get("/urls/:id", (req, res) => {
   // need to parse our clickDatabase and rebuild for this tinyURL id ONLY
   let tempClicksDatabase = {};
   let templateClicks = {};
-  for (let item in clickDatabase) {
-    if (clickDatabase[item].lid === req.params.id) {
-      templateClicks = {
+  let theusertype;
+
+  for (let item in clickDatabase) {                       // loop thru click database
+    if (clickDatabase[item].lid === req.params.id) {      // filter matching tiny url items
+      if (clickDatabase[item].uid.length === 6) {          // is the user registered or not
+        theusertype = '\u0020\u0020(Registered user)';
+      } else {
+        theusertype = '(Unregistered user)';
+      }
+      templateClicks = {                                  // build temp database of clicks for this tiny url id
         uid: clickDatabase[item].uid,
         dateStamp: clickDatabase[item].dateStamp,
+        userType: theusertype,
       };
       tempClicksDatabase[makeID(8)] = templateClicks;
     }
   }
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:tempClicksDatabase};
-  // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
 
@@ -408,12 +415,22 @@ app.post("/urls", (req, res) => {
 // REDIRECT to the longURL
 //
 app.get("/u/:id", (req, res) => {
+  cookieName(req);
+
   let id = req.params.id;
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
     consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
     tinyTrack(trackingDatabase,id,'inc'); // increase total click count on this tiny URL
-    clickTrack(clickDatabase, id, makeID(18), 'add');  // !TODO - change makeID(18) to ACTUAL user id if exists
+
+    let tempuid;
+    if (uid === "" || uid === "nobody") {
+      tempuid = makeID(8);
+      cookieName(req,"set",tempuid); // set a cookie for unregistered users too!
+    } else {
+      tempuid = uid;
+    }
+    clickTrack(clickDatabase, id, tempuid, 'add');  // !TODO - change makeID(18) to ACTUAL user id if exists
     res.redirect(longURL);
   } else {
     consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);

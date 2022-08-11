@@ -79,7 +79,7 @@
       <table>
         <tr><td style="padding-right:25px"><h5>Date & Time (UTC)</h5></td><td><h5>User ID of Who Clicked:</h5></td></tr>
       <% for (let id in logs) { %>
-        <tr><td style="padding-right:25px"><%= logs[id].dateStamp %></td><td><%= logs[id].uid %></td></tr>
+        <tr><td style="padding-right:25px"><%= logs[id].dateStamp %></td><td><%= logs[id].uid %>&nbsp;<%= logs[id].userType %></td></tr>
       <% } %>
     </table>
     </p>
