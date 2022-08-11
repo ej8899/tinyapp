@@ -93,6 +93,8 @@ const conColorCyan = "\x1b[36m", conColorRed = '\x1b[31m', conColorGreen = '\x1b
 const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
 
 
+
+
 //
 // SETUP ADDITIONAL HELPER FUNCTIONS:
 //  also see helpers.js for more
@@ -274,7 +276,6 @@ const countUIDS = function(inputObject) {
 
 
 
-
 /***
  *     _______  _______  _______  ______    _______
  *    |       ||       ||   _   ||    _ |  |       |
@@ -384,7 +385,7 @@ app.get("/urls/:id", (req, res) => {
   // need to parse our clickDatabase and rebuild for this tinyURL id ONLY
   let tempClicksDatabase = {};
   let templateClicks = {};
-  let theusertype;
+  let theusertype = '', graphArray = [], graphDataItem = {}, graphStats = {};
 
   for (let item in clickDatabase) {                       // loop thru click database
     if (clickDatabase[item].lid === req.params.id) {      // filter matching tiny url items
@@ -399,12 +400,38 @@ app.get("/urls/:id", (req, res) => {
         userType: theusertype,
       };
       tempClicksDatabase[makeID(8)] = templateClicks;
+
+      // ASSEMBLE GRAPH DATA:
+      let clickDate = new Date(clickDatabase[item].dateStamp);
+      let theHour = clickDate.getHours();
+      let thehourString = (`0${theHour}`).slice(-2);
+      if (!graphStats[thehourString]) {
+        graphStats[thehourString] = 1;
+      } else {
+        graphStats[thehourString] += 1;
+      }
+      //console.log("FULLDATE:",clickDatabase[])
+      //console.log("HOUR INT:",theHour);
+      //console.log("HOUR STRING:", thehourString);
+      console.log("GRAPH STATS: ",graphStats);
     }
   }
   let moreStats = countUIDS(tempClicksDatabase);
   let clickUniques = Object.keys(moreStats).length;
 
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:tempClicksDatabase, uniques:clickUniques, moreStats:moreStats};
+  // CONVERT GRAPH DATA:
+  let newgraphObj = {};
+  for (let item in graphStats) {
+    console.log("GRAPHSTATS.item",graphStats[item]); // thisis the count
+    console.log("ITEM:",item)
+    newgraphObj[item] = graphStats[item];
+
+    graphArray.push(newgraphObj);
+  }
+  
+  console.log("GRAPH ARRAY:",graphArray);
+
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:tempClicksDatabase, uniques:clickUniques, moreStats:moreStats, graphStats:graphStats};
   res.render("urls_show.ejs", templateVars);
 });
 
