@@ -68,7 +68,11 @@ const trackingDatabase = {
   "9sm5xK": {
     lid: "9sm5xK",
     totalClicks: 53,
-  }
+  },
+  "b2xVn2": {
+    lid: "b2xVn2",
+    totalClicks: 79,
+  },
 };
 
 // analytics database: click LOG
@@ -296,7 +300,7 @@ app.get("/urls", (req, res) => {
     res.render("login.ejs", {loginPage: "yes"});
   } else {
     consolelog(uid + ": in the user database is: " + JSON.stringify(uidData));
-    const templateVars = { urls: urlDatabase, user: uidData};
+    const templateVars = { urls: urlDatabase, user: uidData, tracking: trackingDatabase};
     res.render("urls_index.ejs", templateVars);
   }
 });

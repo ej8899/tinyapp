@@ -60,6 +60,7 @@ You'll be directed to the login page.  An account is required to create and mana
 - incorrect password sends error to user
 - trying to create duplicate accounts sends error to user
 - _stretch_: shows total clicks on a tiny url (in edit page)
+- _stretch_: create click through log for each tiny URL
 ---
 ## Future Plans:
 - dark mode
