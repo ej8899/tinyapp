@@ -90,7 +90,25 @@
       <% for (let id in logs) { %>
         <tr><td style="padding-right:25px"><%= logs[id].dateStamp %></td><td><%= logs[id].uid %>&nbsp;<%= logs[id].userType %></td></tr>
       <% } %>
+      <tr><td colspan=2 align="right">
+<!-- NOT YET ACTIVE - FUTURE USE ONLY-->
+<nav aria-label="...">
+  <ul class="pagination pagination-sm">
+    <li class="page-item disabled">
+      <span class="page-link">Previous</span>
+    </li>
+    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item disabled"><a class="page-link" href="#">3</a></li>
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+      </td></tr>
     </table>
+    
+
     </p>
     </div>
     <!-- Bootstrap JS -->

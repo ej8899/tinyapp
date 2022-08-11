@@ -70,6 +70,7 @@ You can also review link analytics on this page such as total click throughs, un
 - add password reset to login page
 - multiple tiny url selection for bulk delete
 - enable copy URL icon in Tiny URL Info page
+- paginate click through logs
 ---
 ## Attributes:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
