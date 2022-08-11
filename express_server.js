@@ -361,7 +361,20 @@ app.get("/urls/:id", (req, res) => {
   }
   let uidData = usersDatabase[uid];
   const totalCount = tinyTrack(trackingDatabase,req.params.id,"get");
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:clickDatabase};
+  
+  // need to parse our clickDatabase and rebuild for this tinyURL id ONLY
+  let tempClicksDatabase = {};
+  let templateClicks = {};
+  for (let item in clickDatabase) {
+    if (clickDatabase[item].lid === req.params.id) {
+      templateClicks = {
+        uid: clickDatabase[item].uid,
+        dateStamp: clickDatabase[item].dateStamp,
+      };
+      tempClicksDatabase[makeID(8)] = templateClicks;
+    }
+  }
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: uidData, totalCount, logs:tempClicksDatabase};
   // <%= urls[id] %>
   res.render("urls_show.ejs", templateVars);
 });
