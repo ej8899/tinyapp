@@ -11,13 +11,40 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
   
 ---
 ## Contents:
-1. [Quick Start](#quick-start)
-2. [Detailed Operation](#detailed-operation)
-3. [Features](#features)
-4. [Extra Features](#extra-features)
-5. [Future Plans](#future-plans)
+1. [Features](#features)
+2. [Extra Features](#extra-features)
+3. [Future Plans](#future-plans)
+4. [Quick Start](#quick-start)
+5. [Detailed Operation](#detailed-operation)
 6. [Attributions](#attributes)
 7. [Updates](#updates)
+---
+## Features:
+- free service
+- secure
+- easy to use
+- allows for multiple tiny links to the same long URL
+- analytics including hourly click thru chart
+---
+## Extra Features:
+- hide menu bar if not logged in
+- "quiet" mode to silence server-side feedback
+    * use ```-quiet``` as starting argument
+- optional log file generation:  
+    * use ```-logfile``` as starting argument
+- incorrect password sends error to user
+- trying to create duplicate accounts sends error to user
+- _stretch_: shows total clicks on a tiny url (in edit page)
+- _stretch_: create click through log for each tiny URL
+---
+## Future Plans:
+- dark mode
+- link analytics
+- customizable tiny url
+- add password reset to login page
+- multiple tiny url selection for bulk delete
+- enable copy URL icon in Tiny URL Info page
+- paginate click through logs
 ---
 ---
 ## Quick Start:
@@ -45,33 +72,6 @@ You can also review link analytics on this page such as total click throughs, un
 ![](image-createtinyurl.png)
 [back to top](#about)
 ----
-## Features:
-- free service
-- secure
-- easy to use
-- allows for multiple tiny links to the same long URL
-
----
-## Extra Features:
-- hide menu bar if not logged in
-- "quiet" mode to silence server-side feedback
-    * use ```-quiet``` as starting argument
-- optional log file generation:  
-    * use ```-logfile``` as starting argument
-- incorrect password sends error to user
-- trying to create duplicate accounts sends error to user
-- _stretch_: shows total clicks on a tiny url (in edit page)
-- _stretch_: create click through log for each tiny URL
----
-## Future Plans:
-- dark mode
-- link analytics
-- customizable tiny url
-- add password reset to login page
-- multiple tiny url selection for bulk delete
-- enable copy URL icon in Tiny URL Info page
-- paginate click through logs
----
 ## Attributes:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
 - css styling, in part, by <a href="https://getbootstrap.com">Bootstrap</a>
