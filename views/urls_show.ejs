@@ -94,7 +94,7 @@
       </table>
       <% } %>
 
-      <p><h4><BR>Click Through Log:</h4></p>
+      <p><h3><BR>Click Through Log:</h3></p>
       <table>
         <tr><td style="padding-right:25px"><h5>Date & Time (UTC)</h5></td><td><h5>User ID of Who Clicked:</h5></td></tr>
       <% for (let id in logs) { %>
@@ -148,11 +148,17 @@
     barColors: ['#2A8120'],
     // Chart data records -- each entry in this array corresponds to a point on
     // the chart.
-    
+    /*
+  {hour: 07: value: 3},
+     
+      */
+
     data: [
+
     <% for (let id in graphStats) { %>
         { hour: <%= id %>, value:<%= graphStats[id] %> },
       <% } %>
+     
     ],
     // The name of the data record attribute that contains x-values.
     xkey: 'hour',

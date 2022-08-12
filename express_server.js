@@ -423,7 +423,7 @@ app.get("/urls/:id", (req, res) => {
   let newgraphObj = {};
   for (let item in graphStats) {
     console.log("GRAPHSTATS.item",graphStats[item]); // thisis the count
-    console.log("ITEM:",item)
+    console.log("ITEM:",item);
     newgraphObj[item] = graphStats[item];
 
     graphArray.push(newgraphObj);

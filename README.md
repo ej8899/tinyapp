@@ -24,7 +24,8 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - secure
 - easy to use
 - allows for multiple tiny links to the same long URL
-- analytics including hourly click thru chart
+- analytics including hourly click thru chart  
+[( back to top )](#about)
 ---
 ## Extra Features:
 - hide menu bar if not logged in
@@ -32,20 +33,23 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
     * use ```-quiet``` as starting argument
 - optional log file generation:  
     * use ```-logfile``` as starting argument
+- chain input arguments such as:
+    * ```-quiet -logfile``` to quiet server visual feedback, but create log file instead
 - incorrect password sends error to user
 - trying to create duplicate accounts sends error to user
 - _stretch_: shows total clicks on a tiny url (in edit page)
-- _stretch_: create click through log for each tiny URL
+- _stretch_: create click through log for each tiny URL  
+[( back to top )](#about)
 ---
 ## Future Plans:
 - dark mode
-- link analytics
+- additional link analytics
 - customizable tiny url
 - add password reset to login page
 - multiple tiny url selection for bulk delete
 - enable copy URL icon in Tiny URL Info page
-- paginate click through logs
----
+- paginate click through logs  
+[( back to top )](#about)
 ---
 ## Quick Start:
 1) start the TinyApp Server in your terminal with  
@@ -55,6 +59,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
   -you can also use ```-logfile```  to create a server log file
 2) start the web app in your browser with  
 ```localhost:8080/```  
+[( back to top )](#about)
 ---
 ## Detailed Operation:
 1) start the server as mentioned in quick start.  
@@ -70,9 +75,9 @@ You'll be directed to the login page.  An account is required to create and mana
 5) Update and modify tiny URL destinations through a dedicated update page.  
 You can also review link analytics on this page such as total click throughs, unique click throughs by users.  Additionally, the complete log of clicks, which includes the dates and times of when the tiny URL was clicked, is available too! 
 ![](image-createtinyurl.png)
-[back to top](#about)
+[( back to top) ](#about)
 ----
-## Attributes:
+## Attributions:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
 - css styling, in part, by <a href="https://getbootstrap.com">Bootstrap</a>
 ---
@@ -83,4 +88,4 @@ You can also review link analytics on this page such as total click throughs, un
     - add encrypted cookies
 
 ---
-[back to top](#about)
+[( back to top )](#about)
