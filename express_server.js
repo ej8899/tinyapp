@@ -10,6 +10,7 @@
 // REQUIRES & INCLUDES
 //
 const { conColor,
+  myDateObject,
   findUserByEmail,
   cookiesButNoMilk,
   getOpSys,
@@ -41,9 +42,12 @@ app.use(cookieSession({
 //
 // GLOBAL variables necessary to CORE functionality
 //
-
 let uid = ""; // for cookie tracking across all functionality
 
+
+//
+// GLOBAL database variables
+//
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -115,25 +119,17 @@ const consolelog = function(inputText,override) {
     console.log(' ');
     return;
   }
-  // helper for date function to 0 pad
-  const IntTwoChars = (i) => {
-    return (`0${i}`).slice(-2);
-  };
-
+  
   if (createFile === "yes") {
-    const dateObject = new Date();
-    let date = IntTwoChars(dateObject.getDate());
-    let month = IntTwoChars(dateObject.getMonth() + 1);
-    let year = dateObject.getFullYear();
-    let hours = IntTwoChars(dateObject.getHours());
-    let minutes = IntTwoChars(dateObject.getMinutes());
-    let seconds = IntTwoChars(dateObject.getSeconds());
     let strippedText = inputText.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, ''); // clear escape codes
     strippedText = strippedText.replace(/(\r\n|\n|\r)/gm, ""); // clear newlines (we'll use our own for server log)
-    const logfileText = '\r\n' + year + '-' + month + '-' + date + ' - ' + hours + ':' + minutes + ':' + seconds + ' - ' + strippedText;
+    let logDate = myDateObject.justDate();
+    let logTime = myDateObject.justTime();
+    const logfileText = '\r\n' + logDate + ' - ' + logTime + ' - ' + strippedText;
+
     const logfileMaxSize = 50000;
     fs.stat('tinyapp.log',(err,stats) => {
-      if (err) { 
+      if (err) {
         // do nothing if error - hopefully just file not exist
       } else {
         if (stats.size > logfileMaxSize) {
@@ -394,17 +390,12 @@ app.get("/urls/:id", (req, res) => {
       tempClicksDatabase[makeID(8)] = templateClicks;
 
       // ASSEMBLE GRAPH DATA:
-      let clickDate = new Date(clickDatabase[item].dateStamp);
-      let theHour = clickDate.getHours();
-      let thehourString = (`0${theHour}`).slice(-2);
-      if (!graphStats[thehourString]) {
-        graphStats[thehourString] = 1;
+      let theHour = myDateObject.hours(clickDatabase[item].dateStamp);
+      if (!graphStats[theHour]) {
+        graphStats[theHour] = 1;
       } else {
-        graphStats[thehourString] += 1;
+        graphStats[theHour] += 1;
       }
-      //console.log("FULLDATE:",clickDatabase[])
-      //console.log("HOUR INT:",theHour);
-      //console.log("HOUR STRING:", thehourString);
       console.log("GRAPH STATS: ",graphStats);
     }
   }

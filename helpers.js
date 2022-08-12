@@ -12,24 +12,70 @@ const { request, application } = require("express");
 
 // Global Variable Color List
 // Colors object from https://github.com/ej8899/conColors
-const conColor = {
-  cyan : "\x1b[36m",
-  red : '\x1b[31m',
-  green : '\x1b[92m',
-  green1 : '\x1b[32m',
-  grey : '\x1b[90m',
-  reset : "\x1b[0m",
+const conColor = { cyan    : "\x1b[36m",
+  red     : '\x1b[31m',
+  green   : '\x1b[92m',
+  green1  : '\x1b[32m',
+  grey    : '\x1b[90m',
+  reset   : "\x1b[0m",
   magenta : `\x1b[95m`,
-  orange : "\u001b[38;5;208m",
-  yellow : '\x1b[93m',
-  blue : '\x1b[34m',
-  black : '\x1b[30m',
-  purple : '\x1b[35m',
-  brown : '\x1b[33m',
-  bright : "\x1b[1m",
-  dim : "\x1b[2m",
+  orange  : "\u001b[38;5;208m",
+  yellow  : '\x1b[93m',
+  blue    : '\x1b[34m',
+  black   : '\x1b[30m',
+  purple  : '\x1b[35m',
+  brown   : '\x1b[33m',
+  bright  : "\x1b[1m",
+  dim     : "\x1b[2m",
   italics : "\x1b[3m",
   reverse : "\x1b[7m",
+};
+
+
+//
+// myDateObject - date object to provide quick access to formatted date and times
+// v1.0 2022-08-11
+// grab the latest version of my date object here: https://github.com/ej8899/conColors 
+//
+const myDateObject = {
+  // return "right now" if nothing supplied, otherwise return object of supplied date info
+  dateObject(aDate) {
+    if (!aDate) {
+      return new Date();
+    } else {
+      return new Date(aDate);
+    }
+  },
+
+  // padding of single digits to double digits
+  datePad(i) {
+    return (`0${i}`).slice(-2);
+  },
+
+  // date functions
+  date(aDate) { return (this.datePad(this.dateObject(aDate).getDate())); },
+  month(aDate) { return (this.datePad(this.dateObject(aDate).getMonth() + 1)); },
+  year(aDate) { return (this.dateObject(aDate).getFullYear()); },
+  weekday(aDate) { return (this.dateObject(aDate).toLocaleString("en-US", { weekday: "long" })); },
+  monthEnglish(aDate) { return (this.dateObject(aDate).toLocaleString("en-US", { month: "long" })); },
+
+  // time functions
+  hours(aDate) { return (this.datePad(this.dateObject(aDate).getHours())); },
+  minutes(aDate) { return (this.datePad(this.dateObject(aDate).getMinutes())); },
+  seconds(aDate) { return (this.datePad(this.dateObject(aDate).getSeconds())); },
+  milliseconds(aDate) { return (this.dateObject(aDate).getTime()); },
+
+  // combinations
+  dateFull(divider, aDate) { if (!divider) { divider = ':'; } return (this.justDate(aDate) + ' ' + this.justHHMM(aDate)); },
+  justAMPM(divider, aDate) {
+    if (!divider) { divider = ':'; } let h = '', s = '';
+    this.hours(aDate) > 13 ? (h = this.hours(aDate) - 12, s = 'pm') : (h = this.hours(aDate), s = 'am');
+    return (`${h}${divider}${this.minutes(aDate)}${s}`);
+  },
+  justHHMM(divider, aDate) { if (!divider) { divider = ':'; } return (`${this.hours(aDate)}${divider}${this.minutes(aDate)}`); },
+  justDate(divider, aDate) { if (!divider) { divider = '-'; } return (`${this.year(aDate)}${divider}${this.month(aDate)}${divider}${this.date(aDate)}`); },
+  justTime(divider, aDate) { if (!divider) { divider = ':'; } return (`${this.hours(aDate)}${divider}${this.minutes(aDate)}${divider}${this.seconds(aDate)}`); },
+  fullEnglishDate(aDate) { return (`${this.weekday(aDate)}, ${this.monthEnglish(aDate)} ${this.date(aDate)}, ${this.year(aDate)}`) },
 };
 
 //
@@ -88,7 +134,7 @@ const getOpSys = function() {
 const makeServerTitle = function() {
   let m = conColor.magenta + conColor.bright, c = conColor.cyan + conColor.dim, o = conColor.orange + conColor.bright;
   const consoleLine = '-'.repeat(43);
-  console.log(`\n\n  ${m} _    _                  ${c}_                 ${conColor.reset}`);
+  console.log(`  ${m} _    _                  ${c}_                 ${conColor.reset}`);
   console.log(`  ${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColor.reset}`);
   console.log(`  ${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColor.reset}`);
   console.log(`  ${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColor.reset}`);
@@ -108,24 +154,9 @@ const makeServerTitle = function() {
 // return true if yes and ok, false if error code of 400 or >
 //
 const urlExists = function(theURL,callback) {
-/* - ARGH - sync vs async headaches
-  const request = require('request');
-  let myerror = 'empty';
-  request.get(theURL, (error, response, body) => {
-    if (error) {
-      myerror = false;
-    } else {
-      myerror = true;
-    }
-    return callback(myerror);
-  });
-//  return callback(myerror);
-*/
+  return true;
 };
 
-console.log(urlExists("http://www.google.com",(error, result) => {
-  return result;
-}));
 
 
 //
@@ -190,9 +221,9 @@ const clickTrack = function(db, urlID, uid, action) {
   console.log("CLICK TRACK DB: " + JSON.stringify(db));
 };
 
-
 module.exports = {
   conColor,
+  myDateObject,
   findUserByEmail,
   cookiesButNoMilk,
   getOpSys,
