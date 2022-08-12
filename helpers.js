@@ -4,15 +4,33 @@
 //
 
 const { request, application } = require("express");
-// const { clickDatabase } = require('./express_server.js');
+
+
 //
 // additional global variables
 //
-const conColorCyan = "\x1b[36m", conColorRed = '\x1b[31m', conColorGreen = '\x1b[92m',
-  conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
-  conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
-const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
 
+// Global Variable Color List
+// Colors object from https://github.com/ej8899/conColors
+const conColor = {
+  cyan : "\x1b[36m",
+  red : '\x1b[31m',
+  green : '\x1b[92m',
+  green1 : '\x1b[32m',
+  grey : '\x1b[90m',
+  reset : "\x1b[0m",
+  magenta : `\x1b[95m`,
+  orange : "\u001b[38;5;208m",
+  yellow : '\x1b[93m',
+  blue : '\x1b[34m',
+  black : '\x1b[30m',
+  purple : '\x1b[35m',
+  brown : '\x1b[33m',
+  bright : "\x1b[1m",
+  dim : "\x1b[2m",
+  italics : "\x1b[3m",
+  reverse : "\x1b[7m",
+};
 
 //
 // Search our users database by email address for match.  REturn fALSE if no match, or UID if a match
@@ -60,7 +78,7 @@ const getOpSys = function() {
   } else if (opsys === "linux") {
     opsys = "Linux";
   }
-  opsys = conColorBright + conColorOrange + opsys + conColorReset;
+  opsys = conColor.bright + conColor.orange + opsys + conColor.reset;
   return opsys;
 };
 
@@ -68,20 +86,20 @@ const getOpSys = function() {
 // create server title ascii art
 //
 const makeServerTitle = function() {
-  let m = conColorMagenta + conColorBright, c = conColorCyan + conColorDim, o = conColorOrange + conColorBright;
+  let m = conColor.magenta + conColor.bright, c = conColor.cyan + conColor.dim, o = conColor.orange + conColor.bright;
   const consoleLine = '-'.repeat(43);
-  console.log(`\n\n  ${m} _    _                  ${c}_                 ${conColorReset}`);
-  console.log(`  ${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColorReset}`);
-  console.log(`  ${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColorReset}`);
-  console.log(`  ${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColorReset}`);
-  console.log(`   ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColorReset}`);
-  console.log(`   ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColorReset}`);
+  console.log(`\n\n  ${m} _    _                  ${c}_                 ${conColor.reset}`);
+  console.log(`  ${m}| |_ (_) _ __   _   _   ${c}/_\\   _ __   _ __  ${conColor.reset}`);
+  console.log(`  ${m}| __|| || '_ \\ | | | | ${c}//_\\\\ | '_ \\ | '_ \\ ${conColor.reset}`);
+  console.log(`  ${m}| |_ | || | | || |_| |${c}/  _  \\| |_) || |_) |${conColor.reset}`);
+  console.log(`   ${m}\\__||_||_| |_| \\__, |${c}\\_/ \\_/| .__/ | .__/ ${conColor.reset}`);
+  console.log(`   ${o}__             ${m}|___/        ${c}|_|    |_|    ${conColor.reset}`);
   console.log(`  ${o}/ _\\  ___  _ __ __   __ ___  _ __          `);
   console.log(`  \\ \\  / _ \\| '__|\\ \\ / // _ \\| '__|         `);
   console.log(`  _\\ \\|  __/| |    \\ V /|  __/| |            `);
   console.log(`  \\__/ \\___||_|     \\_/  \\___||_|            `);
-  console.log(conColorYellow +  conColorDim + '  ' + consoleLine);
-  console.log(conColorReset);
+  console.log(conColor.yellow +  conColor.dim + '  ' + consoleLine);
+  console.log(conColor.reset);
 };
 
 //
@@ -174,6 +192,7 @@ const clickTrack = function(db, urlID, uid, action) {
 
 
 module.exports = {
+  conColor,
   findUserByEmail,
   cookiesButNoMilk,
   getOpSys,

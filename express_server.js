@@ -9,7 +9,8 @@
 //
 // REQUIRES & INCLUDES
 //
-const { findUserByEmail,
+const { conColor,
+  findUserByEmail,
   cookiesButNoMilk,
   getOpSys,
   makeServerTitle,
@@ -83,15 +84,6 @@ const clickDatabase = {
   //   dateStamp: 12345,
   // }
 };
-
-//
-// additional global variables
-//
-const conColorCyan = "\x1b[36m", conColorRed = '\x1b[31m', conColorGreen = '\x1b[92m',
-  conColorGrey = '\x1b[90m', conColorReset = "\x1b[0m", conColorMagenta = `\x1b[95m`,
-  conColorOrange = "\u001b[38;5;208m", conColorYellow = '\x1b[93m';
-const conColorBright = "\x1b[1m", conColorDim = "\x1b[2m", conColorReverse = "\x1b[7m";
-
 
 
 
@@ -217,10 +209,10 @@ const cookieName = function(req,operation,cookieData) {
     uid = req.session.euid; // this is via SECURE COOKIES
     if (!uid) {
       uid = "nobody"; // use "nobody" as a monitoring system for bad logins
-      consolelog(`\n$"${conColorGreen}nobody${conColorRed}" is trying to access the system!${conColorReset}\n`);
+      consolelog(`\n$"${conColor.green}nobody${conColor.red}" is trying to access the system!${conColor.reset}\n`);
       return uid;
     }
-    consolelog(uid + " says " + conColorGreen + cookiesButNoMilk() + conColorReset);
+    consolelog(uid + " says " + conColor.green + cookiesButNoMilk() + conColor.reset);
     return uid;
   }
   consolelog("BAD cookie data in cookieName()");
@@ -234,10 +226,10 @@ const cookieName = function(req,operation,cookieData) {
 const validateUser = function(userID, suppliedPassword) {
   // if (usersDatabase[userID].password === suppliedPassword) { // old w/o bcrypt
   if (bcrypt.compareSync(suppliedPassword,usersDatabase[userID].password)) { // bcrypt.compareSync returns true or false
-    consolelog(userID + ` entered ${conColorRed}correct password!${conColorReset}`);
+    consolelog(userID + ` entered ${conColor.red}correct password!${conColor.reset}`);
     return userID;
   } else {
-    consolelog(userID + ` Password didn't match!  ${conColorGreen}Hopefully it's not a hacker at our door!${conColorReset}`);
+    consolelog(userID + ` Password didn't match!  ${conColor.green}Hopefully it's not a hacker at our door!${conColor.reset}`);
     return null;
   }
 };
@@ -292,13 +284,13 @@ makeServerTitle();
 // setup the listener
 //
 app.listen(PORT, () => {
-  console.log(`  ${conColorGreen}TinyApp server is now listening on port ${conColorOrange}${PORT}${conColorGreen}!${conColorReset}`);
+  console.log(`  ${conColor.green}TinyApp server is now listening on port ${conColor.orange}${PORT}${conColor.green}!${conColor.reset}`);
   if (process.argv[2] === '-quiet') {
-    consolelog(`  ${conColorOrange}${conColorDim}(( Server is running in silent mode. ))${conColorReset}`,true);
+    consolelog(`  ${conColor.orange}${conColor.dim}(( Server is running in silent mode. ))${conColor.reset}`,true);
   }
-  consolelog(`  ${conColorDim}(Don't forget to gently, but firmly press ${conColorGreen}ctrl-c${conColorReset}${conColorDim} when you need to exit the server!)${conColorReset}`);
-  consolelog(`  ${conColorDim}And yes... that even works for you ${getOpSys()} ${conColorDim}users!${conColorReset}\n`);
-  consolelog(`  Oh, and use ${conColorYellow}express_server.js ${conColorMagenta}-quiet${conColorReset} to run the server in silent mode!\n`);
+  consolelog(`  ${conColor.dim}(Don't forget to gently, but firmly press ${conColor.green}ctrl-c${conColor.reset}${conColor.dim} when you need to exit the server!)${conColor.reset}`);
+  consolelog(`  ${conColor.dim}And yes... that even works for you ${getOpSys()} ${conColor.dim}users!${conColor.reset}\n`);
+  consolelog(`  Oh, and use ${conColor.yellow}express_server.js ${conColor.magenta}-quiet${conColor.reset} to run the server in silent mode!\n`);
 });
 
 //
@@ -351,7 +343,7 @@ app.post("/urls/:id/delete", (req, res) => {
   if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
-  consolelog(`\n${req.params.id} - ${conColorGreen}It's been ${conColorRed}nuked, ${conColorOrange}deleted, ${conColorYellow}wiped out, ${conColorCyan}obliterated & ${conColorMagenta}eliminated,${conColorGreen} boss!\n`);
+  consolelog(`\n${req.params.id} - ${conColor.green}It's been ${conColor.red}nuked, ${conColor.orange}deleted, ${conColor.yellow}wiped out, ${conColor.cyan}obliterated & ${conColor.magenta}eliminated,${conColor.green} boss!\n`);
   delete urlDatabase[req.params.id];
   return res.redirect('/urls/');
 });
@@ -451,10 +443,10 @@ app.post("/urls", (req, res) => {
 
     tinyTrack(trackingDatabase,newTinyURL,"addnew");
     
-    consolelog(`${conColorMagenta}Oh look!  New tiny URLs to play with!${conColorReset}`);
+    consolelog(`${conColor.magenta}Oh look!  New tiny URLs to play with!${conColor.reset}`);
     return res.redirect('/urls/' + newTinyURL);
   } else {
-    consolelog(conColorRed + "Looks like someone forgot something along the way!" + conColorReset);
+    consolelog(conColor.red + "Looks like someone forgot something along the way!" + conColor.reset);
     return res.redirect('/urls/');
   }
 });
@@ -469,7 +461,7 @@ app.get("/u/:id", (req, res) => {
   let id = req.params.id;
   if (id !== 'undefined') {
     const longURL = urlDatabase[id];
-    consolelog(`${conColorOrange}Redirected to ${conColorGreen}${longURL}${conColorReset}`);
+    consolelog(`${conColor.orange}Redirected to ${conColor.green}${longURL}${conColor.reset}`);
     tinyTrack(trackingDatabase,id,'inc'); // increase total click count on this tiny URL
 
     let tempuid;
@@ -482,7 +474,7 @@ app.get("/u/:id", (req, res) => {
     clickTrack(clickDatabase, id, tempuid, 'add');  // !TODO - change makeID(18) to ACTUAL user id if exists
     res.redirect(longURL);
   } else {
-    consolelog(`${conColorYellow}oops -  ${conColorRed}undefined${conColorYellow} isn't a valid destination${conColorReset}\n`);
+    consolelog(`${conColor.yellow}oops -  ${conColor.red}undefined${conColor.yellow} isn't a valid destination${conColor.reset}\n`);
     return res.status(404).render("url_notfound.ejs");
     // return res.redirect('/urls/');
   }
@@ -498,7 +490,7 @@ app.get("/register", (req, res) => {
     return res.redirect('/urls/');
   }
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
-  consolelog(`${conColorGreen}New user visiting the login page.${conColorReset}`);
+  consolelog(`${conColor.green}New user visiting the login page.${conColor.reset}`);
   res.render("newuser.ejs", templateVars);
 });
 
@@ -511,7 +503,7 @@ app.get("/login", (req, res) => {
     return res.redirect('/urls/');
   }
   const templateVars = { urls: urlDatabase, loginPage: "yes"};
-  consolelog(`${conColorGreen}This user needs to get ${conColorCyan}signed in ${conColorGreen} before they can do anything!${conColorReset}`);
+  consolelog(`${conColor.green}This user needs to get ${conColor.cyan}signed in ${conColor.green} before they can do anything!${conColor.reset}`);
 
   cookieName(req,"clear");
   res.render("login.ejs", templateVars);
@@ -523,7 +515,7 @@ app.get("/login", (req, res) => {
 app.get("/logout", (req, res) => {
   consolelog();
   cookieName(req,"clear");
-  consolelog(`${uid}${conColorOrange} Has logged out.${conColorReset}`);
+  consolelog(`${uid}${conColor.orange} Has logged out.${conColor.reset}`);
   const templateVars = { loginPage: "yes"};
   return res.render('login.ejs', templateVars);
 });
@@ -545,7 +537,7 @@ app.post("/register", (req,res) => {
   //
   // DEBUG - this is for login testing only to 'remind' testers of the passwords
   //
-  consolelog(conColorGreen + "\nLet's have a look at that user database, shall we?!? \n" + conColorYellow + JSON.stringify(usersDatabase) + conColorReset + '\n'); // DEBUG
+  consolelog(conColor.green + "\nLet's have a look at that user database, shall we?!? \n" + conColor.yellow + JSON.stringify(usersDatabase) + conColor.reset + '\n'); // DEBUG
 
   // CHECK to ensure user entered an email address for account name - boot back to register if not and give message
   if (!req.body.email) {
@@ -587,9 +579,9 @@ app.post("/login", (req, res) => {
   cookieName(req,"set","");
   consolelog();
   if (req.body.email) {
-    consolelog(`${conColorMagenta}${req.body.email}${conColorOrange} - welcome to TinyApp!${conColorReset}`);
+    consolelog(`${conColor.magenta}${req.body.email}${conColor.orange} - welcome to TinyApp!${conColor.reset}`);
   } else {
-    consolelog(`${conColorYellow}User forgot to enter email on login.${conColorReset}`);
+    consolelog(`${conColor.yellow}User forgot to enter email on login.${conColor.reset}`);
   }
 
   // check to see if user exists
@@ -626,7 +618,7 @@ app.post("/logout", (req, res) => {
   consolelog();
   cookieName(res,"clear");
   //cookieName(req,"set","");
-  consolelog(`${uid}${conColorOrange}is logged out.${conColorReset}`);
+  consolelog(`${uid}${conColor.orange}is logged out.${conColor.reset}`);
   res.render("login.ejs", { loginPage: "yes"});
 });
 

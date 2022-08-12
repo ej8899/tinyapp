@@ -80,6 +80,7 @@ You can also review link analytics on this page such as total click throughs, un
 ## Attributions:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
 - css styling, in part, by <a href="https://getbootstrap.com">Bootstrap</a>
+- misc JS libraries by <a href="http://www.github.com/ej8899">ej-dev conColors(github)</a>
 ---
 ## Updates:
 - Get the most recent version of TinyApp! [here](https://github.com/ej8899/tinyapp).
