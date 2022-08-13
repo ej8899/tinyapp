@@ -48,7 +48,6 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - customizable tiny url
 - add password reset to login page
 - multiple tiny url selection for bulk delete
-- enable copy URL icon in Tiny URL Info page
 - paginate click through logs  
 [( back to top )](#about)
 ---
