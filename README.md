@@ -49,6 +49,8 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - add password reset to login page
 - multiple tiny url selection for bulk delete
 - paginate click through logs  
+- allow main URL page sorting - by date added, long url alphabetical, # of clicks, etc
+- track hackers - if registered users try to manipulate other owner ID's, track & block them by email & IP.
 [( back to top )](#about)
 ---
 ## Quick Start:
