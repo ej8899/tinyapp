@@ -14,7 +14,7 @@ const { request, application } = require("express");
 // Global Variable Color List
 // Colors object from https://github.com/ej8899/conColors
 //
-const conColor = { 
+const conColor = {
   cyan    : "\x1b[36m",
   red     : '\x1b[31m',
   green   : '\x1b[92m',
@@ -41,39 +41,94 @@ const conColor = {
 //
 const myDateObject = {
   // return "right now" if nothing supplied, otherwise return object of supplied date info
-  dateObject(aDate) { return (aDate ? new Date(aDate) : new Date()); },
+  dateObject(aDate) {
+    return (aDate ? new Date(aDate) : new Date());
+  },
 
   // padding of single digits to double digits
-  datePad(i) { return (`0${i}`).slice(-2); },
+  datePad(i) {
+    return (`0${i}`).slice(-2);
+  },
   // check & set date & tim dividers: (not used as of yet)
-  checkDateDiv(div) { if (!div) { return '-'; } else { return div; }},
-  checkTimeDiv(div) { if (!div) { return ':'; } else { return div; }},
+  checkDateDiv(div) {
+    if (!div) {
+      return '-';
+    } else {
+      return div;
+    }
+  },
+  checkTimeDiv(div) {
+    if (!div) {
+      return ':';
+    } else {
+      return div;
+    }
+  },
 
   // date functions
-  date(aDate) { return (this.datePad(this.dateObject(aDate).getDate())); },
-  month(aDate) { return (this.datePad(this.dateObject(aDate).getMonth() + 1)); },
-  year(aDate) { return (this.dateObject(aDate).getFullYear()); },
-  weekday(aDate) { return (this.dateObject(aDate).toLocaleString("en-US", { weekday: "long" })); },
-  monthEnglish(aDate) { return (this.dateObject(aDate).toLocaleString("en-US", { month: "long" })); },
+  date(aDate) {
+    return (this.datePad(this.dateObject(aDate).getDate()));
+  },
+  month(aDate) {
+    return (this.datePad(this.dateObject(aDate).getMonth() + 1));
+  },
+  year(aDate) {
+    return (this.dateObject(aDate).getFullYear());
+  },
+  weekday(aDate) {
+    return (this.dateObject(aDate).toLocaleString("en-US", { weekday: "long" }));
+  },
+  monthEnglish(aDate) {
+    return (this.dateObject(aDate).toLocaleString("en-US", { month: "long" }));
+  },
 
   // time functions
-  hours(aDate) { return (this.datePad(this.dateObject(aDate).getHours())); },
-  minutes(aDate) { return (this.datePad(this.dateObject(aDate).getMinutes())); },
-  seconds(aDate) { return (this.datePad(this.dateObject(aDate).getSeconds())); },
-  milliseconds(aDate) { return (this.dateObject(aDate).getTime()); },
+  hours(aDate) {
+    return (this.datePad(this.dateObject(aDate).getHours()));
+  },
+  minutes(aDate) {
+    return (this.datePad(this.dateObject(aDate).getMinutes()));
+  },
+  seconds(aDate) {
+    return (this.datePad(this.dateObject(aDate).getSeconds()));
+  },
+  milliseconds(aDate) {
+    return (this.dateObject(aDate).getTime());
+  },
 
   // combinations
-  dateFull(d, aDate) { return (this.justDate(aDate) + ' ' + this.justHHMM(aDate)); },
+  dateFull(d, aDate) {
+    return (this.justDate(aDate) + ' ' + this.justHHMM(aDate));
+  },
   justAMPM(d, aDate) {
-    if (!d) { d = ':'}
+    if (!d) {
+      d = ':';
+    }
     let h = '', s = '';
     this.hours(aDate) > 13 ? (h = this.hours(aDate) - 12, s = 'pm') : (h = this.hours(aDate), s = 'am');
     return (`${h}${d}${this.minutes(aDate)}${s}`);
   },
-  justHHMM(d, aDate) { if (!d) { d = ':'; } return (`${this.hours(aDate)}${d}${this.minutes(aDate)}`); },
-  justDate(d, aDate) { if (!d) { d = '-'; } return (`${this.year(aDate)}${d}${this.month(aDate)}${d}${this.date(aDate)}`); },
-  justTime(d, aDate) { if (!d) { d = ':'; } return (`${this.hours(aDate)}${d}${this.minutes(aDate)}${d}${this.seconds(aDate)}`); },
-  fullEnglishDate(aDate) { return (`${this.weekday(aDate)}, ${this.monthEnglish(aDate)} ${this.date(aDate)}, ${this.year(aDate)}`) },
+  justHHMM(d, aDate) {
+    if (!d) {
+      d = ':';
+    }
+    return (`${this.hours(aDate)}${d}${this.minutes(aDate)}`);
+  },
+  justDate(d, aDate) {
+    if (!d) {
+      d = '-';
+    }
+    return (`${this.year(aDate)}${d}${this.month(aDate)}${d}${this.date(aDate)}`);
+  },
+  justTime(d, aDate) {
+    if (!d) {
+      d = ':';
+    }
+    return (`${this.hours(aDate)}${d}${this.minutes(aDate)}${d}${this.seconds(aDate)}`);
+  },
+  fullEnglishDate(aDate) {
+    return (`${this.weekday(aDate)}, ${this.monthEnglish(aDate)} ${this.date(aDate)}, ${this.year(aDate)}`);
+  },
 };
 
 //
