@@ -141,7 +141,6 @@ const findUserByEmail = function(emailAddy,database) {
   // search via emails
   for (let userSearch in database) {
     if (database[userSearch].email === emailAddy) {
-      // console.log(`Hey, we found ${emailAddy} in the database as user ${userSearch}\n`);
       return userSearch;
     }
   }
@@ -247,7 +246,6 @@ const tinyTrack = function(db,tinyid,dbOperation) {
     };
     db[tinyid] = trackingTemplate;
   }
-  console.log("TRACKING DB ENTRY: " + JSON.stringify(db));
 };
 
 //
@@ -256,11 +254,9 @@ const tinyTrack = function(db,tinyid,dbOperation) {
 //
 const clickTrack = function(db, urlID, uid, action) {
   // add a log entry
-  console.log("IN CLICK TRACK");
   if (action === 'add') {
     let rightNow = JSON.stringify(new Date());
     rightNow = rightNow.replace(/['"]+/g, '');
-    console.log("RIGHTNOW: ", rightNow);
 
     let newClickTrack = {
       lid: urlID,
@@ -268,10 +264,7 @@ const clickTrack = function(db, urlID, uid, action) {
       dateStamp: rightNow,
     };
     db[rightNow] = newClickTrack;
-    console.log("CLICK TRACK DB: " + JSON.stringify(db));
-    console.log(JSON.stringify(newClickTrack));
   }
-  console.log("CLICK TRACK DB: " + JSON.stringify(db));
 };
 
 module.exports = {
