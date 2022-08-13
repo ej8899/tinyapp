@@ -16,8 +16,9 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 3. [Future Plans](#future-plans)
 4. [Quick Start](#quick-start)
 5. [Detailed Operation](#detailed-operation)
-6. [Attributions](#attributes)
-7. [Updates](#updates)
+6. [Known Bugs](#known-bugs)
+7. [Attributions](#attributes)
+8. [Updates](#updates)
 ---
 ## Features:
 - free service
@@ -43,7 +44,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 ---
 ## Future Plans:
 - dark mode
-- additional link analytics
+- additional link analytics (more graphs)
 - customizable tiny url
 - add password reset to login page
 - multiple tiny url selection for bulk delete
@@ -76,6 +77,9 @@ You'll be directed to the login page.  An account is required to create and mana
 You can also review link analytics on this page such as total click throughs, unique click throughs by users.  Additionally, the complete log of clicks, which includes the dates and times of when the tiny URL was clicked, is available too! 
 ![](image-createtinyurl.png)
 [( back to top) ](#about)
+----
+## Known Bugs:  
+- clipboard "icon copy" of tiny url has minor 'shift' when clicked 
 ----
 ## Attributions:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
