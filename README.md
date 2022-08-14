@@ -30,13 +30,16 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 [( back to top 🔺)](#about)
 ---
 ## Extra Features...
-- hide menu bar if not logged in
+Server side:  
 - "quiet" mode to silence server-side feedback
     * use ```-quiet``` as starting argument
 - optional log file generation:  
     * use ```-logfile``` as starting argument
 - chain input arguments such as:
-    * ```-quiet -logfile``` to quiet server visual feedback, but create log file instead
+    * ```-quiet -logfile``` to quiet server visual feedback, but create log file instead  
+
+Client/web side:  
+- hide menu bar if not logged in
 - incorrect password sends error to user
 - trying to create duplicate accounts sends error to user
 - _stretch_: shows total clicks on a tiny url (in edit page)
