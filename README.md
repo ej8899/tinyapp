@@ -81,7 +81,7 @@ You can also review link analytics on this page such as total click throughs, un
 [( back to top) ](#about)
 ----
 ## Known Bugs:  
-- clipboard "icon copy" of tiny url has minor 'shift' when clicked 
+- none noticed
 ----
 ## Attributions:
 - title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
