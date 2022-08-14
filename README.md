@@ -26,7 +26,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - easy to use
 - allows for multiple tiny links to the same long URL
 - analytics including hourly click thru chart  
-[( back to top )](#about)
+[( back to top 🔺)](#about)
 ---
 ## Extra Features:
 - hide menu bar if not logged in
@@ -41,7 +41,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - _stretch_: shows total clicks on a tiny url (in edit page)
 - _stretch_: shows unique clicks on a tiny url (in edit page)
 - _stretch_: create click through log for each tiny URL  
-[( back to top )](#about)
+[( back to top 🔺)](#about)
 ---
 ## Future Plans:
 - dark mode
@@ -53,7 +53,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - allow main URL page sorting - by date added, long url alphabetical, # of clicks, etc
 - track hackers - if registered users try to manipulate other owner ID's, track & block them by email & IP.
 - implement SQL databases & go live with TinyApp!  
-[( back to top )](#about)
+[( back to top 🔺)](#about)
 ---
 ## Quick Start:
 1) start the TinyApp Server in your terminal with  
@@ -63,7 +63,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
   -you can also use ```-logfile```  to create a server log file
 2) start the web app in your browser with  
 ```localhost:8080/```  
-[( back to top )](#about)
+[( back to top 🔺)](#about)
 ---
 ## Detailed Operation:
 1) start the server as mentioned in quick start.  
@@ -81,7 +81,7 @@ You can also review link analytics on this page such as total click throughs, an
 ![](image-createtinyurl.png)
 6) To review unique user click logs and complete click through logs, just click the header to expand on the log listings.
 ![](image-accordion.png)
-[( back to top) ](#about)
+[( back to top 🔺) ](#about)
 ----
 ## Known Bugs:  
 - none noticed
@@ -97,4 +97,4 @@ You can also review link analytics on this page such as total click throughs, an
     * (private testing only)
 
 ---
-[( back to top )](#about)
+[( back to top 🔺)](#about)
