@@ -56,12 +56,13 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 [( back to top 🔺)](#about)
 ---
 ## Quick Start:
-1) start the TinyApp Server in your terminal with  
+1) clone and download from GitHub and setup dependencies with ```npm install``` (tested only with node versions 14+)
+2) start the TinyApp Server in your terminal with  
   ```node express_server.js```   
   -you can also use 'quiet mode' via  
   ```node express_server.js -quiet```  
   -you can also use ```-logfile```  to create a server log file
-2) start the web app in your browser with  
+3) start the web app in your browser with  
 ```localhost:8080/```  
 [( back to top 🔺)](#about)
 ---
