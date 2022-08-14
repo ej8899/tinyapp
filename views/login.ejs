@@ -17,15 +17,16 @@
 
 <body>
   <%- include('partials/_header') %>
+  <div class="card text-left">
+    <div class="card-body">
+      <div class="card bg-light mb-3" >
+      <div class="card-header h3">Welcome to Tiny App!</div>
+      <div class="card-body text-left">
+      <p>We are the web's top URL shortening service!<br>Sign in now to create tiny URLs or to check your account
+        info.
 
-    <main style="margin: 1em;">
-      <h3>Welcome to TinyApp!</h3>
-      <p>Welcome to the web's top URL shortening service!<br>Sign in now to create tiny URLs or to check your account
-        info.<br><BR>Need an account? <a href="/register">Register here</a>.</p>
-
-      <h3>Sign In:</h3>
+      <h4>Sign In:</h4>
       <form class="form-inline" action="/login" method="POST">
-        <div class="form-group mb-2">
           <label for="login">Your Email:</label>
           <input class="form-control" type="email" name="email" placeholder="you@someemail.com"
             style="width: 300px; margin: 1em" /><br>
@@ -36,17 +37,20 @@
               <path
                 d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
             </svg> Login</button>
-        </div>
       </form>
+      Need an account? <a href="/register">Register here</a>.
       <% if(locals.message) { %>
         <p class="h6 text-danger">
           <%= message %>
         </p>
         <% } %>
-          <div>
-
-          </div>
-    </main>
+         
+      </div>
+      </div>
+      </div>
+      </div>
+    </div>
+  
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

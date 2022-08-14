@@ -52,6 +52,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - paginate click through logs  
 - allow main URL page sorting - by date added, long url alphabetical, # of clicks, etc
 - track hackers - if registered users try to manipulate other owner ID's, track & block them by email & IP.
+- implement SQL databases & go live with TinyApp!  
 [( back to top )](#about)
 ---
 ## Quick Start:
@@ -76,23 +77,24 @@ You'll be directed to the login page.  An account is required to create and mana
 4) Create new tiny URLS with the "Create" option.  Simply enter the long URL, and click or tap "submit". You'll return to the tiny URLs list (above) and see your new link added to the list!
 ![](image-createfirst.png)
 5) Update and modify tiny URL destinations through a dedicated update page.  
-You can also review link analytics on this page such as total click throughs, unique click throughs by users.  Additionally, the complete log of clicks, which includes the dates and times of when the tiny URL was clicked, is available too! 
+You can also review link analytics on this page such as total click throughs, and unique click throughs by users.  Additionally, the complete log of clicks, which includes the dates and times of when the tiny URL was clicked, is available too! 
 ![](image-createtinyurl.png)
+6) To review unique user click logs and complete click through logs, just click the header to expand on the log listings.
+![](image-accordion.png)
 [( back to top) ](#about)
 ----
 ## Known Bugs:  
 - none noticed
 ----
 ## Attributions:
-- title icon created by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
+- title "rocket" icon by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
 - css styling, in part, by <a href="https://getbootstrap.com">Bootstrap</a>
 - misc JS libraries by <a href="http://www.github.com/ej8899">ej-dev conColors(github)</a>
 ---
 ## Updates:
-- Get the most recent version of TinyApp! [here](https://github.com/ej8899/tinyapp).
+- Get the most recent version of TinyApp! [on our GitHub account here.](https://github.com/ej8899/tinyapp).
 - Change Log v 0.9 - 2022-08-06:  
     * (private testing only)
-    - add encrypted cookies
 
 ---
 [( back to top )](#about)

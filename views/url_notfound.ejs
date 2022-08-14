@@ -23,11 +23,24 @@
   <body>
     <%- include('partials/_header') %>
     
-    <main style="margin: 1em;" class=".text.center"><div align=center>
-      <h3 class="text.center"><img src="/warning.png" width="128" height="128">&nbsp;&nbsp;404 - Tiny URL was not found!</h3>
-      <h4><BR>It may have been removed by the link owner,<BR>or otherwise entered incorrectly.</h4>
-      </div></main>
 
+    <div class="container">
+      <div class="row align-items-center justify-content-center vh-100">
+              <div class="card shadow border" >
+                  <div class="card-body align-items-center" >
+                    <table>
+                      <tr>
+                        <td><img src="/warning.png" width="128" height="128"></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td><h3 class="text.center">404 :
+                          Tiny URL was not found!</h3>
+                        <h4><BR>It may have been removed by the link owner,<BR>or otherwise entered incorrectly.</h4></td>
+                      </tr>
+                    </table>
+                  </div>
+              </div>
+      </div>
+    </div>
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

@@ -21,29 +21,35 @@
 
   <body>
     <%- include('partials/_header') %>
-
-    <main style="margin: 1em;">
-      <h3>Create TinyURL</h3>
-      <form class="form-inline" action="/urls" method="POST">
+    <div class="card text-left">
+    <div class="card-body">
+      <div class="card bg-light mb-3" style="max-width: 32rem;">
+      <div class="card-header h5">Create a New Tiny URL:</div>
+      <div class="card-body text-left">
+      
+        <div>Enter a URL to make tiny:</div>
+        <form class="form-inline" action="/urls" method="POST">
         <div class="form-group mb-2">
-          <label for="longURL">Enter a URL to make tiny:</label>
-          <input
+        <input
             class="form-control"
-            type="text"
+            type="url"
             name="longURL"
             placeholder="http://"
-            style="width: 300px; margin: 1em"
-          />
+            style="width: 300px;"
+          />&nbsp;&nbsp;
           <button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
-            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+          <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
           </svg> Submit</button>
         </div>
-      </form>
+        </form>
       <!-- show any passed messages here -->
       <% if(locals.message) { %>
         <p class="h6 text-danger"><%= message %></p>
       <% } %>
-    </main>
+      </div></div></div>
+    </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

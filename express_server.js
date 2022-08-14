@@ -542,24 +542,26 @@ app.get("/u/:id", (req, res) => {
   cookieName(req);
 
   let id = req.params.id;
-  if (id !== 'undefined') {
+  
+  if (id !== 'undefined' && (id in urlDatabaseMain)) {      // does the id exist in main database?
     const longURL = urlDatabaseMain[id].longURL;
     consolelog(`${conColor.orange}Redirected to ${conColor.green}${longURL}${conColor.reset}`);
     tinyTrack(trackingDatabase,id,'inc'); // increase total click count on this tiny URL
 
     let tempuid;
     if (uid === "" || uid === "nobody") {
-      tempuid = makeID(8);                // create a temp user ID for even unregistered users
-      cookieName(req,"set",tempuid);      // set a cookie for unregistered users too!
+      tempuid = makeID(8);                                  // create a temp user ID for even unregistered users
+      cookieName(req,"set",tempuid);                        // set a cookie for unregistered users too!
     } else {
       tempuid = uid;
     }
     clickTrack(clickDatabase, id, tempuid, 'add');
     res.redirect(longURL);
-  } else {
-    consolelog(`${conColor.yellow}oops -  ${conColor.red}undefined${conColor.yellow} isn't a valid destination${conColor.reset}\n`);
-    return res.status(404).render("url_notfound.ejs");
+    return;
   }
+  // assume bad tiny url and send to 404
+  consolelog(`${conColor.yellow}oops -  ${conColor.red}undefined${conColor.yellow} isn't a valid destination${conColor.reset}\n`);
+  return res.status(404).render("url_notfound.ejs");
 });
 
 
