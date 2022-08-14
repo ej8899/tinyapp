@@ -116,7 +116,7 @@ const clickDatabase = {
 // consoleLog() replacement handler
 // allows for -quiet mode toggles, -logfile for creating logfiles and DEBUG modes
 // USAGE: consolelog(input text string, override, debug)
-// where: 
+// where:
 // override is TRUE then disregard quiet mode
 // debug is TRUE then allow for DEBUG info logging (debug is a TODO item for final function)
 // returns nothing when done
