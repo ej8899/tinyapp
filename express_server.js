@@ -20,11 +20,11 @@ const { conColor,
   clickTrack
 } = require('./helpers.js');
 
-const fs = require('fs');                         // file services
-const bcrypt = require("bcryptjs");               // encryption
-const express = require("express");               // express.js render engine
-const cookieSession = require('cookie-session');  // cookies management - secure - see cookieName() for details
-
+const fs = require('fs');                           // file services
+const bcrypt = require("bcryptjs");                 // password encryption
+const express = require("express");                 // express.js render engine
+const cookieSession = require('cookie-session');    // cookies management - encrypted - see cookieName() for details
+const methodOverride = require('method-override');  // express method override for CRUD
 const app = express();
 const PORT = 8080; // default port 8080
 // const path = require('path');
@@ -32,6 +32,7 @@ const PORT = 8080; // default port 8080
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));                 // override with POST having ?_method=DELETE
 app.use(cookieSession({
   name: 'tinyapp',
   keys: ['this is a secret tinyapp key']
@@ -48,7 +49,7 @@ let uid = ""; // for cookie tracking across all functionality
 // GLOBAL DATABASE variables
 //
 
-// TEMP urlDtabase - this will be restructured as program runs with data from the userID
+// urlDatabase - this is a working database for logged in users only
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -67,7 +68,7 @@ const urlDatabaseMain = {
 };
 
 const usersDatabase = {
-  // test users but will not work with encrypted cookies system
+  // test user accounts will not work as we're using encrypted passwords now
   userRandomID: {
     id: "userRandomID",
     email: "user@example.com",
@@ -93,7 +94,7 @@ const trackingDatabase = {
   },
 };
 
-// analytics database: click LOG
+// analytics database: complete click LOG
 const clickDatabase = {
   // structure example:
   // dateStamp: {
@@ -112,9 +113,12 @@ const clickDatabase = {
 
 
 //
-// consoleLog() replacement handler for quiet mode
-// USAGE: consolelog(input text string, override)
-// where if override is TRUE then disregard quiet mode
+// consoleLog() replacement handler
+// allows for -quiet mode toggles, -logfile for creating logfiles and DEBUG modes
+// USAGE: consolelog(input text string, override, debug)
+// where: 
+// override is TRUE then disregard quiet mode
+// debug is TRUE then allow for DEBUG info logging (debug is a TODO item for final function)
 // returns nothing when done
 // - if argv is -logfile, then create a server log file with date stamps
 // - if argv is -quiet, then only log if override is TRUE
@@ -134,12 +138,13 @@ const consolelog = function(inputText,override) {
     return;
   }
   
+  let logDate = myDateObject.justDate();
+  let logTime = myDateObject.justTime();
   if (createFile === "yes") {
-    // NOTE TO CODE REVIEWER:  below line is REQUIRED to remove escape characters before sending to a file! How can I avoid the ESLINT issue?
+    // NOTE TO CODE REVIEWER:  below line is REQUIRED to remove escape characters before sending to a file!
+    // How can I avoid the ESLINT issue?
     let strippedText = inputText.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, ''); // clear escape codes
     strippedText = strippedText.replace(/(\r\n|\n|\r)/gm, ""); // clear newlines (we'll use our own for server log)
-    let logDate = myDateObject.justDate();
-    let logTime = myDateObject.justTime();
     const logfileText = '\r\n' + logDate + ' - ' + logTime + ' - ' + strippedText;
 
     const logfileMaxSize = 50000;
@@ -166,7 +171,7 @@ const consolelog = function(inputText,override) {
       if (err) throw err;
     });
   }
-  console.log(inputText);  // all that above and we'll console.log the log entry
+  console.log(logTime + ' - ' + inputText);  // all that above and we'll console.log the log entry
 };
 
 
@@ -221,7 +226,7 @@ const cookieName = function(req,operation,cookieData) {
     uid = req.session.euid; // this is via SECURE COOKIES
     if (!uid) {
       uid = "nobody"; // use "nobody" as a monitoring system for bad logins
-      consolelog(`\n"${conColor.green}nobody${conColor.red}" is trying to access the system!${conColor.reset}\n`);
+      consolelog(`"${conColor.green}nobody${conColor.red}" is trying to access the system!${conColor.reset}\n`);
       return uid;
     }
     consolelog(uid + " says " + conColor.green + cookiesButNoMilk() + conColor.reset);
@@ -281,6 +286,7 @@ const countUIDS = function(inputObject) {
   return (returnObject);
 };
 
+
 //
 // urlsForUser(id)
 // input user id field and read MAIN database and update urlDatabase to be ONLY the id's that match to current user.
@@ -289,7 +295,7 @@ const urlsForUser = function(id)  {
   if (!id) {
     id = uid;
   }
-  console.log("IN URLS-FOR-USER");
+  consolelog("Building current user database...");
 
   // delete the existing user URL database
   for (const prop of Object.getOwnPropertyNames(urlDatabase)) {
@@ -298,23 +304,18 @@ const urlsForUser = function(id)  {
 
   // rebuild the user URL database with 'owned' tiny URLs
   for (let dbItem in urlDatabaseMain) {
-    console.log("DBITEM: ",JSON.stringify(dbItem));
-    console.log("DBITEM.userID: ",JSON.stringify(urlDatabaseMain[dbItem].userID));
     // match uid to maindb.id.uid - if so, populate urlDatabase
-    console.log("CURRENT UID: ",uid);
     // dbuid = urlDatabaseMain[db].replace("\"",'');
     if (urlDatabaseMain[dbItem].userID === uid) {
-      console.log("MATCH USERS");
       urlDatabase[dbItem] = urlDatabaseMain[dbItem].longURL;
     }
   }
-  console.log(JSON.stringify(urlDatabase));
 };
 
 //
 // hackCheck(linkID)
 // returns true if security check works out, otherwise false if hack attempt
-// pass main database tinyURL link id, pull user from record & compare to logged in user. 
+// pass main database tinyURL link id, pull user from record & compare to logged in user.
 //
 const hackCheck = function(linkID) {
   if (uid === urlDatabaseMain[linkID].userID) {
@@ -336,6 +337,7 @@ const hackCheck = function(linkID) {
  *     _____| |  |   |  |   _   ||   |  | |  |   |
  *    |_______|  |___|  |__| |__||___|  |_|  |___|
  */
+
 makeServerTitle();
 
 
@@ -372,9 +374,14 @@ app.get("/urls", (req, res) => {
     // need to login
     res.render("login.ejs", {loginPage: "yes"});
   } else {
-    urlsForUser(uidData);
-    const templateVars = { urls: urlDatabase, user: uidData, tracking: trackingDatabase};
-    res.render("urls_index.ejs", templateVars);
+    urlsForUser(uidData);                                       // assemble tiny URLS for this user
+    if (Object.keys(urlDatabase).length === 0) {               // user has no TINY urls, jump them to CREATE page
+      const templateVars = { urls: urlDatabase, user: uidData, message: "Get started by creating your very first Tiny URL!"};
+      res.render("urls_new.ejs", templateVars);
+    } else {
+      const templateVars = { urls: urlDatabase, user: uidData, tracking: trackingDatabase};
+      res.render("urls_index.ejs", templateVars);
+    }
   }
 });
 
@@ -401,16 +408,15 @@ app.get("/urls/new", (req, res) => {  // NOTE: ORDER is important for nested /ur
 //
 // DELETE an existing database entry
 //
-app.post("/urls/:id/delete", (req, res) => {
+//app.post("/urls/:id/delete", (req, res) => {
+app.delete("/urls/:id/delete", (req, res) => {
   if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
-  
   if (hackCheck(req.params.id)) {
-    consolelog(`\n${req.params.id} - ${conColor.green}It's been ${conColor.red}nuked, ${conColor.orange}deleted, ${conColor.yellow}wiped out, ${conColor.cyan}obliterated & ${conColor.magenta}eliminated,${conColor.green} boss!\n`);
+    consolelog(`${req.params.id} - ${conColor.green}It's been ${conColor.red}nuked, ${conColor.orange}deleted, ${conColor.yellow}wiped out, ${conColor.cyan}obliterated & ${conColor.magenta}eliminated,${conColor.green} boss!\n`);
     delete urlDatabaseMain[req.params.id];
   }
-
   return res.redirect('/urls/');
 });
 
@@ -418,15 +424,18 @@ app.post("/urls/:id/delete", (req, res) => {
 //
 // UPDATE an existing database entry
 //
-app.post("/urls/:id/update", (req, res) => {
+// app.post("/urls/:id/update", (req, res) => {
+app.put("/urls/:id/update", (req, res) => {
   if (cookieName(req) === "nobody") {
     return res.status(403).render("login.ejs");
   }
 
-  consolelog("\nupdate tiny url:" + req.params.id + " to " + req.body.longURL);
+  consolelog("\nupdating tiny url:" + req.params.id + " to " + req.body.longURL);
 
   // TODO - need to error check req.body.longURL before changing the database (is a valid/working URL?)
-  urlExists(req.body.longURL);
+  if (urlExists(req.body.longURL) === false) {
+    return res.redirect('/urls/');
+  }
   
   if (hackCheck(req.params.id)) {
     urlDatabaseMain[req.params.id].longURL = req.body.longURL;
@@ -456,6 +465,7 @@ app.get("/urls/:id", (req, res) => {
   let templateClicks = {};
   let theusertype = '', graphArray = [], graphStats = {};
 
+  
   for (let item in clickDatabase) {                         // loop thru click database
     if (clickDatabase[item].lid === req.params.id) {        // filter matching tiny url items
       if (clickDatabase[item].uid.length === 6) {           // is the user registered or not
@@ -483,9 +493,10 @@ app.get("/urls/:id", (req, res) => {
   let clickUniques = Object.keys(moreStats).length;
 
   // CONVERT GRAPH DATA for client side JS graph generator:
-  let newgraphObj = {};
+  let newgraphObj = {}, fixeditem = '';
   for (let item in graphStats) {
-    newgraphObj[item] = graphStats[item];
+    fixeditem = item.slice(-5);
+    newgraphObj[fixeditem] = graphStats[item];
     graphArray.push(newgraphObj);
   }
   
@@ -495,7 +506,7 @@ app.get("/urls/:id", (req, res) => {
 
 
 //
-// CREATE a NEW database Entry
+// CREATE a NEW tiny URL database Entry
 //
 app.post("/urls", (req, res) => {
   if (cookieName(req) === "nobody") {
@@ -511,8 +522,6 @@ app.post("/urls", (req, res) => {
       userID: uid,
     };
     urlDatabaseMain[newTinyURL] = dbRecord;
-    
-    console.log("MAIN database: " + JSON.stringify(urlDatabaseMain));  // DEBUG
 
     tinyTrack(trackingDatabase,newTinyURL,"addnew");
     
@@ -566,6 +575,7 @@ app.get("/register", (req, res) => {
   res.render("newuser.ejs", templateVars);
 });
 
+
 //
 // REDIRECT to the LOGIN page
 //
@@ -592,6 +602,7 @@ app.get("/logout", (req, res) => {
   const templateVars = { loginPage: "yes"};
   return res.render('login.ejs', templateVars);
 });
+
 
 //
 // REGISTRATION handler

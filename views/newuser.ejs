@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include ('partials/_favicons') %>
+
+<head>
+  <%- include ('partials/_favicons') %>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>New User Registration - TinyApp Example</title>
-  </head>
+</head>
 
-  <body>
-    <%- include('partials/_header') %>
+<body>
+  <%- include('partials/_header') %>
 
     <main style="margin: 1em;">
       <h3>Register New Account:</h3>
@@ -30,50 +26,52 @@
         <div class="row g-3 align-items-center">
           <div class="mb-3">
             <div class="col-auto">
-            <label for="exampleInputEmail1" class="form-label">&nbsp;Email address:</label>
-            &nbsp;<input width=200 name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <label for="exampleInputEmail1" class="form-label">&nbsp;Email address:</label>
+              &nbsp;<input width=200 name="email" type="email" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
             </div>
           </div>
         </div>
-          <div class="row g-3 align-items-center">
-            <div class="mb-3">
+        <div class="row g-3 align-items-center">
+          <div class="mb-3">
             <div class="col-auto">
               <label for="inputPassword6" class="col-form-label">Password</label>
             </div>
             <div class="col-auto">
-              <input name="password" type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+              <input name="password" type="password" id="inputPassword6" class="form-control"
+                aria-describedby="passwordHelpInline">
             </div>
           </div>
-          </div>
+        </div>
 
-          <BR><button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
-            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+        <BR><button type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+            <path
+              d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
           </svg> Register Account</button>
         </div>
       </form>
       <div>
         <% if(locals.message) { %>
-          <br><p class="h6 text-danger"><%= message %></p>
-        <% } %>
-        <BR>Already have an account?  <a href="/login">Sign in</a> here.
+          <br>
+          <p class="h6 text-danger">
+            <%= message %>
+          </p>
+          <% } %>
+            <BR>Already have an account? <a href="/login">Sign in</a> here.
       </div>
     </main>
     <!-- Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous"></script>
     <%- include ('partials/_footer') %>
-  </body>
+</body>
+
 </html>

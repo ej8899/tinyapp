@@ -39,6 +39,10 @@
           </svg> Submit</button>
         </div>
       </form>
+      <!-- show any passed messages here -->
+      <% if(locals.message) { %>
+        <p class="h6 text-danger"><%= message %></p>
+      <% } %>
     </main>
     <!-- Bootstrap JS -->
     <script

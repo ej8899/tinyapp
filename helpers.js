@@ -3,8 +3,6 @@
 //  add helper functions for express_server.js
 //
 
-const { request, application } = require("express");
-
 
 //
 // additional global variables
@@ -33,6 +31,7 @@ const conColor = {
   italics : "\x1b[3m",
   reverse : "\x1b[7m",
 };
+
 
 //
 // myDateObject - date object to provide quick access to formatted date and times
@@ -131,6 +130,7 @@ const myDateObject = {
   },
 };
 
+
 //
 // Search our users database by email address for match.  REturn fALSE if no match, or UID if a match
 //
@@ -146,6 +146,7 @@ const findUserByEmail = function(emailAddy,database) {
   }
   return false;
 };
+
 
 //
 // random foolishness for the cookies function
@@ -163,6 +164,7 @@ const cookiesButNoMilk = function() {
   return (quotesArray[quoteNumber]);
 };
 
+
 //
 // read operating system we're using and response with sever message accordingly
 // not required for CORE functionality, but a learning opportunity
@@ -179,6 +181,7 @@ const getOpSys = function() {
   opsys = conColor.bright + conColor.orange + opsys + conColor.reset;
   return opsys;
 };
+
 
 //
 // create server title ascii art
@@ -200,15 +203,19 @@ const makeServerTitle = function() {
   console.log(conColor.reset);
 };
 
+
 //
 // urlExists(theURL)
 // check supplied URL to see if it actually exists (response of < 400)
 // return true if yes and ok, false if error code of 400 or >
 //
 const urlExists = function(theURL,callback) {
-  return true;
+  if (theURL) {
+    // TODO - expand on error checking for valid URL here
+    return true;
+  }
+  return false;
 };
-
 
 
 //
@@ -248,6 +255,7 @@ const tinyTrack = function(db,tinyid,dbOperation) {
   }
 };
 
+
 //
 // clickTrack()
 // this creates a LOG database of EVERY click of a tiny URL - with a tiny URL id, user ID, & datestamp.
@@ -266,6 +274,7 @@ const clickTrack = function(db, urlID, uid, action) {
     db[rightNow] = newClickTrack;
   }
 };
+
 
 module.exports = {
   conColor,

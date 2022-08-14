@@ -39,6 +39,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - incorrect password sends error to user
 - trying to create duplicate accounts sends error to user
 - _stretch_: shows total clicks on a tiny url (in edit page)
+- _stretch_: shows unique clicks on a tiny url (in edit page)
 - _stretch_: create click through log for each tiny URL  
 [( back to top )](#about)
 ---
