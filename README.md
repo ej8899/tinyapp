@@ -1,6 +1,7 @@
 # TinyApp!
-## About:
-TinyApp! is a free URL shortening service and link management system. It is derived from the <a href="www.lighthouselabs.ca">Lighthouse Labs</a> (LHL) full stack web development bootcamp project.
+## About...
+TinyApp! is a free URL shortening service and link management system.  
+It is derived from the <a href="www.lighthouselabs.ca">Lighthouse Labs</a> (LHL) full stack web development bootcamp project.
 
 Existing LHL students can review the project here:  
 https://flex-web.compass.lighthouselabs.ca/projects/tiny-app  
@@ -10,7 +11,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 ![](image-readme.png)
   
 ---
-## Contents:
+## Contents...
 1. [Features](#features)
 2. [Extra Features](#extra-features)
 3. [Future Plans](#future-plans)
@@ -20,7 +21,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 7. [Attributions](#attributes)
 8. [Updates](#updates)
 ---
-## Features:
+## Features...
 - free service
 - secure
 - easy to use
@@ -28,7 +29,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - analytics including hourly click thru chart  
 [( back to top 🔺)](#about)
 ---
-## Extra Features:
+## Extra Features...
 - hide menu bar if not logged in
 - "quiet" mode to silence server-side feedback
     * use ```-quiet``` as starting argument
@@ -43,7 +44,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - _stretch_: create click through log for each tiny URL  
 [( back to top 🔺)](#about)
 ---
-## Future Plans:
+## Future Plans...
 - dark mode
 - additional link analytics (more graphs)
 - customizable tiny url
@@ -55,7 +56,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 - implement SQL databases & go live with TinyApp!  
 [( back to top 🔺)](#about)
 ---
-## Quick Start:
+## Quick Start...
 1) clone and download from GitHub and setup dependencies with ```npm install``` (tested only with node versions 14+)
 2) start the TinyApp Server in your terminal with  
   ```node express_server.js```   
@@ -66,7 +67,7 @@ https://flex-web.compass.lighthouselabs.ca/projects/tiny-app
 ```localhost:8080/```  
 [( back to top 🔺)](#about)
 ---
-## Detailed Operation:
+## Detailed Operation...
 1) start the server as mentioned in quick start.  
 ```node express_server.js```
 ![](image-server.png)
@@ -84,15 +85,15 @@ You can also review link analytics on this page such as total click throughs, an
 ![](image-accordion.png)
 [( back to top 🔺) ](#about)
 ----
-## Known Bugs:  
+## Known Bugs...
 - none noticed
 ----
-## Attributions:
+## Attributions...
 - title "rocket" icon by <a href="https://www.flaticon.com/free-icons/rocket" title="rocket icons">Freepik - Flaticon</a>
 - css styling, in part, by <a href="https://getbootstrap.com">Bootstrap</a>
 - misc JS libraries by <a href="http://www.github.com/ej8899">ej-dev conColors(github)</a>
 ---
-## Updates:
+## Updates...
 - Get the most recent version of TinyApp! [on our GitHub account here.](https://github.com/ej8899/tinyapp).
 - Change Log v 0.9 - 2022-08-06:  
     * (private testing only)
