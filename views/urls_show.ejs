@@ -23,7 +23,6 @@
 <body>
   <%- include ('partials/_header') %>
     <div class="card text-left">
-      <div class="card-header"></div>
       <div class="card-body">
         <h4 class="card-title">URL Info:</h4>
         <h5 class="card-title">Original URL: <%= longURL %></h5>
@@ -35,7 +34,7 @@
               <p class="card-text">
                 <!-- https://preview.keenthemes.com/good/documentation/forms/clipboard.html -->
                 Tiny URL ID: <a data-toggle="tooltip" title="Click to jump to your destination!" id="clipboard_tocopy"
-                  href="http://localhost:8080/u/<%= id %>">http://localhost:8080/u/<%= id %></a>&nbsp;&nbsp;<button
+                  href="http://localhost:8080/u/<%= id %>" target="_blank" rel="noreferrer noopener">http://localhost:8080/u/<%= id %></a>&nbsp;&nbsp;<button
                   data-toggle="tooltip" title="Click to copy to clipboard!" class=" btn btn-icon btn-sm btn-light"
                   data-clipboard-target="#clipboard_tocopy">
                   <!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
@@ -53,67 +52,93 @@
                   <!--end::Svg Icon-->
                 </button>
               </p>  
-      </div>
-      <div class="card-footer text-left">
+      
+      <!-- START: EDIT DESTINATION URL BOX -->
+      <div class="card bg-light mb-3" style="max-width: 32rem;">
+      <div class="card-header h5">Change Destination URL:</div>
+      <div class="card-body text-left">
         <!-- EDIT FORM HERE -->
-        <h4>Change Destination URL:</h4>
-        <form class="form-inline" method="POST" action="/urls/<%= id %>/update?_method=put"><label for="longURL">URL:
+        <form class="form-inline" method="POST" action="/urls/<%= id %>/update?_method=put"><label for="longURL" class="px-md-1">New URL:
           </label><input class="form-control" type="text" name="longURL" value="<%= longURL %>"
-            style="width: 300; margin: 1em; text-align:left" /></input><button type="submit"
-            class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            style="text-align:left" /></input>&nbsp;&nbsp;<button type="submit"
+            class="btn btn-primary px-md-3"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
               class="bi bi-play-fill" viewBox="0 0 16 16">
               <path
                 d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
             </svg> Update</button></form>
       </div>
+      </div>
+      </div>
+      <!-- END: EDIT DESTINATION URL BOX -->
+    
       <div class="card-body">
-        <p class="card-text">
           <!-- ANALYTICS SECTION -->
         <h4 class="card-title">Analytics:</h4>
-        <% if(locals.totalCount) { %>
-          <p>
-          <h5>Click Through Totals: <%= totalCount %>
-          </h5>
-          </p>
-          <% } %>
+        
+          <% if(locals.uniques) { %>
 
-            <% if(locals.uniques) { %>
-              <h5 class="card-title">Clicks By Hour:</h5>
+          <!-- START: HOURLY GRAPH -->
+            <div class="card">
+            <div class="card-header">
+              <b>Clicks By Hour:</b>
+            </div>
+            <div class="card-body">
               <div id="hourlystats" style="height: 250px;"></div>
-
-              <p>
-              <h5>Unique User Click Throughs: <%= uniques %>
-              </h5>
-              </p>
-              <% if(locals.moreStats) { %>
-                <table>
-                  <tr>
-                    <td style="padding-right:20px"><b>User:</b></td>
-                    <td align=center style="padding-left:20px"><b>Clicks:</b></td>
-                  </tr>
-                  <% for (let anid in moreStats) { %>
-                    <tr>
-                      <td style="padding-right:20px">
-                        <%= anid %>
-                      </td>
-                      <td align=center style="padding-left:20px">
-                        <%= moreStats[anid].count %>
-                      </td>
-                    </tr>
+            </div>
+            </div>
+          <!-- END: HOURLY GRAPH -->
+            <BR>
+          <!-- START: OTHER STATS -->
+          <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <b>Unique User Clicks (<%= uniques %>):</b>
+                  </button>
+                </h2>
+              </div>
+          
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                  <% if(locals.moreStats) { %>
+                    <table>
+                      <tr>
+                        <td style="padding-right:20px"><b>User:</b></td>
+                        <td align=center style="padding-left:20px"><b>Clicks:</b></td>
+                      </tr>
+                      <% for (let anid in moreStats) { %>
+                        <tr>
+                          <td style="padding-right:20px">
+                            <%= anid %>
+                          </td>
+                          <td align=center style="padding-left:20px">
+                            <%= moreStats[anid].count %>
+                          </td>
+                        </tr>
+                        <% } %>
+                    </table>
                     <% } %>
-                </table>
-                <% } %>
-
-                  <p>
-                  <h3><BR>Click Through Log:</h3>
-                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <b>Click Through Log <% if(locals.totalCount) { %> ( <%= totalCount %> total clicks )<% } %>:</b>
+                  </button>
+                </h2>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
                   <table>
                     <tr>
                       <td style="padding-right:25px">
-                        <h5>Date & Time (UTC)</h5>
+                        <h6>Date & Time (UTC)</h6>
                       </td>
                       <td>
-                        <h5>User ID of Who Clicked:</h5>
+                        <h6>User ID of Who Clicked:</h6>
                       </td>
                     </tr>
                     <% for (let id in logs) { %>
@@ -145,11 +170,17 @@
                           </td>
                         </tr>
                   </table>
-                  <% } else{ %>
-                    <!-- END OF ANALYTICS (locals.uniques) -->
-                    NO DATA TO SHOW
-                    <% } %>
-                      </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: OTHER STATS -->
+              
+                  
+          <% } else{ %>
+            <!-- END OF ANALYTICS (locals.uniques) -->
+            NO DATA TO SHOW
+            <% } %>
       </div>
       <!-- Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
