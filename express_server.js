@@ -171,7 +171,7 @@ const consolelog = function(inputText,override) {
       if (err) throw err;
     });
   }
-  console.log(logTime + ' - ' + inputText);  // all that above and we'll console.log the log entry
+  console.log(conColor.dim + logTime + ' - ' + conColor.reset + inputText);  // all that above and we'll console.log the log entry
 };
 
 
@@ -318,6 +318,7 @@ const urlsForUser = function(id)  {
 // pass main database tinyURL link id, pull user from record & compare to logged in user.
 //
 const hackCheck = function(linkID) {
+  consolelog(`running hack check on link ${linkID} and user ${uid}`);
   if (uid === urlDatabaseMain[linkID].userID) {
     return true;
   } else {
@@ -430,7 +431,7 @@ app.put("/urls/:id/update", (req, res) => {
     return res.status(403).render("login.ejs");
   }
 
-  consolelog("\nupdating tiny url:" + req.params.id + " to " + req.body.longURL);
+  consolelog("updating tiny url:" + req.params.id + " to " + req.body.longURL);
 
   // TODO - need to error check req.body.longURL before changing the database (is a valid/working URL?)
   if (urlExists(req.body.longURL) === false) {
@@ -628,7 +629,7 @@ app.post("/register", (req,res) => {
   // Does the account already exist?? search via emails!
   let tempUID = findUserByEmail(req.body.email,usersDatabase);
   if (tempUID) {
-    consolelog("\nUser is already in the user database.\nForgot your password? It's " + usersDatabase[tempUID].password);
+    consolelog("User is already in the user database.  Maybe forgot password?");
     const templateVars = { message: "You're already registered as a user! Sign in instead!", loginPage: "yes"};
     return res.render('login.ejs', templateVars);
   }
